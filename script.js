@@ -152,9 +152,12 @@ window.onload = function() {
                         document.getElementById('loginEmail').value = '';
                         document.getElementById('loginSenha').value = '';
                         document.getElementById('loginTelefone').value = '';
+                        
+                        localStorage.setItem('usuarioLogado', JSON.stringify(usuarios[0]));
+                        
                         setTimeout(() => {
-                            successOverlay.style.display = 'none';
-                        }, 3000);
+                            window.location.href = 'TelaIni.html';
+                        }, 2000);
                     } else {
                         alert('Email ou senha incorretos!');
                     }
