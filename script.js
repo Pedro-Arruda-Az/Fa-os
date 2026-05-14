@@ -60,6 +60,8 @@ window.onload = function() {
 
     const telefoneLogin = document.getElementById('loginTelefone');
     const telefoneCadastro = document.getElementById('cadastroTelefone');
+    const cpfLogin = document.getElementById('loginCPF');
+    const cpfCadastro = document.getElementById('cadastroCPF');
 
     function formatarTelefone(input) {
         let valor = input.value.replace(/\D/g, '');
@@ -84,6 +86,29 @@ window.onload = function() {
     if (telefoneCadastro) {
         telefoneCadastro.addEventListener('input', function() {
             formatarTelefone(this);
+        });
+    }
+
+    function formatarCPF(input) {
+        let value = input.value.replace(/\D/g, ''); // remove tudo que não é número
+
+        // Aplica a máscara
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+        input.value = value;
+    }
+
+    if (cpfLogin) {
+        cpfLogin.addEventListener('input', function(e) {
+            formatarCPF(e.target);
+        });
+    }
+
+    if (cpfCadastro) {
+        cpfCadastro.addEventListener('input', function(e) {
+            formatarCPF(e.target);
         });
     }
 
@@ -124,10 +149,11 @@ window.onload = function() {
     if (entrarBtn) {
         entrarBtn.onclick = async function() {
             const email = document.getElementById('loginEmail').value;
+            const cpf = document.getElementById('loginCPF').value.replace(/\D/g, '');
             const senha = document.getElementById('loginSenha').value;
 
-            if (!email || !senha) {
-                alert('Por favor, preencha email e senha!');
+            if (!email || !cpf || !senha) {
+                alert('Por favor, preencha email, CPF e senha!');
                 return;
             }
 
@@ -139,6 +165,7 @@ window.onload = function() {
                         .from('usuarios')
                         .select('*')
                         .eq('email', email)
+                        .eq('cpf', cpf)
                         .eq('senha', senhaHash);
 
                     if (error) {
@@ -150,6 +177,7 @@ window.onload = function() {
                         successOverlay.style.display = 'flex';
                         loginModal.style.display = 'none';
                         document.getElementById('loginEmail').value = '';
+                        document.getElementById('loginCPF').value = '';
                         document.getElementById('loginSenha').value = '';
                         document.getElementById('loginTelefone').value = '';
                         
@@ -177,16 +205,17 @@ window.onload = function() {
             const email = document.getElementById('cadastroEmail').value;
             const nome_user = document.getElementById('cadastroUsuario').value;
             const telefone = document.getElementById('cadastroTelefone').value.replace(/\D/g, '');
+            const cpf = document.getElementById('cadastroCPF').value.replace(/\D/g, '');
             const senha = document.getElementById('cadastroSenha').value;
             
-            if (nome && email && nome_user && senha) {
+            if (nome && email && nome_user && cpf && senha) {
                 if (supabaseClient && window.CryptoJS) {
                     try {
                         const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
                         
                         const { data, error } = await supabaseClient
                             .from('usuarios')
-                            .insert([{ nome, email, nome_user, telefone, senha: senhaHash }])
+                            .insert([{ nome, email, nome_user, telefone, cpf, senha: senhaHash }])
                             .select();
 
                         if (error) {
@@ -205,6 +234,7 @@ window.onload = function() {
                         document.getElementById('cadastroEmail').value = '';
                         document.getElementById('cadastroUsuario').value = '';
                         document.getElementById('cadastroTelefone').value = '';
+                        document.getElementById('cadastroCPF').value = '';
                         document.getElementById('cadastroSenha').value = '';
                     } catch (err) {
                         console.error(err);
