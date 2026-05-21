@@ -100,6 +100,27 @@ window.onload = function() {
         input.value = value;
     }
 
+    function TestaCPF(strCPF) {
+        var Soma;
+        var Resto;
+        Soma = 0;
+        if (!strCPF || strCPF.length !== 11 || /^(\d)\1{10}$/.test(strCPF)) return false;
+
+        for (let i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+        Soma = 0;
+        for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+        return true;
+    }
+
     if (cpfLogin) {
         cpfLogin.addEventListener('input', function(e) {
             formatarCPF(e.target);
@@ -157,6 +178,11 @@ window.onload = function() {
                 return;
             }
 
+            if (!TestaCPF(cpf)) {
+                alert('CPF inválido!');
+                return;
+            }
+
             if (supabaseClient && window.CryptoJS) {
                 try {
                     const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
@@ -209,6 +235,11 @@ window.onload = function() {
             const senha = document.getElementById('cadastroSenha').value;
             
             if (nome && email && nome_user && cpf && senha) {
+                if (!TestaCPF(cpf)) {
+                    alert('CPF inválido!');
+                    return;
+                }
+                
                 if (supabaseClient && window.CryptoJS) {
                     try {
                         const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
@@ -220,7 +251,13 @@ window.onload = function() {
 
                         if (error) {
                             if (error.code === '23505') {
-                                alert('Email já cadastrado!');
+                                if (error.message && error.message.toLowerCase().includes('cpf')) {
+                                    alert('Este CPF já está cadastrado!');
+                                } else if (error.message && error.message.toLowerCase().includes('email')) {
+                                    alert('Este Email já está cadastrado!');
+                                } else {
+                                    alert('Dado já cadastrado (Email, CPF ou Usuário)!');
+                                }
                             } else {
                                 alert('Erro: ' + error.message);
                             }
