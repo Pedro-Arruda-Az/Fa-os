@@ -60,6 +60,8 @@ window.onload = function() {
 
     const telefoneLogin = document.getElementById('loginTelefone');
     const telefoneCadastro = document.getElementById('cadastroTelefone');
+    const cpfLogin = document.getElementById('loginCPF');
+    const cpfCadastro = document.getElementById('cadastroCPF');
 
     function formatarTelefone(input) {
         let valor = input.value.replace(/\D/g, '');
@@ -84,6 +86,50 @@ window.onload = function() {
     if (telefoneCadastro) {
         telefoneCadastro.addEventListener('input', function() {
             formatarTelefone(this);
+        });
+    }
+
+    function formatarCPF(input) {
+        let value = input.value.replace(/\D/g, ''); // remove tudo que não é número
+
+        // Aplica a máscara
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+        input.value = value;
+    }
+
+    function TestaCPF(strCPF) {
+        var Soma;
+        var Resto;
+        Soma = 0;
+        if (!strCPF || strCPF.length !== 11 || /^(\d)\1{10}$/.test(strCPF)) return false;
+
+        for (let i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+        Soma = 0;
+        for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+        return true;
+    }
+
+    if (cpfLogin) {
+        cpfLogin.addEventListener('input', function(e) {
+            formatarCPF(e.target);
+        });
+    }
+
+    if (cpfCadastro) {
+        cpfCadastro.addEventListener('input', function(e) {
+            formatarCPF(e.target);
         });
     }
 
@@ -124,10 +170,16 @@ window.onload = function() {
     if (entrarBtn) {
         entrarBtn.onclick = async function() {
             const email = document.getElementById('loginEmail').value;
+            const cpf = document.getElementById('loginCPF').value.replace(/\D/g, '');
             const senha = document.getElementById('loginSenha').value;
 
-            if (!email || !senha) {
-                alert('Por favor, preencha email e senha!');
+            if (!email || !cpf || !senha) {
+                alert('Por favor, preencha email, CPF e senha!');
+                return;
+            }
+
+            if (!TestaCPF(cpf)) {
+                alert('CPF inválido!');
                 return;
             }
 
@@ -139,6 +191,7 @@ window.onload = function() {
                         .from('usuarios')
                         .select('*')
                         .eq('email', email)
+                        .eq('cpf', cpf)
                         .eq('senha', senhaHash);
 
                     if (error) {
@@ -150,6 +203,7 @@ window.onload = function() {
                         successOverlay.style.display = 'flex';
                         loginModal.style.display = 'none';
                         document.getElementById('loginEmail').value = '';
+                        document.getElementById('loginCPF').value = '';
                         document.getElementById('loginSenha').value = '';
                         document.getElementById('loginTelefone').value = '';
                         
@@ -177,21 +231,33 @@ window.onload = function() {
             const email = document.getElementById('cadastroEmail').value;
             const nome_user = document.getElementById('cadastroUsuario').value;
             const telefone = document.getElementById('cadastroTelefone').value.replace(/\D/g, '');
+            const cpf = document.getElementById('cadastroCPF').value.replace(/\D/g, '');
             const senha = document.getElementById('cadastroSenha').value;
             
-            if (nome && email && nome_user && senha) {
+            if (nome && email && nome_user && cpf && senha) {
+                if (!TestaCPF(cpf)) {
+                    alert('CPF inválido!');
+                    return;
+                }
+                
                 if (supabaseClient && window.CryptoJS) {
                     try {
                         const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
                         
                         const { data, error } = await supabaseClient
                             .from('usuarios')
-                            .insert([{ nome, email, nome_user, telefone, senha: senhaHash }])
+                            .insert([{ nome, email, nome_user, telefone, cpf, senha: senhaHash }])
                             .select();
 
                         if (error) {
                             if (error.code === '23505') {
-                                alert('Email já cadastrado!');
+                                if (error.message && error.message.toLowerCase().includes('cpf')) {
+                                    alert('Este CPF já está cadastrado!');
+                                } else if (error.message && error.message.toLowerCase().includes('email')) {
+                                    alert('Este Email já está cadastrado!');
+                                } else {
+                                    alert('Dado já cadastrado (Email, CPF ou Usuário)!');
+                                }
                             } else {
                                 alert('Erro: ' + error.message);
                             }
@@ -205,6 +271,7 @@ window.onload = function() {
                         document.getElementById('cadastroEmail').value = '';
                         document.getElementById('cadastroUsuario').value = '';
                         document.getElementById('cadastroTelefone').value = '';
+                        document.getElementById('cadastroCPF').value = '';
                         document.getElementById('cadastroSenha').value = '';
                     } catch (err) {
                         console.error(err);
