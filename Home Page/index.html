@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Soluções rápidas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Topo com logo e menu -->
+        <div class="topo">
+            <div class="logo">Faços</div>
+            <div class="nav-bar">
+                <div class="menu">
+                    <a href="#sobre">sobre</a>
+                    <a href="#diferencial">diferencial</a>
+                    <a href="#funcionamento">funcionamento</a>
+                    <a href="#servicos">serviços</a>
+                    <a href="home_profissional.html">seja um profissional</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="conteudo">
+            <div class="ajuda">precisa de ajuda agora?<br>A gente resolve!</div>
+            <div class="botoes">
+                <button class="login" id="loginBtn">login</button>
+                <button class="cadastro" id="cadastroBtn">cadastro</button>
+            </div>
+        </div>
+
+        <!-- Seção Sobre -->
+        <div id="sobre" class="section">
+            <h2>sobre</h2>
+            <p>A Faços é uma plataforma que conecta você a profissionais de serviços domésticos e manutenção de forma rápida e prática. Nosso objetivo é facilitar o seu dia a dia, eliminando a demora e a burocracia na hora de encontrar ajuda.</p>
+            <p>Com poucos cliques, você encontra profissionais qualificados próximos de você, prontos para atender sua necessidade no momento em que ela surge.</p>
+            <p>Seja para uma emergência ou uma tarefa do dia a dia, a Faços resolve.</p>
+        </div>
+
+        <!-- Seção Diferencial -->
+        <div id="diferencial" class="section">
+            <h2>diferencial</h2>
+            <p>Diferente dos serviços tradicionais, a Faços foi criada para atender demandas imediatas.</p>
+            <p>Nada de esperar dias por um agendamento. Nossa plataforma conecta você a profissionais disponíveis em tempo real, permitindo que o serviço seja realizado o mais rápido possível.</p>
+            <p>Além disso, garantimos mais segurança e confiança através de avaliações, perfis verificados e acompanhamento do serviço.</p>
+            <p>Atendimento rápido, prático e no momento em que você precisa.</p>
+        </div>
+
+        <!-- Seção Funcionamento -->
+        <div id="funcionamento" class="section">
+            <h2>funcionamento</h2>
+            <p>Usar a Faços é simples e rápido:</p>
+            <ul class="steps-list">
+                <li><strong>1 Escolha o serviço</strong> - Selecione o tipo de ajuda que você precisa.</li>
+                <li><strong>2 Veja profissionais disponíveis</strong> - Encontre prestadores próximos e disponíveis naquele momento.</li>
+                <li><strong>3 Solicite o atendimento</strong> - Escolha um profissional e confirme o chamado.</li>
+                <li><strong>4 Acompanhe em tempo real</strong> - Veja o status e o tempo estimado de chegada.</li>
+                <li><strong>5 Finalize e avalie</strong> - Após o serviço, você pode avaliar a experiência.</li>
+            </ul>
+        </div>
+
+        <!-- Seção Serviços -->
+        <div id="servicos" class="section">
+            <h2>serviços</h2>
+            <p>Na Faços, você encontra diversos serviços para resolver problemas do dia a dia, como:</p>
+            <div class="servicos-lista">
+                <div class="servicos-coluna">
+                    <ul>
+                        <li>- Limpeza residencial</li>
+                        <li>- Encanador</li>
+                        <li>- Pequenos reparos</li>
+                        <li>- Serviços gerais</li>
+                    </ul>
+                </div>
+                <div class="servicos-coluna">
+                    <ul>
+                        <li>- Eletricista</li>
+                        <li>- Montagem de móveis</li>
+                        <li>- Jardinagem</li>
+                    </ul>
+                </div>
+            </div>
+            <p>Estamos sempre ampliando nossa rede de profissionais para oferecer cada vez mais opções para você.</p>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <div class="footer-wrapper">
+        <div class="footer">
+            <div class="footer-logo">Faços</div>
+            <p>Precisa de ajuda agora? A gente resolve!</p>
+            <p>© 2026 Faços. Todos os direitos reservados.</p>
+        </div>
+    </div>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal close-login">&times;</span>
+            <h2>bem vindo de volta!</h2>
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="Digite seu email">
+            <label>CPF</label>
+            <input type="tel" id="loginCPF" placeholder="000.000.000-00" maxlength="14">
+            <label>Senha</label>
+            <input type="password" id="loginSenha" placeholder="Digite sua senha">
+            <a href="#" class="esqueci-senha">esqueci minha senha</a>
+            <label>Telefone</label>
+            <input type="tel" id="loginTelefone" placeholder="(00)00000-0000" maxlength="14">
+            <button class="entrar-btn" id="entrarBtn">entrar</button>
+            <div class="fazer-login">
+                Ainda não tem uma conta? <a class="switch-to-cadastro">Cadastrar-se</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CADASTRO -->
+    <div id="cadastroModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal close-cadastro">&times;</span>
+            <h2>crie sua conta!</h2>
+            <label>Nome completo</label>
+            <input type="text" id = "cadastroNome" placeholder="Digite seu nome completo">
+            <label>Email</label>
+            <input type="email" id = "cadastroEmail" placeholder="Digite seu email">
+            <label>Nome de usuário</label>
+            <div class="usuario-prefix">
+                <span>@</span>
+                <input type="text" id = "cadastroUsuario" placeholder="usuario">
+            </div>
+            <label>Telefone</label>
+            <input type="tel" id = "cadastroTelefone" placeholder="(00)00000-0000" maxlength="14">
+            <label>CPF</label>
+            <input type="tel" id = "cadastroCPF" maxlength="14" placeholder="000.000.000-00">
+            <label>Senha</label>
+            <input type="password" id="cadastroSenha" placeholder="Digite sua senha">
+            <button class="criar-btn">Criar conta</button>
+            <div class="fazer-login">
+                Já tem uma conta? <a class="switch-to-login">fazer login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA DE SUCESSO -->
+    <div id="successOverlay" class="success-overlay">
+        <div class="success-modal">
+            <h3>Login concluído com sucesso!</h3>
+            <p>Bem-vindo(a) à Faços!</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

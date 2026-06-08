@@ -1,0 +1,424 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFDE59;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Topo com logo e menu */
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+}
+
+/* Menu no canto superior direito */
+.nav-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #000;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.menu a:hover {
+    opacity: 0.7;
+}
+
+/* Conteúdo principal centralizado */
+.conteudo {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Texto "precisa de ajuda agora?" */
+.ajuda {
+    font-size: 4rem;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+/* Botões */
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 100;
+}
+
+.botoes button {
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer !important;
+    padding: 0.7rem 2rem;
+    border-radius: 50px;
+    border: none;
+    position: relative;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.botoes button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.botoes button:active {
+    transform: scale(0.98);
+}
+
+.login {
+    background: transparent;
+    border: 2px solid #000 !important;
+    color: #000;
+}
+
+.cadastro {
+    background: #000;
+    color: #FFDE59;
+}
+
+/* Seções gerais */
+.section {
+    margin-top: 4rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 30px;
+    scroll-margin-top: 80px;
+}
+
+.section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 1rem;
+}
+
+.section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #1e1e1e;
+    margin-bottom: 1rem;
+}
+
+/* Lista de serviços em duas colunas */
+.servicos-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.servicos-coluna {
+    flex: 1;
+    min-width: 200px;
+}
+
+.servicos-lista ul {
+    list-style: none;
+}
+
+.servicos-lista li {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #1e1e1e;
+    margin-bottom: 0.5rem;
+}
+
+/* Lista de funcionamento */
+.steps-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.steps-list li {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #1e1e1e;
+    margin-bottom: 0.8rem;
+}
+
+.steps-list li strong {
+    color: #000;
+}
+
+/* Rodapé com fundo marrom */
+.footer-wrapper {
+    background-color: #8B4513;
+    margin-top: 4rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FFDE59;
+    margin-bottom: 1rem;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: #FFDE59;
+    margin: 0.5rem 0;
+}
+
+/* MODAIS */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 480px;
+    border-radius: 40px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-modal:hover {
+    color: #000;
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #000;
+    text-align: center;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 1.2rem;
+    color: #333;
+    font-size: 1rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    outline: none;
+    background: white;
+}
+
+.modal-content input:focus {
+    border-color: #FFDE59;
+    box-shadow: 0 0 0 3px rgba(255, 222, 89, 0.3);
+    background: #fffef7;
+}
+
+.esqueci-senha {
+    display: block;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #FF8C00;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.entrar-btn,
+.criar-btn {
+    width: 100%;
+    background: #000;
+    color: #FFDE59;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.fazer-login {
+    text-align: center;
+    font-size: 1rem;
+    color: #555;
+}
+
+.fazer-login a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.usuario-prefix {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    padding: 1rem;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.usuario-prefix:focus-within {
+    border-color: #FFDE59;
+    box-shadow: 0 0 0 3px rgba(255, 222, 89, 0.3);
+}
+
+.usuario-prefix span {
+    color: #888;
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.usuario-prefix input {
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    flex: 1;
+    background: transparent;
+}
+
+.usuario-prefix input:focus {
+    box-shadow: none;
+    border: none;
+}
+
+/* Tela de sucesso */
+.success-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.success-modal {
+    background: white;
+    text-align: center;
+    padding: 2.5rem;
+    border-radius: 30px;
+    animation: fadeIn 0.3s ease;
+}
+
+.success-modal h3 {
+    font-size: 1.8rem;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.success-modal p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .ajuda {
+        font-size: 2.5rem;
+    }
+    .botoes button {
+        font-size: 1rem;
+        padding: 0.5rem 1.2rem;
+    }
+    .menu {
+        gap: 1rem;
+    }
+    .section h2 {
+        font-size: 1.5rem;
+    }
+    .servicos-lista {
+        flex-direction: column;
+    }
+    .topo {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+}
