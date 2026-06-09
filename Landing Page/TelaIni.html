@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Encontre profissionais</title>
-    <link rel="stylesheet" href="/css/TelaIni.css">
+    <link rel="stylesheet" href="/Landing Page/TelaIni.css">
 </head>
+
 <body>
     <header class="header">
         <div class="header-left">
@@ -14,7 +16,9 @@
         <div class="header-right">
             <a href="/Profissional/home_profissional.html" class="header-link">seja um profissional</a>
             <div class="header-icons">
-                <a href="/Landing Page/TelaIni.html" style="display:flex;align-items:center;"><span class="header-icon-item" width="15px"><img src="/imagens/casa.png" alt="Home" width="28px"></span></a>
+                <a href="/Landing Page/TelaIni.html" style="display:flex;align-items:center;"><span
+                        class="header-icon-item" width="15px"><img src="/imagens/casa.png" alt="Home"
+                            width="28px"></span></a>
                 <span class="header-icon-item"><img src="imagens/pessoa.png" alt="" width="35px"></span>
                 <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
@@ -23,11 +27,11 @@
 
     <div class="main-container">
         <aside class="sidebar">
-            <img src="/imagens/balao-de-bate-papo.png" alt="" width = "32px">
-            <img src="/imagens/localizacao.png" alt="" width = "40px">
-            <img src="/imagens/prancheta.png" alt="" width = "32px">
-            <img src="/imagens/cartao.png" alt="" width = "32px">
-            <img src="/imagens/notificacao.png" alt="" width = "32px">
+            <img src="/imagens/balao-de-bate-papo.png" alt="" width="32px">
+            <img src="/imagens/localizacao.png" alt="" width="40px">
+            <img src="/imagens/prancheta.png" alt="" width="32px">
+            <img src="/imagens/cartao.png" alt="" width="32px">
+            <img src="/imagens/notificacao.png" alt="" width="32px">
         </aside>
 
         <main class="content">
@@ -71,22 +75,7 @@
         ajuda / suporte
     </button>
 
-    <script>
-        function verificarLogin() {
-            const usuarioLogado = localStorage.getItem('usuarioLogado');
-            if (!usuarioLogado) {
-                window.location.href = '/index.html';
-            }
-        }
-        
-        function fazerLogout() {
-            localStorage.removeItem('usuarioLogado');
-            window.location.href = '/index.html';
-        }
-        
-        verificarLogin();
-        
-        document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
-    </script>
+    <script src="/Landing Page/TelaIni.js"></script>
 </body>
+
 </html>
