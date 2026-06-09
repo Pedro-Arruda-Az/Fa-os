@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
-        window.location.href = 'index.html';
+        window.location.href = '/index.html';
     }
 }
 
@@ -240,7 +240,7 @@ function bindEvents() {
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('usuarioLogado');
-        window.location.href = 'index.html';
+        window.location.href = '/index.html';
     });
 
     // Busca
