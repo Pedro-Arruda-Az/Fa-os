@@ -242,12 +242,12 @@
 <body>
     <header class="header">
         <div class="header-left">
-            <span class="header-icon"><img src="../imagens/upscalemedia-transformed.png" alt="Facos" width="100px"></span>
+            <span class="header-icon"><img src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px"></span>
         </div>
         <div class="header-right">
-            <a href="../Profissional/home_profissional.html" class="header-link">seja um profissional</a>
+            <a href="/Profissional/home_profissional.html" class="header-link">seja um profissional</a>
             <div class="header-icons">
-                <a href="../Landing Page/TelaIni.html" style="display:flex;align-items:center;"><span class="header-icon-item" width="15px"><img src="../imagens/casa.png" alt="Home" width="28px"></span></a>
+                <a href="/Landing Page/TelaIni.html" style="display:flex;align-items:center;"><span class="header-icon-item" width="15px"><img src="/imagens/casa.png" alt="Home" width="28px"></span></a>
                 <span class="header-icon-item"><img src="imagens/pessoa.png" alt="" width="35px"></span>
                 <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
@@ -256,11 +256,11 @@
 
     <div class="main-container">
         <aside class="sidebar">
-            <img src="../imagens/balao-de-bate-papo.png" alt="" width = "32px">
-            <img src="../imagens/localizacao.png" alt="" width = "40px">
-            <img src="../imagens/prancheta.png" alt="" width = "32px">
-            <img src="../imagens/cartao.png" alt="" width = "32px">
-            <img src="../imagens/notificacao.png" alt="" width = "32px">
+            <img src="/imagens/balao-de-bate-papo.png" alt="" width = "32px">
+            <img src="/imagens/localizacao.png" alt="" width = "40px">
+            <img src="/imagens/prancheta.png" alt="" width = "32px">
+            <img src="/imagens/cartao.png" alt="" width = "32px">
+            <img src="/imagens/notificacao.png" alt="" width = "32px">
         </aside>
 
         <main class="content">
@@ -276,7 +276,7 @@
             <h2 class="section-title">serviços mais procurados</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <a href="../Serviços/Limpeza.html"><span>Limpeza residencial</span></a>
+                    <a href="/Serviços/Limpeza.html"><span>Limpeza residencial</span></a>
                 </div>
                 <div class="service-card">
                     <span>Eletricista</span>
@@ -308,13 +308,13 @@
         function verificarLogin() {
             const usuarioLogado = localStorage.getItem('usuarioLogado');
             if (!usuarioLogado) {
-                window.location.href = '../index.html';
+                window.location.href = '/index.html';
             }
         }
         
         function fazerLogout() {
             localStorage.removeItem('usuarioLogado');
-            window.location.href = '../index.html';
+            window.location.href = '/index.html';
         }
         
         verificarLogin();
