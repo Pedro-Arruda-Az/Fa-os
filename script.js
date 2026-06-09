@@ -210,7 +210,7 @@ window.onload = function() {
                         localStorage.setItem('usuarioLogado', JSON.stringify(usuarios[0]));
                         
                         setTimeout(() => {
-                            window.location.href = 'TelaIni.html';
+                            window.location.href = 'Landing Page/TelaIni.html';
                         }, 2000);
                     } else {
                         alert('Email ou senha incorretos!');
