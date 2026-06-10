@@ -274,14 +274,22 @@ function bindEvents() {
         }
     });
 
-    // Sidebar toggle
+    // Sidebar toggle — fixa/libera o sidebar aberto independente do hover
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
+    let sidebarPinned = false;
+
     sidebarToggle.addEventListener('click', () => {
-        const collapsed = sidebar.style.width === '0px';
-        sidebar.style.width = collapsed ? '72px' : '0px';
-        sidebarToggle.textContent = collapsed ? '‹' : '›';
-        // Atualizar mapa após transição
+        sidebarPinned = !sidebarPinned;
+        if (sidebarPinned) {
+            sidebar.style.transform = 'translateX(0)';
+            sidebar.style.boxShadow = '4px 0 20px rgba(139,69,19,0.15)';
+            sidebarToggle.textContent = '‹';
+        } else {
+            sidebar.style.transform = '';
+            sidebar.style.boxShadow = '';
+            sidebarToggle.textContent = '›';
+        }
         setTimeout(() => map && map.invalidateSize(), 320);
     });
 
