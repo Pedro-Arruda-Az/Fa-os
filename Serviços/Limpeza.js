@@ -274,22 +274,13 @@ function bindEvents() {
         }
     });
 
-    // Sidebar toggle — fixa/libera o sidebar aberto independente do hover
+    // Sidebar toggle — trava aberto ao clicar, fecha ao clicar novamente
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
-    let sidebarPinned = false;
 
     sidebarToggle.addEventListener('click', () => {
-        sidebarPinned = !sidebarPinned;
-        if (sidebarPinned) {
-            sidebar.style.transform = 'translateX(0)';
-            sidebar.style.boxShadow = '4px 0 20px rgba(139,69,19,0.15)';
-            sidebarToggle.textContent = '‹';
-        } else {
-            sidebar.style.transform = '';
-            sidebar.style.boxShadow = '';
-            sidebarToggle.textContent = '›';
-        }
+        const pinned = sidebar.classList.toggle('pinned');
+        sidebarToggle.textContent = pinned ? '‹' : '›';
         setTimeout(() => map && map.invalidateSize(), 320);
     });
 
