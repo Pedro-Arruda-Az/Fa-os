@@ -307,3 +307,21 @@ function bindEvents() {
         if (e.key === 'Escape') closeModal();
     });
 }
+// MODO ESCURO
+const darkModeToggle = document.getElementById('darkModeToggle');
+if (darkModeToggle) {
+    // Verificar preferência salva
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️ Modo claro';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkModeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo escuro';
+        // Atualizar tamanho do mapa após mudança de estilo (opcional)
+        if (map) setTimeout(() => map.invalidateSize(), 100);
+    });
+}

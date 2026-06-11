@@ -7,23 +7,38 @@
     <title>Faços - Encontre profissionais</title>
     <link rel="stylesheet" href="/Landing Page/TelaIni.css">
     <style>
-        /* moved inline styles to internal stylesheet to resolve inline style warning */
-        .home-link { display: flex; align-items: center; }
+        .home-link,
+        .perfil-link {
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .home-link:hover,
+        .perfil-link:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
 <body>
     <header class="header">
         <div class="header-left">
-            <span class="header-icon"><img src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px"></span>
+            <span class="header-icon">
+                <img src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px">
+            </span>
         </div>
         <div class="header-right">
             <a href="/Profissional/home_profissional.html" class="header-link">seja um profissional</a>
             <div class="header-icons">
-                <a href="/Landing Page/TelaIni.html" class="home-link"><span
-                        class="header-icon-item" width="15px"><img src="/imagens/casa.png" alt="Home"
-                            width="28px"></span></a>
-                <span class="header-icon-item"><img src="imagens/pessoa.png" alt="" width="35px"></span>
+                <!-- BOTÃO PERFIL (LADO ESQUERDO DA CASA) -->
+                <a href="/Landing Page/Perfil.html" class="perfil-link" title="Meu Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32px">
+                </a>
+                <!-- BOTÃO HOME -->
+                <a href="/Landing Page/TelaIni.html" class="home-link" title="Início">
+                    <img src="/imagens/casa.png" alt="Home" width="28px">
+                </a>
                 <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
         </div>
@@ -31,11 +46,11 @@
 
     <div class="main-container">
         <aside class="sidebar">
-            <img src="/imagens/balao-de-bate-papo.png" alt="" width="32px">
-            <img src="/imagens/localizacao.png" alt="" width="40px">
-            <img src="/imagens/prancheta.png" alt="" width="32px">
-            <img src="/imagens/cartao.png" alt="" width="32px">
-            <img src="/imagens/notificacao.png" alt="" width="32px">
+            <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
+            <img src="/imagens/localizacao.png" alt="Localização" width="40px">
+            <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
+            <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
+            <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
         </aside>
 
         <main class="content">
@@ -74,9 +89,15 @@
         </main>
     </div>
 
+    <!-- BOTÃO AJUDA -->
     <button class="help-button">
         <span>❓</span>
         ajuda / suporte
+    </button>
+
+    <!-- BOTÃO MODO ESCURO -->
+    <button class="dark-mode-toggle-ini" id="darkModeToggleIni">
+        🌙 Modo escuro
     </button>
 
     <script src="/Landing Page/TelaIni.js"></script>

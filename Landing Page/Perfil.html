@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Meu Perfil</title>
+    <link rel="stylesheet" href="/Landing Page/Perfil.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" width="100px">
+        </div>
+        <div class="header-right">
+            <a href="/Profissional/home_profissional.html" class="header-link">seja um profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/Perfil.html" class="perfil-link">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="35px">
+                </a>
+                <a href="/Landing Page/TelaIni.html" class="home-link">
+                    <img src="/imagens/casa.png" alt="Home" width="28px">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
+            <img src="/imagens/localizacao.png" alt="Localização" width="40px">
+            <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
+            <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
+            <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
+        </aside>
+
+        <main class="perfil-container">
+            
+            <div class="perfil-grid">
+                <!-- Coluna da esquerda - Informações do usuário -->
+                <div class="perfil-info-card">
+                    <div class="foto-perfil">
+                        <div class="avatar-circle" id="avatarCircle">
+                            <span id="avatarIniciais">U</span>
+                        </div>
+                        <button class="trocar-foto-btn" id="trocarFotoBtn">trocar foto</button>
+                        <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">Usuário</span>
+                        <span class="info-value" id="perfilUsuario">@usuario123</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">endereço</span>
+                        <span class="info-value" id="perfilEndereco">Rua XXXXX, 000 - Cidade, Estado</span>
+                    </div>
+                </div>
+
+                <!-- Coluna da direita - Editar perfil -->
+                <div class="perfil-edit-card">
+                    <h2 class="edit-title">editar seu perfil</h2>
+
+                    <div class="edit-form">
+                        <div class="form-group">
+                            <label>Nome:</label>
+                            <input type="text" id="editNome" placeholder="Seu nome completo">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Telefone:</label>
+                            <input type="tel" id="editTelefone" placeholder="(00) 00000-0000" maxlength="15">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Sexo:</label>
+                            <select id="editSexo">
+                                <option value="Prefiro não dizer">Prefiro não dizer</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Endereço:</label>
+                            <input type="text" id="editEndereco" placeholder="Rua, número, bairro, cidade - Estado">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Senha:</label>
+                            <input type="password" id="editSenha" placeholder="**********">
+                            <small class="senha-obs">Deixe em branco para manter a mesma senha</small>
+                        </div>
+
+                        <button class="salvar-btn" id="salvarBtn">salvar alterações</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button class="help-button">
+        <span>❓</span>
+        ajuda / suporte
+    </button>
+
+    <button class="dark-mode-toggle-ini" id="darkModeToggleIni">
+        🌙 Modo escuro
+    </button>
+
+    <script src="/Landing Page/Perfil.js"></script>
+</body>
+</html>

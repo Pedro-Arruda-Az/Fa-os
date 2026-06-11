@@ -5,9 +5,11 @@
 }
 
 body {
-    background-color: #ddc911fd;
+    background: linear-gradient(135deg, #FFE066 0%, #FFC107 50%, #E6A800 100%);
+    background-attachment: fixed;
     font-family: 'Segoe UI', Arial, sans-serif;
     min-height: 100vh;
+    color: #5C3A1E;
 }
 
 html {
@@ -31,7 +33,7 @@ html {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #000;
+    color: #5C3A1E;
 }
 
 /* Menu no canto superior direito */
@@ -49,9 +51,9 @@ html {
 
 .menu a {
     text-decoration: none;
-    color: #000;
+    color: #5C3A1E;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: opacity 0.3s;
 }
@@ -69,8 +71,8 @@ html {
 /* Texto "precisa de ajuda agora?" */
 .ajuda {
     font-size: 4rem;
-    font-weight: 600;
-    color: #000;
+    font-weight: 700;
+    color: #5C3A1E;
     margin-bottom: 0.5rem;
 }
 
@@ -86,7 +88,7 @@ html {
 
 .botoes button {
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer !important;
     padding: 0.7rem 2rem;
     border-radius: 50px;
@@ -109,20 +111,21 @@ html {
 
 .login {
     background: transparent;
-    border: 2px solid #000 !important;
-    color: #000;
+    border: 2px solid #5C3A1E !important;
+    color: #5C3A1E;
 }
 
 .cadastro {
-    background: #000;
-    color: #FFDE59;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 /* Seções gerais */
 .section {
     margin-top: 4rem;
     padding: 2rem;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
     border-radius: 30px;
     scroll-margin-top: 80px;
 }
@@ -130,15 +133,16 @@ html {
 .section h2 {
     font-size: 2rem;
     font-weight: 700;
-    color: #000;
+    color: #5C3A1E;
     margin-bottom: 1rem;
 }
 
 .section p {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #1e1e1e;
+    color: #4A2E16;
     margin-bottom: 1rem;
+    font-weight: 500;
 }
 
 /* Lista de serviços em duas colunas */
@@ -161,8 +165,9 @@ html {
 .servicos-lista li {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #1e1e1e;
+    color: #4A2E16;
     margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 /* Lista de funcionamento */
@@ -174,17 +179,19 @@ html {
 .steps-list li {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #1e1e1e;
+    color: #4A2E16;
     margin-bottom: 0.8rem;
+    font-weight: 500;
 }
 
 .steps-list li strong {
-    color: #000;
+    color: #5C3A1E;
+    font-weight: 800;
 }
 
 /* Rodapé com fundo marrom */
 .footer-wrapper {
-    background-color: #8B4513;
+    background-color: #5C3A1E;
     margin-top: 4rem;
 }
 
@@ -198,13 +205,13 @@ html {
 .footer-logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #FFDE59;
+    color: #FFE066;
     margin-bottom: 1rem;
 }
 
 .footer p {
     font-size: 0.9rem;
-    color: #FFDE59;
+    color: #FFE066;
     margin: 0.5rem 0;
 }
 
@@ -223,7 +230,7 @@ html {
 }
 
 .modal-content {
-    background: white;
+    background: #FFF8E7;
     width: 90%;
     max-width: 480px;
     border-radius: 40px;
@@ -244,14 +251,14 @@ html {
 }
 
 .close-modal:hover {
-    color: #000;
+    color: #5C3A1E;
 }
 
 .modal-content h2 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: #000;
+    color: #5C3A1E;
     text-align: center;
 }
 
@@ -260,14 +267,14 @@ html {
     font-weight: 600;
     margin-bottom: 0.5rem;
     margin-top: 1.2rem;
-    color: #333;
+    color: #5C3A1E;
     font-size: 1rem;
 }
 
 .modal-content input {
     width: 100%;
     padding: 1rem;
-    border: 2px solid #ddd;
+    border: 2px solid #E6A800;
     border-radius: 16px;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -277,8 +284,8 @@ html {
 }
 
 .modal-content input:focus {
-    border-color: #FFDE59;
-    box-shadow: 0 0 0 3px rgba(255, 222, 89, 0.3);
+    border-color: #5C3A1E;
+    box-shadow: 0 0 0 3px rgba(92, 58, 30, 0.3);
     background: #fffef7;
 }
 
@@ -286,16 +293,17 @@ html {
     display: block;
     text-align: right;
     font-size: 0.9rem;
-    color: #FF8C00;
+    color: #5C3A1E;
     text-decoration: none;
     margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 .entrar-btn,
 .criar-btn {
     width: 100%;
-    background: #000;
-    color: #FFDE59;
+    background: #5C3A1E;
+    color: #FFE066;
     border: none;
     padding: 1rem;
     border-radius: 50px;
@@ -309,11 +317,11 @@ html {
 .fazer-login {
     text-align: center;
     font-size: 1rem;
-    color: #555;
+    color: #5C3A1E;
 }
 
 .fazer-login a {
-    color: #000;
+    color: #5C3A1E;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
@@ -322,7 +330,7 @@ html {
 .usuario-prefix {
     display: flex;
     align-items: center;
-    border: 2px solid #ddd;
+    border: 2px solid #E6A800;
     border-radius: 16px;
     padding: 1rem;
     background: white;
@@ -330,8 +338,8 @@ html {
 }
 
 .usuario-prefix:focus-within {
-    border-color: #FFDE59;
-    box-shadow: 0 0 0 3px rgba(255, 222, 89, 0.3);
+    border-color: #5C3A1E;
+    box-shadow: 0 0 0 3px rgba(92, 58, 30, 0.3);
 }
 
 .usuario-prefix span {
@@ -369,7 +377,7 @@ html {
 }
 
 .success-modal {
-    background: white;
+    background: #FFF8E7;
     text-align: center;
     padding: 2.5rem;
     border-radius: 30px;
@@ -378,13 +386,13 @@ html {
 
 .success-modal h3 {
     font-size: 1.8rem;
-    color: #000;
+    color: #5C3A1E;
     margin-bottom: 0.5rem;
 }
 
 .success-modal p {
     font-size: 1.1rem;
-    color: #555;
+    color: #5C3A1E;
 }
 
 @keyframes fadeIn {
