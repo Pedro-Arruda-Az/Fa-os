@@ -3,18 +3,19 @@
    Tela de busca de profissionais com mapa (Leaflet)
    ============================================================ */
 
-// ── Dados dos profissionais (mock) ────────────────────────────
+const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
+
 const professionals = [
     {
         id: 1,
-        name: 'LimpaMais Serviços',
+        name: 'LimpaMais Servicos',
         service: 'Limpeza residencial',
         rating: 4.8,
         distance: 1.2,
         lat: -23.5590,
         lng: -46.6530,
-        services: 'Limpeza completa, pós-obra',
-        price: 'R$ 120 – R$ 250',
+        services: 'Limpeza completa, pos-obra',
+        price: 'R$ 120 - R$ 250',
         initials: 'LM'
     },
     {
@@ -26,19 +27,19 @@ const professionals = [
         lat: -23.5620,
         lng: -46.6560,
         services: 'Limpeza completa, passagem',
-        price: 'R$ 150 – R$ 300',
+        price: 'R$ 150 - R$ 300',
         initials: 'CH'
     },
     {
         id: 3,
-        name: 'João Silva - Faxineiro',
+        name: 'Joao Silva - Faxineiro',
         service: 'Limpeza residencial',
         rating: 4.7,
         distance: 3.1,
         lat: -23.5555,
         lng: -46.6600,
         services: 'Faxina, janelas, piso',
-        price: 'R$ 100 – R$ 200',
+        price: 'R$ 100 - R$ 200',
         initials: 'JS'
     },
     {
@@ -50,18 +51,15 @@ const professionals = [
         lat: -23.5650,
         lng: -46.6490,
         services: 'Limpeza completa, lavagem',
-        price: 'R$ 130 – R$ 270',
+        price: 'R$ 130 - R$ 270',
         initials: 'BT'
     }
 ];
 
-// ── Estado ────────────────────────────────────────────────────
 let map = null;
 let markers = {};
-let activeCard = null;
 let activePro = null;
 
-// ── Inicialização ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     initMap();
@@ -69,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
 });
 
-// ── Verificar login ───────────────────────────────────────────
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -77,9 +74,7 @@ function verificarLogin() {
     }
 }
 
-// ── Mapa Leaflet ──────────────────────────────────────────────
 function initMap() {
-    // Centro: São Paulo - Ibirapuera
     const center = [-23.5874, -46.6576];
 
     map = L.map('map', {
@@ -94,7 +89,6 @@ function initMap() {
         maxZoom: 19
     }).addTo(map);
 
-    // Marcadores de cada profissional
     professionals.forEach(pro => {
         const icon = L.divIcon({
             className: '',
@@ -127,13 +121,11 @@ function initMap() {
     });
 }
 
-// ── Renderizar cards ──────────────────────────────────────────
 function renderCards(list) {
     const container = document.getElementById('professionalsList');
     const countEl = document.getElementById('resultsCount');
 
     countEl.textContent = `${list.length} profissional${list.length !== 1 ? 'is' : ''} encontrado${list.length !== 1 ? 's' : ''}`;
-
     container.innerHTML = '';
 
     if (list.length === 0) {
@@ -166,12 +158,10 @@ function renderCards(list) {
     });
 }
 
-// ── Estrelas ──────────────────────────────────────────────────
 function buildStars(rating) {
     let html = '';
     for (let i = 1; i <= 5; i++) {
-        const filled = i <= Math.round(rating);
-        html += `<span class="star${filled ? '' : ' empty'}">★</span>`;
+        html += `<span class="star${i <= Math.round(rating) ? '' : ' empty'}">★</span>`;
     }
     return html;
 }
@@ -179,18 +169,15 @@ function buildStars(rating) {
 function buildModalStars(rating) {
     let html = '';
     for (let i = 1; i <= 5; i++) {
-        const filled = i <= Math.round(rating);
-        html += `<span class="modal-star${filled ? '' : ' empty'}">★</span>`;
+        html += `<span class="modal-star${i <= Math.round(rating) ? '' : ' empty'}">★</span>`;
     }
     return html;
 }
 
-// ── Selecionar profissional ───────────────────────────────────
 function selectPro(id) {
     const pro = professionals.find(p => p.id === id);
     if (!pro) return;
 
-    // Ativar card
     document.querySelectorAll('.pro-card').forEach(c => c.classList.remove('active'));
     const card = document.querySelector(`.pro-card[data-id="${id}"]`);
     if (card) {
@@ -198,7 +185,6 @@ function selectPro(id) {
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // Mover mapa
     if (map) {
         map.setView([pro.lat, pro.lng], 15, { animate: true });
         markers[id].openPopup();
@@ -207,17 +193,6 @@ function selectPro(id) {
     activePro = pro;
 }
 
-// ── Busca / filtro ────────────────────────────────────────────
-function filterProfessionals(query) {
-    if (!query.trim()) return professionals;
-    const q = query.toLowerCase().trim();
-    return professionals.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.service.toLowerCase().includes(q)
-    );
-}
-
-// ── Modal de perfil ───────────────────────────────────────────
 function openModal(pro) {
     document.getElementById('modalAvatar').textContent = pro.initials;
     document.getElementById('modalName').textContent = pro.name;
@@ -227,7 +202,6 @@ function openModal(pro) {
     document.getElementById('modalRating').textContent = `${pro.rating} / 5.0`;
     document.getElementById('modalServices').textContent = pro.services;
     document.getElementById('modalPrice').textContent = pro.price;
-
     document.getElementById('profileModal').classList.add('open');
 }
 
@@ -235,22 +209,74 @@ function closeModal() {
     document.getElementById('profileModal').classList.remove('open');
 }
 
-// ── Bind de eventos ───────────────────────────────────────────
+async function iniciarPagamento(pro) {
+    const btn = document.getElementById('solicitarBtn');
+    const textoOriginal = btn.textContent;
+
+    btn.textContent = 'Aguarde...';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    try {
+        const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${ACCESS_TOKEN}`
+            },
+            body: JSON.stringify({
+                items: [
+                    {
+                        title: `Servico de Limpeza - ${pro.name}`,
+                        quantity: 1,
+                        currency_id: 'BRL',
+                        unit_price: 120.00
+                    }
+                ],
+                payment_methods: {
+                    excluded_payment_types: [],
+                    installments: 1
+                },
+                external_reference: `FACO-${Date.now()}`
+            })
+        });
+
+        const data = await response.json();
+        console.log('Resposta MP:', data);
+
+        if (data.init_point) {
+            window.open(data.init_point, '_blank');
+        } else if (data.sandbox_init_point) {
+            window.open(data.sandbox_init_point, '_blank');
+        } else {
+            throw new Error(data.message || 'Link de pagamento nao retornado');
+        }
+
+    } catch (err) {
+        console.error('Erro ao iniciar pagamento:', err);
+        alert('Erro ao conectar com o Mercado Pago.\nVerifique o console para mais detalhes.');
+    }
+
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+}
+
 function bindEvents() {
-    // Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('usuarioLogado');
         window.location.href = '/index.html';
     });
 
-    // Busca
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
-        const filtered = filterProfessionals(searchInput.value);
+        const filtered = professionals.filter(p => {
+            const q = searchInput.value.toLowerCase().trim();
+            return !q || p.name.toLowerCase().includes(q) || p.service.toLowerCase().includes(q);
+        });
         renderCards(filtered);
     });
 
-    // Abrir modal ao dar duplo clique no card
     document.getElementById('professionalsList').addEventListener('dblclick', (e) => {
         const card = e.target.closest('.pro-card');
         if (card) {
@@ -260,31 +286,23 @@ function bindEvents() {
         }
     });
 
-    // Fechar modal
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('profileModal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('profileModal')) closeModal();
     });
 
-    // Solicitar atendimento
     document.getElementById('solicitarBtn').addEventListener('click', () => {
-        if (activePro) {
-            alert(`Solicitação enviada para ${activePro.name}!\nAguarde a confirmação do profissional.`);
-            closeModal();
-        }
+        if (activePro) iniciarPagamento(activePro);
     });
 
-    // Sidebar toggle — trava aberto ao clicar, fecha ao clicar novamente
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
-
     sidebarToggle.addEventListener('click', () => {
         const pinned = sidebar.classList.toggle('pinned');
         sidebarToggle.textContent = pinned ? '‹' : '›';
         setTimeout(() => map && map.invalidateSize(), 320);
     });
 
-    // Atalho de teclado: Escape fecha modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
