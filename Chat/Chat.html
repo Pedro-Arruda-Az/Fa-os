@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Chat</title>
+    <link rel="stylesheet" href="Chat.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+        </div>
+        <div class="header-right">
+            <!-- LINK ATUALIZADO -->
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <button class="logout-btn" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar-trigger"></div>
+        <aside class="sidebar">
+            <a href="/Chat/Chat.html" class="sidebar-icon active" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32">
+            </a>
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="36">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="28">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="28">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="28">
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Recolher">&#8249;</button>
+        </aside>
+
+        <section class="chat-list">
+            <div class="chat-header">
+                <h2>Mensagens</h2>
+                <span class="chat-count" id="chatCount">4 conversas</span>
+            </div>
+
+            <div class="search-box">
+                <span class="search-icon">&#128269;</span>
+                <input
+                    type="text"
+                    id="searchChat"
+                    class="search-input"
+                    placeholder="procurar conversa..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="conversations-list" id="conversationsList">
+            </div>
+        </section>
+
+        <section class="chat-window" id="chatWindow">
+            <div class="chat-placeholder" id="chatPlaceholder">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="64">
+                <h3>Selecione uma conversa</h3>
+                <p>Escolha um profissional para iniciar o chat</p>
+            </div>
+
+            <div class="chat-active" id="chatActive" style="display:none;">
+                <div class="chat-window-header">
+                    <div class="chat-contact-info">
+                        <div class="chat-avatar" id="chatAvatar">LM</div>
+                        <div>
+                            <span class="chat-contact-name" id="chatContactName">LimpaMais Serviços</span>
+                            <span class="chat-contact-status" id="chatContactStatus">Online</span>
+                        </div>
+                    </div>
+                    <button class="chat-back-btn" id="chatBackBtn">&#8592;</button>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                </div>
+
+                <div class="chat-input-area">
+                    <input
+                        type="text"
+                        id="chatMessageInput"
+                        class="chat-input"
+                        placeholder="Digite uma mensagem..."
+                        autocomplete="off"
+                    >
+                    <button class="chat-send-btn" id="chatSendBtn">
+                        <span>&#9654;</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        🌙 Modo escuro
+    </button>
+
+    <script src="Chat.js"></script>
+</body>
+</html>

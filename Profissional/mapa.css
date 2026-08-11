@@ -1,0 +1,521 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #FFC700;
+    --yellow-light: #FFDD3D;
+    --bg-dark: #171717;
+    --card-bg: #262626;
+    --item-bg: #404040;
+    --item-bg-hover: #4a4a4a;
+    --border: rgba(255,255,255,0.09);
+    --text-dark: #171717;
+    --text-muted: #9CA3AF;
+    --green: #34D399;
+    --red: #F87171;
+    --header-height: 92px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
+    border-top: 5px solid #141414;
+    border-bottom: 5px solid #141414;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 30px;
+    height: 33px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-btn:hover {
+    opacity: 0.65;
+    transform: translateY(-1px);
+}
+
+/* ========== CONTEÚDO ========== */
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2.5rem 3.5rem 4rem;
+}
+
+.page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--yellow);
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.back-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.back-btn:hover {
+    transform: translateX(-3px);
+    opacity: 0.8;
+}
+
+.page-title {
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: var(--yellow);
+}
+
+.card-titulo {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.1rem;
+}
+
+/* ========== GRID PRINCIPAL ========== */
+.mapa-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ========== CARD ATENDIMENTOS / MAPA ========== */
+.atendimentos-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--border);
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    background: #1f1f1f;
+}
+
+.map-legend {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    background: rgba(23,23,23,0.92);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #fff;
+    z-index: 500;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dot-verde {
+    background: var(--green);
+}
+
+.dot-amarelo {
+    background: var(--yellow);
+}
+
+/* ========== LISTA DE CLIENTES ========== */
+.clientes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cliente-item {
+    background: var(--item-bg);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+}
+
+.cliente-topo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.3rem;
+}
+
+.cliente-nome {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.status-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    text-transform: lowercase;
+}
+
+.status-atendido {
+    background: rgba(52,211,153,0.18);
+    color: var(--green);
+}
+
+.status-proximo {
+    background: rgba(255,199,0,0.18);
+    color: var(--yellow);
+}
+
+.cliente-servico {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.85rem;
+}
+
+.cliente-baixo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.cliente-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #C9C9C9;
+}
+
+.meta-ok {
+    color: var(--green);
+}
+
+.cliente-valor {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.btn-navegar {
+    width: 100%;
+    margin-top: 1rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-navegar:hover {
+    background: var(--yellow-light);
+    transform: translateY(-1px);
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.rota-card,
+.stats-card,
+.area-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+/* ---- Rota do dia ---- */
+.rota-timeline {
+    margin-bottom: 1.25rem;
+}
+
+.rota-etapa {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.rota-icone {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rota-icone svg {
+    width: 18px;
+    height: 18px;
+}
+
+.rota-icone-ok {
+    background: rgba(52,211,153,0.18);
+    color: var(--green);
+}
+
+.rota-icone-proximo {
+    background: rgba(255,199,0,0.18);
+    color: var(--yellow);
+}
+
+.rota-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.rota-nome {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.rota-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.rota-linha {
+    width: 2px;
+    height: 22px;
+    background: repeating-linear-gradient(to bottom, var(--yellow) 0, var(--yellow) 4px, transparent 4px, transparent 8px);
+    margin-left: 17px;
+}
+
+.btn-navegar-proximo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-navegar-proximo svg {
+    width: 17px;
+    height: 17px;
+}
+
+.btn-navegar-proximo:hover {
+    background: var(--yellow-light);
+    transform: translateY(-1px);
+}
+
+/* ---- Estatísticas ---- */
+.stat-bloco {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.1rem;
+}
+
+.stat-bloco:last-child {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.stat-valor {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.stat-verde {
+    color: var(--green);
+}
+
+/* ---- Área de atuação ---- */
+.area-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #E5E5E5;
+}
+
+.area-raio {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 0.9rem;
+}
+
+/* ========== BOTÃO AJUDA ========== */
+.help-button {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    z-index: 200;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.help-button svg {
+    width: 19px;
+    height: 19px;
+}
+
+.help-button:hover {
+    background: var(--yellow-light);
+    transform: translateY(-2px);
+}
+
+/* ========== LEAFLET AJUSTES ========== */
+.leaflet-popup-content-wrapper {
+    background: #262626;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.leaflet-popup-tip {
+    background: #262626;
+}
+
+.leaflet-popup-content {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 1100px) {
+    .mapa-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .page {
+        padding: 1.75rem 1.25rem 3rem;
+    }
+    .map-wrapper {
+        height: 320px;
+    }
+    .cliente-baixo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

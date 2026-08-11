@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Histórico de Pedidos</title>
+    <link rel="stylesheet" href="Pedidos.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+        </div>
+        <div class="header-right">
+            <!-- LINK ATUALIZADO -->
+            <a href="/Profissional/login_profissional.html" class="header-link">seja um profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar-trigger"></div>
+        <aside class="sidebar">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32">
+            </a>
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="36">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon active" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="28">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="28">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="28">
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Recolher">&#8249;</button>
+        </aside>
+
+        <main class="pedidos-content">
+            <h1 class="page-title">Histórico de Pedidos</h1>
+
+            <div class="filtros">
+                <button class="filtro-btn active" data-filtro="todos">Todos</button>
+                <button class="filtro-btn" data-filtro="concluidos">Concluídos</button>
+                <button class="filtro-btn" data-filtro="andamento">Em andamento</button>
+                <button class="filtro-btn" data-filtro="cancelados">Cancelados</button>
+            </div>
+
+            <div class="pedidos-list" id="pedidosList">
+            </div>
+        </main>
+    </div>
+
+    <button class="help-button">
+        <span>❓</span>
+        Ajuda / Suporte
+    </button>
+
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        🌙 Modo escuro
+    </button>
+
+    <script src="Pedidos.js"></script>
+</body>
+</html>

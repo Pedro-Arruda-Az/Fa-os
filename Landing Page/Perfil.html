@@ -12,7 +12,8 @@
             <img src="/imagens/upscalemedia-transformed.png" alt="Faços" width="100px">
         </div>
         <div class="header-right">
-            <a href="/Profissional/home_profissional.html" class="header-link">seja um profissional</a>
+            <!-- LINK ATUALIZADO -->
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
             <div class="header-icons">
                 <a href="/Landing Page/Perfil.html" class="perfil-link">
                     <img src="/imagens/pessoa.png" alt="Perfil" width="35px">
@@ -27,23 +28,32 @@
 
     <div class="main-container">
         <aside class="sidebar">
-            <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
-            <img src="/imagens/localizacao.png" alt="Localização" width="40px">
-            <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
-            <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
-            <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
+            </a>
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="40px">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
+            </a>
         </aside>
 
         <main class="perfil-container">
             
             <div class="perfil-grid">
-                <!-- Coluna da esquerda - Informações do usuário -->
                 <div class="perfil-info-card">
                     <div class="foto-perfil">
                         <div class="avatar-circle" id="avatarCircle">
                             <span id="avatarIniciais">U</span>
                         </div>
-                        <button class="trocar-foto-btn" id="trocarFotoBtn">trocar foto</button>
+                        <button class="trocar-foto-btn" id="trocarFotoBtn">Trocar foto</button>
                         <input type="file" id="fotoInput" accept="image/*" style="display: none;">
                     </div>
 
@@ -53,14 +63,13 @@
                     </div>
 
                     <div class="info-row">
-                        <span class="info-label">endereço</span>
+                        <span class="info-label">Endereço</span>
                         <span class="info-value" id="perfilEndereco">Rua XXXXX, 000 - Cidade, Estado</span>
                     </div>
                 </div>
 
-                <!-- Coluna da direita - Editar perfil -->
                 <div class="perfil-edit-card">
-                    <h2 class="edit-title">editar seu perfil</h2>
+                    <h2 class="edit-title">Editar seu perfil</h2>
 
                     <div class="edit-form">
                         <div class="form-group">
@@ -103,11 +112,11 @@
 
     <button class="help-button">
         <span>❓</span>
-        ajuda / suporte
+        Ajuda / Suporte
     </button>
 
     <button class="dark-mode-toggle-ini" id="darkModeToggleIni">
-        <img src="/imagens/lua.png" alt="lua" width="15px"> Modo escuro
+        🌙 Modo escuro
     </button>
 
     <script src="/Landing Page/Perfil.js"></script>

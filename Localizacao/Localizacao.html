@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Serviços Próximos</title>
+    <link rel="stylesheet" href="Localizacao.css">
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+        </div>
+        <div class="header-right">
+            <a href="/Profissional/home_profissional.html" class="header-link">Seja um Profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN CONTAINER ========== -->
+    <div class="main-container">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar-trigger"></div>
+        <aside class="sidebar">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32">
+            </a>
+            <!-- LOCALIZAÇÃO - LINK ATUALIZADO (ATIVO) -->
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon active" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="36">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="28">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="28">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="28">
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Recolher">&#8249;</button>
+        </aside>
+
+        <!-- ========== LISTA DE SERVIÇOS PRÓXIMOS ========== -->
+        <section class="list-panel">
+            <div class="list-header">
+                <h2>Serviços Próximos</h2>
+            </div>
+
+            <div class="search-box">
+                <span class="search-icon">&#128269;</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="procurar por serviço / profissional"
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="results-count" id="resultsCount">5 profissionais encontrados</div>
+
+            <div class="professionals-list" id="professionalsList">
+                <!-- Cards gerados pelo JS -->
+            </div>
+        </section>
+
+        <!-- ========== MAPA ========== -->
+        <section class="map-panel" id="mapPanel">
+            <div id="map"></div>
+            <div class="map-overlay-label">São Paulo</div>
+        </section>
+    </div>
+
+    <!-- BOTÃO AJUDA - MANTIDO -->
+    <button class="help-button">
+        <span>❓</span>
+        Ajuda / Suporte
+    </button>
+
+    <!-- ========== BOTÃO MODO ESCURO ========== -->
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        🌙 Modo escuro
+    </button>
+
+    <!-- Leaflet (mapa open-source) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="Localizacao.js"></script>
+</body>
+</html>

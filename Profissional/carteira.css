@@ -1,0 +1,550 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #FFC700;
+    --yellow-light: #FFDD3D;
+    --bg-dark: #171717;
+    --card-bg: #262626;
+    --item-bg: #404040;
+    --item-bg-hover: #4a4a4a;
+    --border: rgba(255,255,255,0.09);
+    --text-dark: #171717;
+    --text-muted: #9CA3AF;
+    --green: #34D399;
+    --red: #F87171;
+    --header-height: 92px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
+    border-top: 5px solid #141414;
+    border-bottom: 5px solid #141414;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 30px;
+    height: 33px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-btn:hover {
+    opacity: 0.65;
+    transform: translateY(-1px);
+}
+
+/* ========== CONTEÚDO ========== */
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2.5rem 3.5rem 4rem;
+}
+
+.page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--yellow);
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.back-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.back-btn:hover {
+    transform: translateX(-3px);
+    opacity: 0.8;
+}
+
+.page-title {
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: var(--yellow);
+}
+
+/* ========== CARDS DE SALDO ========== */
+.saldo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.saldo-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.saldo-principal {
+    background: linear-gradient(135deg, #FFC700, #E8B300);
+}
+
+.saldo-topo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #E5E5E5;
+}
+
+.saldo-principal .saldo-topo {
+    color: var(--text-dark);
+}
+
+.saldo-topo svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.icon-verde {
+    color: var(--green);
+}
+
+.saldo-valor {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.saldo-principal .saldo-valor {
+    color: var(--text-dark);
+}
+
+.valor-verde {
+    color: var(--green);
+}
+
+.saldo-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.saldo-principal .saldo-sub {
+    color: rgba(23,23,23,0.7);
+}
+
+/* ========== AÇÕES ========== */
+.acoes-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.btn-sacar,
+.btn-pix {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transition: transform 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.btn-sacar {
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+}
+
+.btn-sacar svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-sacar:hover {
+    background: var(--yellow-light);
+    transform: translateY(-1px);
+}
+
+.btn-pix {
+    background: var(--bg-dark);
+    color: var(--yellow);
+    border: 1.5px solid var(--yellow);
+}
+
+.btn-pix:hover {
+    background: rgba(255,199,0,0.08);
+    transform: translateY(-1px);
+}
+
+/* ========== GRID PRINCIPAL ========== */
+.conteudo-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.card-titulo {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ========== HISTÓRICO ========== */
+.historico-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.btn-exportar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--item-bg);
+    color: #E5E5E5;
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-exportar svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-exportar:hover {
+    background: var(--item-bg-hover);
+}
+
+.filtros-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.filtro-btn {
+    background: var(--item-bg);
+    color: #C9C9C9;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1.1rem;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.filtro-btn:hover {
+    background: var(--item-bg-hover);
+}
+
+.filtro-btn.active {
+    background: var(--yellow);
+    color: var(--text-dark);
+}
+
+.transacoes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.transacao-item {
+    background: var(--item-bg);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.transacao-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transacao-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.icon-positivo {
+    background: rgba(52,211,153,0.18);
+    color: var(--green);
+}
+
+.icon-negativo {
+    background: rgba(248,113,113,0.18);
+    color: var(--red);
+}
+
+.transacao-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.transacao-nome {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.transacao-data {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.transacao-valor-col {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.35rem;
+}
+
+.transacao-valor {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.valor-positivo {
+    color: var(--green);
+}
+
+.valor-negativo {
+    color: var(--red);
+}
+
+.status-pago {
+    background: rgba(52,211,153,0.18);
+    color: var(--green);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.65rem;
+    border-radius: 20px;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dados-card,
+.ganhos-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.dados-card .card-titulo,
+.ganhos-card .card-titulo {
+    margin-bottom: 1.25rem;
+    display: block;
+}
+
+.dado-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.1rem;
+}
+
+.dado-label {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.dado-valor {
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+.btn-editar {
+    width: 100%;
+    background: var(--item-bg);
+    color: var(--yellow);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.4rem;
+    transition: background 0.2s;
+}
+
+.btn-editar:hover {
+    background: var(--item-bg-hover);
+}
+
+.ganho-semana {
+    margin-bottom: 1.1rem;
+}
+
+.ganho-semana:last-child {
+    margin-bottom: 0;
+}
+
+.ganho-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #E5E5E5;
+    margin-bottom: 0.45rem;
+}
+
+.ganho-barra {
+    height: 6px;
+    background: var(--item-bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ganho-fill {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 4px;
+}
+
+/* ========== SCROLLBAR ========== */
+.transacoes-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.transacoes-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.transacoes-list::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 1100px) {
+    .conteudo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .page {
+        padding: 1.75rem 1.25rem 3rem;
+    }
+
+    .saldo-row {
+        grid-template-columns: 1fr;
+    }
+
+    .acoes-row {
+        grid-template-columns: 1fr;
+    }
+}

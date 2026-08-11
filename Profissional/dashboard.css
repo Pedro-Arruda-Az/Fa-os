@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #FFC700;
+    --yellow-light: #FFDD3D;
+    --bg-dark: #171717;
+    --card-bg: #262626;
+    --card-border: rgba(255,255,255,0.09);
+    --card-border-hover: rgba(255,199,0,0.55);
+    --text-dark: #171717;
+    --red: #FB2C36;
+    --header-height: 92px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
+    border-top: 5px solid #141414;
+    border-bottom: 5px solid #141414;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 30px;
+    height: 33px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-btn:hover {
+    opacity: 0.65;
+    transform: translateY(-1px);
+}
+
+/* ========== CONTEÚDO ========== */
+.page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.75rem 3.5rem 6rem;
+}
+
+.greeting {
+    font-size: 2.1rem;
+    font-weight: 500;
+    color: var(--yellow);
+    margin-bottom: 2.25rem;
+}
+
+.greeting span {
+    color: var(--yellow);
+}
+
+/* ========== GRID DE CARDS ========== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 1.6rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    min-height: 108px;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-border-hover);
+    background: #2c2c2c;
+}
+
+.card-icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+}
+
+.card-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.card-label {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--yellow);
+}
+
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-dark);
+}
+
+/* ========== BOTÃO AJUDA ========== */
+.help-button {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    z-index: 200;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.help-button svg {
+    width: 19px;
+    height: 19px;
+}
+
+.help-button:hover {
+    background: var(--yellow-light);
+    transform: translateY(-2px);
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 900px) {
+    .page {
+        padding: 2rem 1.5rem 6rem;
+    }
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .header {
+        padding: 0 1.25rem;
+    }
+    .header-title {
+        font-size: 1rem;
+    }
+    .greeting {
+        font-size: 1.5rem;
+    }
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .card {
+        padding: 1.25rem 1.4rem;
+    }
+}
+

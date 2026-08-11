@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Mapa</title>
+    <link rel="stylesheet" href="mapa.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/index.html" class="brand-link">
+                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
+                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
+                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
+                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
+                </svg>
+                <span class="header-title">painel profissional</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/index.html" class="icon-btn" title="Início" aria-label="Início">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+            </a>
+            <a href="#" class="icon-btn" id="perfilBtn" title="Perfil" aria-label="Perfil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="page">
+        <div class="page-title-row">
+            <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </a>
+            <h1 class="page-title">mapa</h1>
+        </div>
+
+        <div class="mapa-grid">
+
+            <!-- ===== COLUNA PRINCIPAL ===== -->
+            <section class="atendimentos-card">
+                <h2 class="card-titulo">Seus atendimentos</h2>
+
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot dot-verde"></span>
+                            Cliente atendido
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot dot-amarelo"></span>
+                            Próximo cliente
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clientes-list" id="clientesList">
+
+                    <div class="cliente-item">
+                        <div class="cliente-topo">
+                            <span class="cliente-nome">João Silva</span>
+                            <span class="status-badge status-atendido">atendido</span>
+                        </div>
+                        <p class="cliente-servico">Limpeza residencial</p>
+                        <div class="cliente-baixo">
+                            <div class="cliente-meta">
+                                <span class="meta-item">📍 2.3km</span>
+                                <span class="meta-item meta-ok">✓ Concluído às 14:30</span>
+                            </div>
+                            <span class="cliente-valor">R$ 150,00</span>
+                        </div>
+                    </div>
+
+                    <div class="cliente-item">
+                        <div class="cliente-topo">
+                            <span class="cliente-nome">Mariana Costa</span>
+                            <span class="status-badge status-proximo">próximo</span>
+                        </div>
+                        <p class="cliente-servico">Limpeza residencial</p>
+                        <div class="cliente-baixo">
+                            <div class="cliente-meta">
+                                <span class="meta-item">📍 3.8km</span>
+                                <span class="meta-item">🕐 16:00</span>
+                            </div>
+                            <span class="cliente-valor">R$ 180,00</span>
+                        </div>
+                        <button class="btn-navegar" id="iniciarNavegacaoBtn">Iniciar navegação</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ===== SIDEBAR ===== -->
+            <aside class="sidebar-col">
+
+                <div class="rota-card">
+                    <h2 class="card-titulo">Rota do dia</h2>
+
+                    <div class="rota-timeline">
+                        <div class="rota-etapa">
+                            <span class="rota-icone rota-icone-ok">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                            </span>
+                            <div class="rota-info">
+                                <span class="rota-nome">João Silva</span>
+                                <span class="rota-sub">2.3km · Concluído</span>
+                            </div>
+                        </div>
+
+                        <div class="rota-linha"></div>
+
+                        <div class="rota-etapa">
+                            <span class="rota-icone rota-icone-proximo">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </span>
+                            <div class="rota-info">
+                                <span class="rota-nome">Mariana Costa</span>
+                                <span class="rota-sub">3.8km · 16:00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-navegar-proximo" id="navegarProximoBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                        Navegar para próximo
+                    </button>
+                </div>
+
+                <div class="stats-card">
+                    <h2 class="card-titulo">Estatísticas</h2>
+
+                    <div class="stat-bloco">
+                        <span class="stat-label">Distância total hoje</span>
+                        <span class="stat-valor">6.1 km</span>
+                    </div>
+
+                    <div class="stat-bloco">
+                        <span class="stat-label">Serviços concluídos</span>
+                        <span class="stat-valor stat-verde">1</span>
+                    </div>
+                </div>
+
+                <div class="area-card">
+                    <h2 class="card-titulo">Área de atuação</h2>
+
+                    <ul class="area-list">
+                        <li>📍 Centro</li>
+                        <li>📍 Zona Norte</li>
+                        <li>📍 Zona Sul</li>
+                    </ul>
+
+                    <span class="area-raio">Raio máximo: 15km</span>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- ========== BOTÃO AJUDA ========== -->
+    <button class="help-button" id="helpBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        ajuda / suporte
+    </button>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="mapa.js"></script>
+</body>
+</html>

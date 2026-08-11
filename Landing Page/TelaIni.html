@@ -25,32 +25,41 @@
     <header class="header">
         <div class="header-left">
             <span class="header-icon">
-                <img class="tipografia" src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px">
+                <img src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px">
             </span>
         </div>
         <div class="header-right">
-            <a href="/Profissional/home_profissional.html" class="header-link">Seja um profissional</a>
+            <!-- LINK ATUALIZADO -->
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
             <div class="header-icons">
-                <!-- BOTÃO PERFIL (LADO ESQUERDO DA CASA) -->
                 <a href="/Landing Page/Perfil.html" class="perfil-link" title="Meu Perfil">
                     <img src="/imagens/pessoa.png" alt="Perfil" width="32px">
                 </a>
-                <!-- BOTÃO HOME -->
                 <a href="/Landing Page/TelaIni.html" class="home-link" title="Início">
                     <img src="/imagens/casa.png" alt="Home" width="28px">
                 </a>
-                <button class="logout-btn" id="logoutBtn">Sair</button>
+                <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
         </div>
     </header>
 
     <div class="main-container">
         <aside class="sidebar">
-            <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
-            <img src="/imagens/localizacao.png" alt="Localização" width="32px">
-            <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
-            <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
-            <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
+            </a>
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="40px">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="32px">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="32px">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="32px">
+            </a>
         </aside>
 
         <main class="content">
@@ -66,7 +75,7 @@
             <h2 class="section-title">Serviços mais procurados</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <a href="/Serviços/Limpeza.html">Limpeza residencial</a>
+                    <a href="/Servicos/Limpeza.html">Limpeza residencial</a>
                 </div>
                 <div class="service-card">
                     <a href="#">Eletricista</a>
@@ -85,19 +94,31 @@
                 </div>
             </div>
 
-            <h2 class="section-title">Estatísticas da plataforma</h2>
+            <h2 class="section-title">estatísticas da plataforma</h2>
+            <div class="estatisticas-container">
+                <div class="estatistica-item">
+                    <span class="estatistica-numero">500+</span>
+                    <span class="estatistica-label">Profissionais ativos</span>
+                </div>
+                <div class="estatistica-item">
+                    <span class="estatistica-numero">2.5k</span>
+                    <span class="estatistica-label">Serviços realizados</span>
+                </div>
+                <div class="estatistica-item">
+                    <span class="estatistica-numero">4.80</span>
+                    <span class="estatistica-label">Avaliação média</span>
+                </div>
+            </div>
         </main>
     </div>
 
-    <!-- BOTÃO AJUDA -->
     <button class="help-button">
         <span>❓</span>
         Ajuda / Suporte
     </button>
 
-    <!-- BOTÃO MODO ESCURO -->
     <button class="dark-mode-toggle-ini" id="darkModeToggleIni">
-        <img src="/imagens/lua.png" alt="lua" width="15px"> Modo escuro
+        🌙 Modo escuro
     </button>
 
     <script src="/Landing Page/TelaIni.js"></script>
