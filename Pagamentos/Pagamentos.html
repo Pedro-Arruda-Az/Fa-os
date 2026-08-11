@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Pagamentos</title>
+    <link rel="stylesheet" href="Pagamentos.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+        </div>
+        <div class="header-right">
+            <!-- LINK ATUALIZADO -->
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <button class="logout-btn" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar-trigger"></div>
+        <aside class="sidebar">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32">
+            </a>
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="36">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="28">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon active" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="28">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="28">
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Recolher">&#8249;</button>
+        </aside>
+
+        <main class="pagamentos-content">
+            <h1 class="page-title">Pagamentos e Transações</h1>
+
+            <div class="saldo-container">
+                <div class="saldo-item saldo-principal">
+                    <span class="saldo-label">saldo disponível</span>
+                    <span class="saldo-valor positivo" id="saldoValor">R$ 280,00</span>
+                    <button class="adicionar-credito-btn" id="adicionarCreditoBtn">Adicionar crédito</button>
+                </div>
+                <div class="saldo-item total-gasto">
+                    <span class="saldo-label">total gasto</span>
+                    <span class="saldo-valor gasto" id="totalGasto">R$ 880,00</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">histórico de transações</h2>
+
+            <div class="transacoes-list" id="transacoesList">
+            </div>
+        </main>
+    </div>
+
+    <button class="help-button">
+        <span>❓</span>
+        Ajuda / Suporte
+    </button>
+
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        🌙 Modo escuro
+    </button>
+
+    <div class="modal-overlay" id="creditoModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 class="modal-title">Adicionar crédito</h2>
+            <p class="modal-subtitle">Escolha o valor e a forma de pagamento</p>
+
+            <div class="valor-opcoes">
+                <button class="valor-btn" data-valor="50">R$ 50</button>
+                <button class="valor-btn" data-valor="100">R$ 100</button>
+                <button class="valor-btn" data-valor="200">R$ 200</button>
+                <button class="valor-btn" data-valor="500">R$ 500</button>
+            </div>
+
+            <div class="modal-form-group">
+                <label>Valor personalizado</label>
+                <input type="number" id="valorPersonalizado" placeholder="Digite o valor" min="1">
+            </div>
+
+            <div class="modal-form-group">
+                <label>Forma de pagamento</label>
+                <select id="formaPagamento">
+                    <option value="cartao">Cartão de crédito</option>
+                    <option value="pix">PIX</option>
+                    <option value="boleto">Boleto</option>
+                </select>
+            </div>
+
+            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn">Confirmar pagamento</button>
+        </div>
+    </div>
+
+    <script src="Pagamentos.js"></script>
+</body>
+</html>

@@ -239,6 +239,50 @@ body {
     text-align: center;
 }
 
+/* ========== ESTATÍSTICAS DA PLATAFORMA ========== */
+.estatisticas-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+}
+
+.estatistica-item {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 1.5rem 1rem;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 199, 11, 0.3);
+    transition: all 0.3s ease;
+}
+
+.estatistica-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.estatistica-numero {
+    display: block;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #5C3A1E;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+}
+
+.estatistica-label {
+    display: block;
+    font-size: 1rem;
+    color: #5C3A1E;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
 /* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
@@ -248,8 +292,8 @@ body {
     color: #FFE066;
     border: none;
     border-radius: 50px;
-    padding: 1rem 2rem;
-    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -296,15 +340,19 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background-color: #2a241e;
+    background-color: #ffc70b;
 }
 
 body.dark-mode .header-link {
-    color: #ffc70b;
+    color: #5C3A1E;
+}
+
+body.dark-mode .header-icon-item {
+    color: #5C3A1E;
 }
 
 body.dark-mode .sidebar {
-    background-color: #2a241e;
+    background-color: #ffc70b;
 }
 
 body.dark-mode .sidebar img {
@@ -347,27 +395,45 @@ body.dark-mode .service-card:hover {
     background-color: #3a3a3a;
 }
 
+body.dark-mode .estatistica-item {
+    background: rgba(42, 42, 42, 0.8);
+    border-color: rgba(255, 199, 11, 0.2);
+}
+
+body.dark-mode .estatistica-item:hover {
+    background: rgba(42, 42, 42, 0.95);
+    border-color: rgba(255, 199, 11, 0.4);
+}
+
+body.dark-mode .estatistica-numero {
+    color: #ffc70b;
+}
+
+body.dark-mode .estatistica-label {
+    color: #f0e6d0;
+}
+
 body.dark-mode .help-button {
-    background-color: #ffc70b;
-    color: #2a241e;
+    background-color: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .logout-btn {
-    background-color: #ffc70b;
-    color: #2a241e;
+    background-color: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .logout-btn:hover {
-    background-color: #e6b400;
+    background-color: #4A2E16;
 }
 
 body.dark-mode .dark-mode-toggle-ini {
-    background-color: #ffc70b;
-    color: #2a241e;
+    background-color: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .dark-mode-toggle-ini:hover {
-    background-color: #e6b400;
+    background-color: #4A2E16;
 }
 
 /* ========== RESPONSIVIDADE ========== */
@@ -375,11 +441,13 @@ body.dark-mode .dark-mode-toggle-ini:hover {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+    .estatisticas-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
     .title {
         font-size: 2rem;
     }
-    
     .content {
         padding: 2rem;
     }
@@ -389,25 +457,25 @@ body.dark-mode .dark-mode-toggle-ini:hover {
     .services-grid {
         grid-template-columns: 1fr;
     }
-    
+    .estatisticas-container {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    .estatistica-numero {
+        font-size: 2rem;
+    }
     .sidebar {
         display: none;
     }
-    
     .content {
         padding: 1.5rem;
     }
-    
     .title {
         font-size: 1.5rem;
     }
-    
     .help-button,
     .dark-mode-toggle-ini {
         padding: 0.6rem 1.2rem;
         font-size: 0.8rem;
     }
-}
-.tipografia{
-    margin-left: -17px;
 }

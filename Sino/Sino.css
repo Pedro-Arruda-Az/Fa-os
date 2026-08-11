@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #ffc70b;
+    --brown: #8B4513;
+    --brown-dark: #6B3410;
+    --brown-light: #A0522D;
+    --text-dark: #2C1A0E;
+    --text-mid: #5A3A1A;
+    --text-light: #A0826D;
+    --bg-white: #FFFFFF;
+    --bg-cream: #FFFBF2;
+    --bg-card: #FFFFFF;
+    --border: #F0E0C0;
+    --shadow: 0 2px 12px rgba(139,69,19,0.10);
+    --shadow-hover: 0 6px 24px rgba(139,69,19,0.18);
+    --radius: 16px;
+    --sidebar-width: 82px;
+    --header-height: 64px;
+    --unread-dot: #ef4444;
+    --time-color: #A0826D;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: var(--yellow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.logo-img {
+    height: 40px;
+    object-fit: contain;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header-link {
+    color: var(--brown);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s;
+}
+.header-link:hover { opacity: 0.7; }
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.icon-btn:hover { opacity: 1; transform: scale(1.1); }
+
+.logout-btn {
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    padding: 0.45rem 1.1rem;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.logout-btn:hover {
+    background: var(--brown-dark);
+    transform: scale(1.04);
+}
+
+/* ========== MAIN LAYOUT ========== */
+.main-container {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - var(--header-height));
+    overflow: hidden;
+    position: relative;
+}
+
+/* Gatilho da sidebar */
+.sidebar-trigger {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 100%;
+    z-index: 200;
+    flex-shrink: 0;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+    width: 0;
+    background: var(--bg-white);
+    border-right: 0px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 1.5rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: width 0.3s ease, padding 0.3s ease, border-width 0.3s ease;
+    position: relative;
+    z-index: 150;
+}
+
+.sidebar-trigger:hover ~ .sidebar,
+.sidebar:hover,
+.sidebar.pinned {
+    width: var(--sidebar-width);
+    padding: 1.5rem 0;
+    border-right-width: 1px;
+    box-shadow: 4px 0 20px rgba(139,69,19,0.10);
+}
+
+.sidebar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    transition: background 0.2s, transform 0.2s;
+    opacity: 0.75;
+    text-decoration: none;
+}
+.sidebar-icon:hover {
+    background: #FFF3D0;
+    opacity: 1;
+    transform: scale(1.08);
+}
+.sidebar-icon.active {
+    background: #FFF3D0;
+    opacity: 1;
+    border: 2px solid var(--yellow);
+}
+
+.sidebar-toggle {
+    margin-top: auto;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--brown);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.sidebar-toggle:hover { background: #FFF3D0; }
+
+/* ========== CONTEÚDO ========== */
+.notificacoes-content {
+    flex: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
+    background: var(--bg-cream);
+}
+
+.notificacoes-content::-webkit-scrollbar { width: 5px; }
+.notificacoes-content::-webkit-scrollbar-track { background: transparent; }
+.notificacoes-content::-webkit-scrollbar-thumb { background: #DDB880; border-radius: 4px; }
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* ========== STATUS BADGE ========== */
+.status-badge {
+    background: rgba(255, 199, 11, 0.2);
+    border: 1px solid var(--yellow);
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+.status-badge span {
+    color: var(--unread-dot);
+    font-weight: 700;
+}
+
+/* ========== LISTA DE NOTIFICAÇÕES ========== */
+.notificacoes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.notificacao-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow);
+    position: relative;
+    cursor: pointer;
+}
+
+.notificacao-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Notificação não lida */
+.notificacao-card.unread {
+    border-left: 4px solid var(--unread-dot);
+    background: #FFF8F0;
+}
+
+.notificacao-card.unread .notificacao-titulo {
+    font-weight: 700;
+}
+
+.notificacao-card .notificacao-info {
+    flex: 1;
+}
+
+.notificacao-card .notificacao-titulo {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+}
+
+.notificacao-card .notificacao-descricao {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    margin-bottom: 0.2rem;
+}
+
+.notificacao-card .notificacao-tempo {
+    font-size: 0.8rem;
+    color: var(--time-color);
+}
+
+.notificacao-card .notificacao-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    margin-left: 1.5rem;
+}
+
+/* Bolinha de não lida */
+.notificacao-card .unread-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--unread-dot);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-bottom: 0.3rem;
+}
+
+.notificacao-card .notificacao-icone {
+    font-size: 1.5rem;
+}
+
+/* ========== BOTÕES FLUTUANTES ========== */
+.help-button {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(139,69,19,0.3);
+    z-index: 200;
+    transition: background 0.2s, transform 0.2s;
+}
+.help-button:hover {
+    background: var(--brown-dark);
+    transform: translateY(-2px);
+}
+
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(139,69,19,0.3);
+    z-index: 200;
+    transition: background 0.2s, transform 0.2s;
+}
+.dark-mode-toggle:hover {
+    background: var(--brown-dark);
+    transform: translateY(-2px);
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 700px) {
+    .main-container {
+        flex-direction: column;
+        height: auto;
+    }
+    .sidebar { display: none; }
+    .notificacoes-content { padding: 1.5rem; }
+    .page-title { font-size: 1.5rem; }
+    .status-badge { font-size: 0.8rem; padding: 0.4rem 1rem; }
+    .notificacao-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .notificacao-card .notificacao-right {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-left: 0;
+    }
+    .notificacao-card .unread-dot {
+        margin-bottom: 0;
+        margin-right: 0.5rem;
+    }
+}
+
+/* ========== MODO ESCURO ========== */
+body.dark-mode {
+    --yellow: #e6b400;
+    --brown: #D2A679;
+    --brown-dark: #C17A4A;
+    --brown-light: #D9A066;
+    --text-dark: #F5E6D3;
+    --text-mid: #E6C8A8;
+    --text-light: #BFA88C;
+    --bg-white: #1E1A16;
+    --bg-cream: #2A241E;
+    --bg-card: #2E2822;
+    --border: #4A3A2A;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --shadow-hover: 0 6px 24px rgba(0,0,0,0.4);
+    --time-color: #8A7A6A;
+}
+
+body.dark-mode .header {
+    background: var(--yellow);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .header-link,
+body.dark-mode .icon-btn {
+    color: #1E1A16;
+}
+
+body.dark-mode .sidebar {
+    background: #1E1A16;
+    border-right-color: var(--border);
+}
+
+body.dark-mode .sidebar-icon:hover {
+    background: #3A2E24;
+}
+
+body.dark-mode .notificacoes-content {
+    background: #1E1A16;
+}
+
+body.dark-mode .notificacao-card {
+    background: #2E2822;
+    border-color: var(--border);
+}
+
+body.dark-mode .notificacao-card:hover {
+    border-color: var(--yellow);
+}
+
+body.dark-mode .notificacao-card.unread {
+    background: #2A241E;
+    border-left-color: var(--unread-dot);
+}
+
+body.dark-mode .status-badge {
+    background: rgba(230, 180, 0, 0.15);
+    border-color: var(--yellow);
+}
+
+body.dark-mode .dark-mode-toggle {
+    background: var(--yellow);
+    color: #2A241E;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background: #e6b400;
+}
+
+body.dark-mode .help-button {
+    background: var(--yellow);
+    color: #2A241E;
+}
+
+body.dark-mode .help-button:hover {
+    background: #e6b400;
+}

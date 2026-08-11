@@ -1,0 +1,464 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #FFC700;
+    --yellow-light: #FFDD3D;
+    --bg-dark: #171717;
+    --card-bg: #262626;
+    --item-bg: #404040;
+    --item-bg-hover: #4a4a4a;
+    --border: rgba(255,255,255,0.09);
+    --text-dark: #171717;
+    --text-muted: #9CA3AF;
+    --green: #34D399;
+    --red: #F87171;
+    --blue: #60A5FA;
+    --header-height: 92px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
+    border-top: 5px solid #141414;
+    border-bottom: 5px solid #141414;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 30px;
+    height: 33px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-btn:hover {
+    opacity: 0.65;
+    transform: translateY(-1px);
+}
+
+/* ========== CONTEÚDO ========== */
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2.5rem 3.5rem 4rem;
+}
+
+.page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--yellow);
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.back-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.back-btn:hover {
+    transform: translateX(-3px);
+    opacity: 0.8;
+}
+
+.page-title {
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: var(--yellow);
+    flex: 1;
+}
+
+.btn-marcar-lidas {
+    background: var(--item-bg);
+    color: #E5E5E5;
+    border: none;
+    border-radius: 10px;
+    padding: 0.65rem 1.1rem;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-marcar-lidas:hover {
+    background: var(--item-bg-hover);
+}
+
+.card-titulo {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.1rem;
+}
+
+/* ========== GRID PRINCIPAL ========== */
+.notif-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ========== SEÇÕES ========== */
+.secao-titulo {
+    color: var(--yellow);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.9rem;
+}
+
+.notif-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-bottom: 1.75rem;
+}
+
+.notif-list:last-child {
+    margin-bottom: 0;
+}
+
+/* ========== CARD DE NOTIFICAÇÃO ========== */
+.notif-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid transparent;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.notif-card.is-unread.notif-pagamento {
+    background: rgba(255,199,0,0.12);
+    border-left-color: var(--yellow);
+}
+
+.notif-card.is-unread.notif-mensagem {
+    background: rgba(96,165,250,0.12);
+    border-left-color: var(--blue);
+}
+
+.notif-card.is-unread.notif-lembrete {
+    background: rgba(248,113,113,0.12);
+    border-left-color: var(--red);
+}
+
+.notif-card.is-read-fade {
+    opacity: 0.55;
+}
+
+.notif-card.hidden {
+    display: none;
+}
+
+.notif-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notif-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.icon-pagamento {
+    background: var(--yellow);
+    color: var(--text-dark);
+}
+
+.icon-mensagem {
+    background: var(--blue);
+    color: #0B1B33;
+}
+
+.icon-lembrete {
+    background: var(--red);
+    color: #3A0A0A;
+}
+
+.icon-concluido {
+    background: rgba(52,211,153,0.18);
+    color: var(--green);
+}
+
+.icon-pagamento-lido {
+    background: rgba(255,199,0,0.18);
+    color: var(--yellow);
+}
+
+.icon-lembrete-lido {
+    background: rgba(255,199,0,0.18);
+    color: var(--yellow);
+}
+
+.notif-corpo {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.notif-titulo {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.notif-pagamento.is-unread .notif-titulo {
+    color: var(--yellow);
+}
+
+.notif-mensagem.is-unread .notif-titulo {
+    color: var(--blue);
+}
+
+.notif-lembrete.is-unread .notif-titulo {
+    color: var(--red);
+}
+
+.notif-tempo {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.notif-texto {
+    font-size: 0.9rem;
+    color: #D4D4D4;
+    margin-bottom: 0.5rem;
+}
+
+.notif-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--yellow);
+    text-decoration: none;
+}
+
+.notif-link:hover {
+    text-decoration: underline;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.resumo-card,
+.prefs-card,
+.filtros-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+/* ---- Resumo ---- */
+.resumo-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: #E5E5E5;
+    margin-bottom: 0.9rem;
+}
+
+.resumo-linha:last-child {
+    margin-bottom: 0;
+}
+
+.resumo-valor {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--yellow);
+}
+
+/* ---- Preferências ---- */
+.pref-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: #E5E5E5;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.pref-linha:last-child {
+    margin-bottom: 0;
+}
+
+.pref-check {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--yellow);
+    cursor: pointer;
+}
+
+/* ---- Filtros rápidos ---- */
+.filtros-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.filtro-rapido-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--item-bg);
+    color: #E5E5E5;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.filtro-rapido-btn:hover {
+    background: var(--item-bg-hover);
+}
+
+.filtro-rapido-btn.active {
+    background: var(--yellow);
+    color: var(--text-dark);
+}
+
+/* ========== BOTÃO AJUDA ========== */
+.help-button {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    z-index: 200;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.help-button svg {
+    width: 19px;
+    height: 19px;
+}
+
+.help-button:hover {
+    background: var(--yellow-light);
+    transform: translateY(-2px);
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 1100px) {
+    .notif-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .page {
+        padding: 1.75rem 1.25rem 3rem;
+    }
+    .page-title-row {
+        flex-wrap: wrap;
+    }
+    .btn-marcar-lidas {
+        order: 3;
+        width: 100%;
+    }
+    .notif-topo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+    }
+}

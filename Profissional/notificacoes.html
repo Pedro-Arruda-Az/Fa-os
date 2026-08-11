@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Notificações</title>
+    <link rel="stylesheet" href="notificacoes.css">
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/index.html" class="brand-link">
+                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
+                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
+                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
+                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
+                </svg>
+                <span class="header-title">painel profissional</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/index.html" class="icon-btn" title="Início" aria-label="Início">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+            </a>
+            <a href="#" class="icon-btn" id="perfilBtn" title="Perfil" aria-label="Perfil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="page">
+        <div class="page-title-row">
+            <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </a>
+            <h1 class="page-title">notificações</h1>
+
+            <button class="btn-marcar-lidas" id="marcarLidasBtn">Marcar todas como lidas</button>
+        </div>
+
+        <div class="notif-grid">
+
+            <!-- ===== COLUNA PRINCIPAL ===== -->
+            <section class="notif-coluna">
+
+                <h2 class="secao-titulo">Novas</h2>
+
+                <div class="notif-list" id="notifNovas">
+
+                    <div class="notif-card notif-pagamento is-unread" data-id="1" data-tipo="pagamentos">
+                        <span class="notif-icon icon-pagamento">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1.1-3 2.5 1.3 2.2 3 2.5c1.7.3 3 1.1 3 2.5s-1.3 2.5-3 2.5-3-1.1-3-2.5"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Pagamento recebido</span>
+                                <span class="notif-tempo">Agora</span>
+                            </div>
+                            <p class="notif-texto">R$ 150,00 de João Silva - Limpeza residencial</p>
+                            <a href="/Profissional/carteira.html" class="notif-link">Ver detalhes</a>
+                        </div>
+                    </div>
+
+                    <div class="notif-card notif-mensagem is-unread" data-id="2" data-tipo="mensagens">
+                        <span class="notif-icon icon-mensagem">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Nova mensagem</span>
+                                <span class="notif-tempo">5 min</span>
+                            </div>
+                            <p class="notif-texto">Mariana Costa enviou uma mensagem</p>
+                            <a href="/Profissional/mensagens.html" class="notif-link">Ver mensagem</a>
+                        </div>
+                    </div>
+
+                    <div class="notif-card notif-lembrete is-unread" data-id="3" data-tipo="lembretes">
+                        <span class="notif-icon icon-lembrete">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Lembrete importante</span>
+                                <span class="notif-tempo">1h</span>
+                            </div>
+                            <p class="notif-texto">Renovar licença da empresa até 28/04/2026</p>
+                            <a href="/Profissional/agenda.html" class="notif-link">Ver na agenda</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <h2 class="secao-titulo">Anteriores</h2>
+
+                <div class="notif-list" id="notifAnteriores">
+
+                    <div class="notif-card" data-id="4" data-tipo="lembretes">
+                        <span class="notif-icon icon-concluido">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Serviço concluído</span>
+                                <span class="notif-tempo">2h</span>
+                            </div>
+                            <p class="notif-texto">Limpeza residencial para Maria Santos finalizada</p>
+                        </div>
+                    </div>
+
+                    <div class="notif-card" data-id="5" data-tipo="pagamentos">
+                        <span class="notif-icon icon-pagamento-lido">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1.1-3 2.5 1.3 2.2 3 2.5c1.7.3 3 1.1 3 2.5s-1.3 2.5-3 2.5-3-1.1-3-2.5"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Pagamento recebido</span>
+                                <span class="notif-tempo">Ontem</span>
+                            </div>
+                            <p class="notif-texto">R$ 180,00 de Maria Santos</p>
+                        </div>
+                    </div>
+
+                    <div class="notif-card" data-id="6" data-tipo="lembretes">
+                        <span class="notif-icon icon-lembrete-lido">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                        </span>
+                        <div class="notif-corpo">
+                            <div class="notif-topo">
+                                <span class="notif-titulo">Lembrete</span>
+                                <span class="notif-tempo">2 dias</span>
+                            </div>
+                            <p class="notif-texto">Comprar produtos de limpeza agendado para hoje</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ===== SIDEBAR ===== -->
+            <aside class="sidebar-col">
+
+                <div class="resumo-card">
+                    <h2 class="card-titulo">Resumo</h2>
+
+                    <div class="resumo-linha">
+                        <span>Novas</span>
+                        <span class="resumo-valor" id="resumoNovas">3</span>
+                    </div>
+                    <div class="resumo-linha">
+                        <span>Não lidas</span>
+                        <span class="resumo-valor" id="resumoNaoLidas">5</span>
+                    </div>
+                    <div class="resumo-linha">
+                        <span>Total</span>
+                        <span class="resumo-valor" id="resumoTotal">7</span>
+                    </div>
+                </div>
+
+                <div class="prefs-card">
+                    <h2 class="card-titulo">Preferências</h2>
+
+                    <label class="pref-linha">
+                        <span>Pagamentos</span>
+                        <input type="checkbox" class="pref-check" data-pref="pagamentos" checked>
+                    </label>
+                    <label class="pref-linha">
+                        <span>Mensagens</span>
+                        <input type="checkbox" class="pref-check" data-pref="mensagens" checked>
+                    </label>
+                    <label class="pref-linha">
+                        <span>Lembretes</span>
+                        <input type="checkbox" class="pref-check" data-pref="lembretes" checked>
+                    </label>
+                </div>
+
+                <div class="filtros-card">
+                    <h2 class="card-titulo">Filtros rápidos</h2>
+
+                    <div class="filtros-lista">
+                        <button class="filtro-rapido-btn" data-filtro="nao-lidas">Apenas não lidas</button>
+                        <button class="filtro-rapido-btn" data-filtro="pagamentos">Pagamentos</button>
+                        <button class="filtro-rapido-btn" data-filtro="mensagens">Mensagens</button>
+                        <button class="filtro-rapido-btn" data-filtro="lembretes">Lembretes</button>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- ========== BOTÃO AJUDA ========== -->
+    <button class="help-button" id="helpBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Ajuda / Suporte
+    </button>
+
+    <script src="notificacoes.js"></script>
+</body>
+</html>

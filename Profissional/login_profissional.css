@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #ffc70b;
+    --brown: #8B4513;
+    --brown-dark: #6B3410;
+    --text-dark: #2C1A0E;
+    --text-light: #A0826D;
+    --bg-cream: #FFFBF2;
+    --bg-white: #FFFFFF;
+    --border: #F0E0C0;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #FFE066 0%, #FFC107 50%, #E6A800 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* ========== LOGO ========== */
+.logo-container {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.logo-link {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #5C3A1E;
+    display: block;
+    line-height: 1.1;
+}
+
+.logo-sub {
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: #5C3A1E;
+    letter-spacing: 0.2em;
+    display: block;
+    margin-top: 0.1rem;
+    opacity: 0.7;
+}
+
+/* ========== LOGIN CARD ========== */
+.login-card {
+    background: var(--bg-white);
+    border-radius: 30px;
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+}
+
+.login-card h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* ========== FORM GROUP ========== */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.4rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #faf8f5;
+    color: var(--text-dark);
+}
+
+.form-group input:focus {
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px rgba(255, 199, 11, 0.25);
+    background: #fffef7;
+}
+
+.form-group input::placeholder {
+    color: var(--text-light);
+    opacity: 0.6;
+}
+
+/* ========== ESQUECI SENHA ========== */
+.esqueci-senha {
+    display: block;
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--brown);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.2s;
+}
+
+.esqueci-senha:hover {
+    opacity: 0.7;
+}
+
+/* ========== BOTÃO ENTRAR ========== */
+.entrar-btn {
+    width: 100%;
+    background: #5C3A1E;
+    color: #FFE066;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.entrar-btn:hover {
+    background: var(--brown-dark);
+    transform: scale(1.02);
+}
+
+.entrar-btn:active {
+    transform: scale(0.98);
+}
+
+/* ========== CADASTRAR LINK ========== */
+.cadastrar-link {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-top: 1.5rem;
+}
+
+.cadastrar-link a {
+    color: var(--brown);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.cadastrar-link a:hover {
+    opacity: 0.7;
+}
+
+/* ========== MODAL ========== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1.5rem;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-white);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 30px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: var(--text-dark);
+}
+
+.modal-content h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-content .form-group {
+    margin-bottom: 1rem;
+}
+
+.modal-content .form-group label {
+    font-size: 0.8rem;
+}
+
+.modal-content .form-group input {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+}
+
+.criar-btn {
+    width: 100%;
+    background: #5C3A1E;
+    color: #FFE066;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.criar-btn:hover {
+    background: var(--brown-dark);
+    transform: scale(1.02);
+}
+
+.fazer-login {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-top: 1.2rem;
+}
+
+.fazer-login a {
+    color: var(--brown);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.fazer-login a:hover {
+    opacity: 0.7;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .login-card h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo {
+        font-size: 2rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .login-card h1 {
+        font-size: 1.3rem;
+    }
+    
+    .form-group input {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+}

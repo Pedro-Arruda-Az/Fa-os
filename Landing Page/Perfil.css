@@ -354,11 +354,11 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background-color: #2a241e;
+    background-color: #ffc70b;
 }
 
 body.dark-mode .header-link {
-    color: #FFC107;
+    color: #5C3A1E;
 }
 
 body.dark-mode .sidebar {

@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #FFC700;
+    --yellow-light: #FFDD3D;
+    --bg-dark: #171717;
+    --card-bg: #262626;
+    --item-bg: #404040;
+    --border: rgba(255,255,255,0.09);
+    --text-dark: #171717;
+    --text-muted: #9CA3AF;
+    --header-height: 92px;
+
+    --confirmado-bg: rgba(52,211,153,0.12);
+    --confirmado-border: rgba(52,211,153,0.4);
+    --confirmado-text: #34D399;
+
+    --pendente-bg: rgba(255,199,0,0.12);
+    --pendente-border: rgba(255,199,0,0.4);
+    --pendente-text: #F2C94C;
+
+    --cancelado-bg: rgba(248,113,113,0.12);
+    --cancelado-border: rgba(248,113,113,0.4);
+    --cancelado-text: #F87171;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.header {
+    height: var(--header-height);
+    background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
+    border-top: 5px solid #141414;
+    border-bottom: 5px solid #141414;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 30px;
+    height: 33px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-btn:hover {
+    opacity: 0.65;
+    transform: translateY(-1px);
+}
+
+/* ========== CONTEÚDO ========== */
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 3.5rem 4rem;
+}
+
+.page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--yellow);
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.back-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.back-btn:hover {
+    transform: translateX(-3px);
+    opacity: 0.8;
+}
+
+.page-title {
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: var(--yellow);
+}
+
+/* ========== RESUMO ========== */
+.resumo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+}
+
+.resumo-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.resumo-numero {
+    color: var(--yellow);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.resumo-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ========== LISTA DA AGENDA ========== */
+.agenda-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dia-titulo {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: lowercase;
+}
+
+.dia-grupo .compromisso-card + .compromisso-card {
+    margin-top: 1rem;
+}
+
+.compromisso-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.compromisso-card:hover {
+    border-color: rgba(255,199,0,0.35);
+    transform: translateY(-2px);
+}
+
+.compromisso-card.cancelado {
+    opacity: 0.6;
+}
+
+.horario-col {
+    flex-shrink: 0;
+    width: 64px;
+    text-align: center;
+    border-right: 1px solid var(--item-bg);
+    padding-right: 1.5rem;
+}
+
+.horario {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.compromisso-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.compromisso-top {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.compromisso-nome {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.status-badge {
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.28rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid transparent;
+}
+
+.status-confirmado {
+    background: var(--confirmado-bg);
+    border-color: var(--confirmado-border);
+    color: var(--confirmado-text);
+}
+
+.status-pendente {
+    background: var(--pendente-bg);
+    border-color: var(--pendente-border);
+    color: var(--pendente-text);
+}
+
+.status-cancelado {
+    background: var(--cancelado-bg);
+    border-color: var(--cancelado-border);
+    color: var(--cancelado-text);
+}
+
+.compromisso-servico {
+    color: #C9C9C9;
+    font-size: 0.95rem;
+}
+
+.compromisso-endereco {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.agenda-btn {
+    flex-shrink: 0;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 20px;
+    padding: 0.55rem 1.4rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.agenda-btn:hover {
+    background: var(--yellow-light);
+    transform: translateY(-1px);
+}
+
+.agenda-btn:disabled {
+    background: var(--item-bg);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 800px) {
+    .page {
+        padding: 1.75rem 1.25rem 3rem;
+    }
+
+    .resumo-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+
+    .compromisso-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .horario-col {
+        border-right: none;
+        border-bottom: 1px solid var(--item-bg);
+        padding-right: 0;
+        padding-bottom: 0.75rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .agenda-btn {
+        width: 100%;
+    }
+}

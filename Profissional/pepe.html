@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Meus Pedidos</title>
+    <link rel="stylesheet" href="pepe.css">
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/index.html" class="brand-link">
+                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
+                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
+                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
+                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
+                </svg>
+                <span class="header-title">painel profissional</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/index.html" class="icon-btn" title="Início" aria-label="Início">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+            </a>
+            <a href="#" class="icon-btn" id="perfilBtn" title="Perfil" aria-label="Perfil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="page">
+        <div class="page-title-row">
+            <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </a>
+            <h1 class="page-title">Meus pedidos</h1>
+        </div>
+
+        <div class="pedidos-list" id="pedidosList">
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">João Silva</span>
+                        <span class="status-badge status-andamento">Em andamento</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 3 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>23/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>14:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 150,00</span>
+                    <button class="pedido-btn btn-detalhes">Detalhes</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Maria Santos</span>
+                        <span class="status-badge status-concluido">Concluído</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 4 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>22/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>09:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 180,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Pedro Costa</span>
+                        <span class="status-badge status-andamento">Em andamento</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 3 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>23/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>16:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 150,00</span>
+                    <button class="pedido-btn btn-detalhes">Detalhes</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Ana Lima</span>
+                        <span class="status-badge status-concluido">Concluído</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 3 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>22/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>14:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 150,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Carlos Mendes</span>
+                        <span class="status-badge status-concluido">Concluído</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 5 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>21/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>10:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 200,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Beatriz Souza</span>
+                        <span class="status-badge status-concluido">Concluído</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 3 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>20/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>16:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 150,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Roberto Alves</span>
+                        <span class="status-badge status-cancelado">Cancelado</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 3 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>19/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>11:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 150,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+            <div class="pedido-card">
+                <div class="pedido-info">
+                    <div class="pedido-top">
+                        <span class="pedido-nome">Fernanda Lima</span>
+                        <span class="status-badge status-concluido">Concluído</span>
+                    </div>
+                    <p class="pedido-servico">Limpeza residencial - 6 cômodos</p>
+                    <div class="pedido-meta">
+                        <span class="meta-item"><span class="meta-icon">📅</span>18/04/2026</span>
+                        <span class="meta-item"><span class="meta-icon">🕐</span>08:00</span>
+                    </div>
+                </div>
+                <div class="pedido-valor">
+                    <span class="valor">R$ 220,00</span>
+                    <button class="pedido-btn btn-comprovante">Ver comprovante</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="pepe.js"></script>
+</body>
+</html>

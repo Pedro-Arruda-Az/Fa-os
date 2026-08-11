@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Agenda</title>
+    <link rel="stylesheet" href="agenda.css">
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/index.html" class="brand-link">
+                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
+                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
+                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
+                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
+                </svg>
+                <span class="header-title">painel profissional</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/index.html" class="icon-btn" title="Início" aria-label="Início">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+            </a>
+            <a href="#" class="icon-btn" id="perfilBtn" title="Perfil" aria-label="Perfil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="page">
+        <div class="page-title-row">
+            <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </a>
+            <h1 class="page-title">Agenda</h1>
+        </div>
+
+        <!-- ===== RESUMO DO DIA ===== -->
+        <div class="resumo-row">
+            <div class="resumo-card">
+                <span class="resumo-numero" id="resumoHoje">2</span>
+                <span class="resumo-label">hoje</span>
+            </div>
+            <div class="resumo-card">
+                <span class="resumo-numero" id="resumoSemana">5</span>
+                <span class="resumo-label">esta semana</span>
+            </div>
+            <div class="resumo-card">
+                <span class="resumo-numero" id="resumoPendentes">1</span>
+                <span class="resumo-label">pendentes</span>
+            </div>
+        </div>
+
+        <!-- ===== AGENDA POR DIA ===== -->
+        <div class="agenda-list" id="agendaList">
+
+            <div class="dia-grupo">
+                <h2 class="dia-titulo">Hoje · 23/04/2026</h2>
+
+                <div class="compromisso-card">
+                    <div class="horario-col">
+                        <span class="horario">14:00</span>
+                    </div>
+                    <div class="compromisso-info">
+                        <div class="compromisso-top">
+                            <span class="compromisso-nome">João Silva</span>
+                            <span class="status-badge status-confirmado">Confirmado</span>
+                        </div>
+                        <p class="compromisso-servico">Limpeza residencial - 3 cômodos</p>
+                        <span class="compromisso-endereco">📍 Rua das Palmeiras, 120 - Centro</span>
+                    </div>
+                    <button class="agenda-btn">Detalhes</button>
+                </div>
+
+                <div class="compromisso-card">
+                    <div class="horario-col">
+                        <span class="horario">16:00</span>
+                    </div>
+                    <div class="compromisso-info">
+                        <div class="compromisso-top">
+                            <span class="compromisso-nome">Pedro Costa</span>
+                            <span class="status-badge status-confirmado">Confirmado</span>
+                        </div>
+                        <p class="compromisso-servico">Limpeza residencial - 3 cômodos</p>
+                        <span class="compromisso-endereco">📍 Av. Brasil, 845 - Jardim América</span>
+                    </div>
+                    <button class="agenda-btn">Detalhes</button>
+                </div>
+            </div>
+
+            <div class="dia-grupo">
+                <h2 class="dia-titulo">Amanhã · 24/04/2026</h2>
+
+                <div class="compromisso-card">
+                    <div class="horario-col">
+                        <span class="horario">10:00</span>
+                    </div>
+                    <div class="compromisso-info">
+                        <div class="compromisso-top">
+                            <span class="compromisso-nome">Fernanda Costa</span>
+                            <span class="status-badge status-pendente">Pendente</span>
+                        </div>
+                        <p class="compromisso-servico">Limpeza pós-obra - 2 cômodos</p>
+                        <span class="compromisso-endereco">📍 Rua Sete de Setembro, 300</span>
+                    </div>
+                    <button class="agenda-btn">Confirmar</button>
+                </div>
+            </div>
+
+            <div class="dia-grupo">
+                <h2 class="dia-titulo">25/04/2026</h2>
+
+                <div class="compromisso-card">
+                    <div class="horario-col">
+                        <span class="horario">09:00</span>
+                    </div>
+                    <div class="compromisso-info">
+                        <div class="compromisso-top">
+                            <span class="compromisso-nome">Ana Lima</span>
+                            <span class="status-badge status-confirmado">Confirmado</span>
+                        </div>
+                        <p class="compromisso-servico">Limpeza residencial - 4 cômodos</p>
+                        <span class="compromisso-endereco">📍 Rua das Acácias, 58 - Vila Nova</span>
+                    </div>
+                    <button class="agenda-btn">Detalhes</button>
+                </div>
+
+                <div class="compromisso-card cancelado">
+                    <div class="horario-col">
+                        <span class="horario">15:00</span>
+                    </div>
+                    <div class="compromisso-info">
+                        <div class="compromisso-top">
+                            <span class="compromisso-nome">Roberto Alves</span>
+                            <span class="status-badge status-cancelado">Cancelado</span>
+                        </div>
+                        <p class="compromisso-servico">Limpeza residencial - 3 cômodos</p>
+                        <span class="compromisso-endereco">📍 Rua Barão do Rio Branco, 12</span>
+                    </div>
+                    <button class="agenda-btn" disabled>Cancelado</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="agenda.js"></script>
+</body>
+</html>
