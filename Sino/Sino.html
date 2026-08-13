@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Notificações</title>
     <link rel="stylesheet" href="Sino.css">
+    <link rel="stylesheet" href="/Buzz/buzz.css">
 </head>
 <body>
 
@@ -16,13 +17,13 @@
             <!-- LINK ATUALIZADO -->
             <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
             <div class="header-icons">
-                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
-                    <img src="/imagens/casa.png" alt="Home" width="28">
-                </a>
                 <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
                     <img src="/imagens/pessoa.png" alt="Perfil" width="32">
                 </a>
-                <button class="logout-btn" id="logoutBtn">Sair</button>
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
         </div>
     </header>
@@ -49,7 +50,7 @@
         </aside>
 
         <main class="notificacoes-content">
-            <h1 class="page-title">notificações</h1>
+            <h1 class="page-title">Notificações</h1>
 
             <div class="status-badge" id="statusBadge">
                 Você tem <span id="unreadCount">2</span> notificações não lidas
@@ -61,14 +62,14 @@
     </div>
 
     <button class="help-button">
-        <span>❓</span>
         Ajuda / Suporte
     </button>
 
     <button class="dark-mode-toggle" id="darkModeToggle">
-        🌙 Modo escuro
+        Modo escuro
     </button>
 
     <script src="Sino.js"></script>
+    <script src="/Buzz/buzz.js"></script>
 </body>
 </html>

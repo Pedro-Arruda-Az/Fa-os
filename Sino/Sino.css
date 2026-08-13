@@ -408,16 +408,16 @@ body.dark-mode .icon-btn {
 }
 
 body.dark-mode .sidebar {
-    background: #1E1A16;
-    border-right-color: var(--border);
+    background: #ffc70b;
+    border-right-color: #E6A800;
 }
 
 body.dark-mode .sidebar-icon:hover {
-    background: #3A2E24;
+    background: rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode .notificacoes-content {
-    background: #1E1A16;
+    background: #121212;
 }
 
 body.dark-mode .notificacao-card {
@@ -440,19 +440,28 @@ body.dark-mode .status-badge {
 }
 
 body.dark-mode .dark-mode-toggle {
-    background: var(--yellow);
-    color: #2A241E;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .dark-mode-toggle:hover {
-    background: #e6b400;
+    background: #4A2E16;
 }
 
 body.dark-mode .help-button {
-    background: var(--yellow);
-    color: #2A241E;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .help-button:hover {
-    background: #e6b400;
+    background: #4A2E16;
+}
+
+body.dark-mode .logout-btn {
+    background: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .logout-btn:hover {
+    background: #4A2E16;
 }

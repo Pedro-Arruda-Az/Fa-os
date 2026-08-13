@@ -5,7 +5,6 @@ console.log('Arquivo script.js carregado!');
    ========================================================= */
 const conteudoAbas = {
     sobre: {
-        icon: '🏠',
         label: 'SOBRE',
         html: `
             <h3>Sobre a Faços</h3>
@@ -15,7 +14,6 @@ const conteudoAbas = {
         `
     },
     diferencial: {
-        icon: '⭐',
         label: 'DIFERENCIAL',
         html: `
             <h3>Nosso diferencial</h3>
@@ -26,7 +24,6 @@ const conteudoAbas = {
         `
     },
     funcionamento: {
-        icon: '🕐',
         label: 'FUNCIONAMENTO',
         html: `
             <h3>Como funciona</h3>
@@ -71,7 +68,6 @@ const conteudoAbas = {
         `
     },
     servicos: {
-        icon: '🔧',
         label: 'SERVIÇOS',
         html: `
             <h3>Serviços disponíveis</h3>
@@ -99,7 +95,7 @@ function renderAba(chave) {
     if (!infoContent) return;
 
     infoContent.innerHTML = `
-        <div class="info-tag"><span>${dados.icon}</span> ${dados.label}</div>
+        <div class="info-tag">${dados.label}</div>
         ${dados.html}
     `;
 

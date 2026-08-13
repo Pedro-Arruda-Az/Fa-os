@@ -194,17 +194,17 @@ function configurarModoEscuro() {
     if (!darkModeToggle) return;
 
     // Verificar preferência salva
-    if (localStorage.getItem('darkModeIni') === 'enabled') {
+    if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️ Modo claro';
+        darkModeToggle.textContent = 'Modo claro';
     }
 
     // Evento de clique
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkModeIni', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo escuro';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkModeToggle.textContent = isDark ? 'Modo claro' : 'Modo escuro';
     });
 }
 
