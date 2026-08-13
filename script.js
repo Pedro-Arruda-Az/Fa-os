@@ -185,9 +185,50 @@ window.onload = function() {
         };
     }
 
+    // ========== LOGIN ADM (rápido, pra pessoas autorizadas) ==========
+    const admBtn = document.getElementById('admBtn');
+    const admModal = document.getElementById('admModal');
+    const closeAdm = document.querySelector('.close-adm');
+    const admConfirmarBtn = document.getElementById('admConfirmarBtn');
+
+    const ADM_EMAIL = 'facos.oficial@gmail.com';
+    const ADM_SENHA = '1416';
+
+    if (admBtn) {
+        admBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (admModal) admModal.style.display = 'flex';
+        });
+    }
+
+    if (closeAdm) {
+        closeAdm.onclick = function() {
+            admModal.style.display = 'none';
+        };
+    }
+
+    if (admConfirmarBtn) {
+        admConfirmarBtn.addEventListener('click', function() {
+            const emailDigitado = document.getElementById('admEmail').value.trim();
+            const senhaDigitada = document.getElementById('admSenha').value.trim();
+
+            if (emailDigitado === ADM_EMAIL && senhaDigitada === ADM_SENHA) {
+                localStorage.setItem('usuarioLogado', JSON.stringify({
+                    nome: 'Administrador',
+                    email: ADM_EMAIL,
+                    admin: true
+                }));
+                window.location.href = '/Landing Page/TelaIni.html';
+            } else {
+                alert('Email ou senha incorretos.');
+            }
+        });
+    }
+
     window.onclick = function(event) {
         if (event.target == loginModal) loginModal.style.display = 'none';
         if (event.target == cadastroModal) cadastroModal.style.display = 'none';
+        if (event.target == admModal) admModal.style.display = 'none';
         if (event.target == redefinirSenhaModal) redefinirSenhaModal.style.display = 'none';
     };
 

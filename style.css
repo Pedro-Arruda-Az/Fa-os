@@ -581,3 +581,27 @@ body {
         max-width: 260px;
     }
 }
+
+/* ========== BOTÃO ADM (login rápido) ========== */
+.adm-btn {
+    position: fixed;
+    top: 0.8rem;
+    right: 0.8rem;
+    z-index: 900;
+    background: #5C3A1E;
+    border: none;
+    color: #FFE066;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.adm-btn:hover {
+    background: #4A2E16;
+    transform: scale(1.05);
+}

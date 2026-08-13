@@ -5,6 +5,14 @@
 
 const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
 
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
+
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
 const professionals = [
     {
         id: 1,
@@ -16,6 +24,7 @@ const professionals = [
         lng: -46.6530,
         services: 'Limpeza completa, pos-obra',
         price: 'R$ 120 - R$ 250',
+        priceValue: 150.00,
         initials: 'LM'
     },
     {
@@ -28,6 +37,7 @@ const professionals = [
         lng: -46.6560,
         services: 'Limpeza completa, passagem',
         price: 'R$ 150 - R$ 300',
+        priceValue: 200.00,
         initials: 'CH'
     },
     {
@@ -40,6 +50,7 @@ const professionals = [
         lng: -46.6600,
         services: 'Faxina, janelas, piso',
         price: 'R$ 100 - R$ 200',
+        priceValue: 130.00,
         initials: 'JS'
     },
     {
@@ -52,6 +63,7 @@ const professionals = [
         lng: -46.6490,
         services: 'Limpeza completa, lavagem',
         price: 'R$ 130 - R$ 270',
+        priceValue: 180.00,
         initials: 'BT'
     }
 ];
@@ -59,9 +71,10 @@ const professionals = [
 let map = null;
 let markers = {};
 let activePro = null;
+let usuarioAtual = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
+    usuarioAtual = verificarLogin();
     initMap();
     renderCards(professionals);
     bindEvents();
@@ -71,7 +84,9 @@ function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
         window.location.href = '/index.html';
+        return null;
     }
+    return JSON.parse(usuarioLogado);
 }
 
 function initMap() {
@@ -209,13 +224,141 @@ function closeModal() {
     document.getElementById('profileModal').classList.remove('open');
 }
 
-async function iniciarPagamento(pro) {
-    const btn = document.getElementById('solicitarBtn');
-    const textoOriginal = btn.textContent;
+// ========== MODAL: FORMA DE PAGAMENTO ==========
+let metodoSelecionado = null;
+let saldoAtualCarteira = 0;
 
-    btn.textContent = 'Aguarde...';
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
+async function abrirModalPagamento(pro) {
+    document.getElementById('pagamentoSubtitle').textContent = `Serviço com ${pro.name}`;
+    document.getElementById('pagamentoValor').textContent = formatarMoeda(pro.priceValue);
+
+    metodoSelecionado = null;
+    document.querySelectorAll('.pagamento-opcao').forEach((el) => el.classList.remove('active'));
+    document.getElementById('confirmarPagamentoBtn').disabled = true;
+
+    closeModal();
+    document.getElementById('paymentModal').classList.add('open');
+
+    const saldoTexto = document.getElementById('saldoDisponivelTexto');
+    saldoTexto.textContent = 'Carregando saldo...';
+
+    saldoAtualCarteira = await buscarSaldoCarteira();
+    saldoTexto.textContent = `Saldo disponível: ${formatarMoeda(saldoAtualCarteira)}`;
+
+    const opcaoCarteira = document.querySelector('.pagamento-opcao[data-metodo="carteira"]');
+    if (saldoAtualCarteira < pro.priceValue) {
+        opcaoCarteira.disabled = true;
+        saldoTexto.textContent += ' (insuficiente)';
+    } else {
+        opcaoCarteira.disabled = false;
+    }
+}
+
+function closePaymentModal() {
+    document.getElementById('paymentModal').classList.remove('open');
+}
+
+function formatarMoeda(valor) {
+    return `R$ ${Number(valor).toFixed(2).replace('.', ',')}`;
+}
+
+async function buscarSaldoCarteira() {
+    if (!supabaseClient || !usuarioAtual) return 0;
+
+    const { data, error } = await supabaseClient
+        .from('usuarios')
+        .select('saldo')
+        .eq('email', usuarioAtual.email)
+        .single();
+
+    if (error || !data) return 0;
+    return Number(data.saldo || 0);
+}
+
+async function registrarPedido(pro, formaPagamento) {
+    if (!supabaseClient || !usuarioAtual) return;
+
+    const { error } = await supabaseClient
+        .from('pedidos')
+        .insert([{
+            usuario_email: usuarioAtual.email,
+            titulo: pro.service,
+            profissional: pro.name,
+            valor: pro.priceValue,
+            status: 'em_andamento',
+            forma_pagamento: formaPagamento
+        }]);
+
+    if (error) {
+        console.error('Erro ao registrar o pedido:', error);
+        // O pagamento já foi concluído; só o histórico de pedidos que pode
+        // não aparecer. Não bloqueia o fluxo do usuário.
+    }
+}
+
+async function pagarComCarteira(pro) {
+    const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
+    const textoOriginal = confirmarBtn.textContent;
+    confirmarBtn.disabled = true;
+    confirmarBtn.textContent = 'Processando...';
+
+    try {
+        if (saldoAtualCarteira < pro.priceValue) {
+            alert('Saldo insuficiente. Adicione crédito na carteira ou escolha o Mercado Pago.');
+            return;
+        }
+
+        const novoSaldo = Math.round((saldoAtualCarteira - pro.priceValue) * 100) / 100;
+
+        const { error } = await supabaseClient
+            .from('usuarios')
+            .update({ saldo: novoSaldo })
+            .eq('email', usuarioAtual.email);
+
+        if (error) {
+            alert('Erro ao debitar o saldo: ' + error.message);
+            return;
+        }
+
+        // Registra o gasto para aparecer no histórico e no "Total gasto" da carteira
+        const { error: registroError } = await supabaseClient
+            .from('pagamentos')
+            .insert([{
+                usuario_email: usuarioAtual.email,
+                valor: pro.priceValue,
+                forma_pagamento: 'carteira',
+                status: 'aprovado',
+                tipo: 'gasto',
+                descricao: `${pro.service} - ${pro.name}`,
+                external_reference: `GASTO-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+            }]);
+
+        if (registroError) {
+            console.error('Erro ao registrar o gasto:', registroError);
+            // O saldo já foi debitado corretamente; só o histórico que pode não
+            // aparecer no "Total gasto" da carteira. Não bloqueia o fluxo do usuário.
+        }
+
+        // Registra o pedido para aparecer no Histórico de Pedidos
+        await registrarPedido(pro, 'carteira');
+
+        alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
+        closePaymentModal();
+    } catch (err) {
+        console.error(err);
+        alert('Ocorreu um erro ao processar o pagamento com a carteira.');
+    } finally {
+        confirmarBtn.disabled = false;
+        confirmarBtn.textContent = textoOriginal;
+    }
+}
+
+async function iniciarPagamento(pro) {
+    const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
+    const textoOriginal = confirmarBtn.textContent;
+
+    confirmarBtn.textContent = 'Aguarde...';
+    confirmarBtn.disabled = true;
 
     try {
         const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
@@ -230,7 +373,7 @@ async function iniciarPagamento(pro) {
                         title: `Servico de Limpeza - ${pro.name}`,
                         quantity: 1,
                         currency_id: 'BRL',
-                        unit_price: 120.00
+                        unit_price: pro.priceValue
                     }
                 ],
                 payment_methods: {
@@ -245,9 +388,16 @@ async function iniciarPagamento(pro) {
         console.log('Resposta MP:', data);
 
         if (data.init_point) {
+            // Como o checkout abre em outra aba e não temos confirmação
+            // automática de volta, registramos o pedido já aqui (o Mercado
+            // Pago também manda um e-mail de confirmação pro cliente).
+            await registrarPedido(pro, 'mercadopago');
             window.open(data.init_point, '_blank');
+            closePaymentModal();
         } else if (data.sandbox_init_point) {
+            await registrarPedido(pro, 'mercadopago');
             window.open(data.sandbox_init_point, '_blank');
+            closePaymentModal();
         } else {
             throw new Error(data.message || 'Link de pagamento nao retornado');
         }
@@ -257,9 +407,8 @@ async function iniciarPagamento(pro) {
         alert('Erro ao conectar com o Mercado Pago.\nVerifique o console para mais detalhes.');
     }
 
-    btn.textContent = textoOriginal;
-    btn.disabled = false;
-    btn.style.opacity = '1';
+    confirmarBtn.textContent = textoOriginal;
+    confirmarBtn.disabled = false;
 }
 
 function bindEvents() {
@@ -292,7 +441,32 @@ function bindEvents() {
     });
 
     document.getElementById('solicitarBtn').addEventListener('click', () => {
-        if (activePro) iniciarPagamento(activePro);
+        if (activePro) abrirModalPagamento(activePro);
+    });
+
+    document.getElementById('paymentModalClose').addEventListener('click', closePaymentModal);
+    document.getElementById('paymentModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('paymentModal')) closePaymentModal();
+    });
+
+    document.querySelectorAll('.pagamento-opcao').forEach((opcao) => {
+        opcao.addEventListener('click', () => {
+            if (opcao.disabled) return;
+            document.querySelectorAll('.pagamento-opcao').forEach((el) => el.classList.remove('active'));
+            opcao.classList.add('active');
+            metodoSelecionado = opcao.dataset.metodo;
+            document.getElementById('confirmarPagamentoBtn').disabled = false;
+        });
+    });
+
+    document.getElementById('confirmarPagamentoBtn').addEventListener('click', () => {
+        if (!activePro || !metodoSelecionado) return;
+
+        if (metodoSelecionado === 'carteira') {
+            pagarComCarteira(activePro);
+        } else if (metodoSelecionado === 'mercadopago') {
+            iniciarPagamento(activePro);
+        }
     });
 
     const sidebarToggle = document.getElementById('sidebarToggle');

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <button class="adm-btn" id="admBtn" title="Login administrativo">ADM</button>
+
     <div class="page">
 
         <!-- COLUNA ESQUERDA -->
@@ -51,6 +53,19 @@
 
                 <a href="Profissional/login_profissional.html" class="seja-profissional">seja um profissional</a>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE LOGIN ADM -->
+    <div id="admModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal close-adm">&times;</span>
+            <h2>Login ADM</h2>
+            <label>Email</label>
+            <input type="email" id="admEmail" value="facos.oficial@gmail.com">
+            <label>Senha</label>
+            <input type="password" id="admSenha" value="1416">
+            <button class="entrar-btn" id="admConfirmarBtn">Confirmar</button>
         </div>
     </div>
 
