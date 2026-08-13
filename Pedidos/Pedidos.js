@@ -1,66 +1,18 @@
 /* ============================================================
    FAÇOS - Pedidos.js
-   Página de histórico de pedidos
+   Página de histórico de pedidos (dados reais do Supabase)
    ============================================================ */
 
-// ========== DADOS DE EXEMPLO ==========
-const pedidos = [
-    {
-        id: 1,
-        titulo: 'Limpeza completa residencial',
-        profissional: 'LimpaMais Serviços',
-        data: '20 Abr 2026',
-        preco: 'R$ 150,00',
-        status: 'concluido',
-        avaliacao: 5.0
-    },
-    {
-        id: 2,
-        titulo: 'Reparo elétrico',
-        profissional: 'Eletro Fix',
-        data: '18 Abr 2026',
-        preco: 'R$ 200,00',
-        status: 'concluido',
-        avaliacao: 4.5
-    },
-    {
-        id: 3,
-        titulo: 'Montagem de guarda-roupa',
-        profissional: 'Montagem Express',
-        data: '15 Abr 2026',
-        preco: 'R$ 180,00',
-        status: 'concluido',
-        avaliacao: 5.0
-    },
-    {
-        id: 4,
-        titulo: 'Limpeza pós-obra',
-        profissional: 'Clean House Pro',
-        data: '12 Abr 2026',
-        preco: 'R$ 350,00',
-        status: 'concluido',
-        avaliacao: null
-    },
-    {
-        id: 5,
-        titulo: 'Instalação de ar-condicionado',
-        profissional: 'Frio Total',
-        data: '10 Abr 2026',
-        preco: 'R$ 450,00',
-        status: 'andamento',
-        avaliacao: null
-    },
-    {
-        id: 6,
-        titulo: 'Desentupimento de pia',
-        profissional: 'Desentupidora Rápida',
-        data: '05 Abr 2026',
-        preco: 'R$ 120,00',
-        status: 'cancelado',
-        avaliacao: null
-    }
-];
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+let usuario = null;
+let pedidos = [];
 let filtroAtual = 'todos';
 
 // ========== VERIFICAR LOGIN ==========
@@ -68,7 +20,31 @@ function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
         window.location.href = '/index.html';
+        return null;
     }
+    return JSON.parse(usuarioLogado);
+}
+
+// ========== BUSCAR PEDIDOS REAIS ==========
+async function buscarPedidos(email) {
+    if (!supabaseClient) return [];
+
+    const { data, error } = await supabaseClient
+        .from('pedidos')
+        .select('*')
+        .eq('usuario_email', email)
+        .order('criado_em', { ascending: false });
+
+    if (error || !data) return [];
+
+    return data.map((p) => ({
+        titulo: p.titulo,
+        profissional: p.profissional,
+        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        preco: `R$ ${Number(p.valor).toFixed(2).replace('.', ',')}`,
+        status: p.status,
+        avaliacao: p.avaliacao !== null && p.avaliacao !== undefined ? Number(p.avaliacao) : null
+    }));
 }
 
 // ========== RENDERIZAR PEDIDOS ==========
@@ -113,10 +89,10 @@ function renderPedidos(lista) {
         }
 
         // Mapear status para classe CSS
-        const statusClass = `status-${pedido.status}`;
+        const statusClass = `status-${pedido.status === 'em_andamento' ? 'andamento' : pedido.status}`;
         const statusLabel = {
             'concluido': 'Concluído',
-            'andamento': 'Em andamento',
+            'em_andamento': 'Em andamento',
             'cancelado': 'Cancelado'
         }[pedido.status] || pedido.status;
 
@@ -150,7 +126,7 @@ function filtrarPedidos(filtro) {
             listaFiltrada = pedidos.filter(p => p.status === 'concluido');
             break;
         case 'andamento':
-            listaFiltrada = pedidos.filter(p => p.status === 'andamento');
+            listaFiltrada = pedidos.filter(p => p.status === 'em_andamento');
             break;
         case 'cancelados':
             listaFiltrada = pedidos.filter(p => p.status === 'cancelado');
@@ -205,11 +181,15 @@ function configurarSidebar() {
 }
 
 // ========== INICIALIZAR ==========
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
-    renderPedidos(pedidos);
+document.addEventListener('DOMContentLoaded', async () => {
+    usuario = verificarLogin();
+    if (!usuario) return;
+
     configurarModoEscuro();
     configurarSidebar();
+
+    pedidos = await buscarPedidos(usuario.email);
+    filtrarPedidos('todos');
 
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
