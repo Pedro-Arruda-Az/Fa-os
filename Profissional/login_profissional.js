@@ -374,7 +374,10 @@ if (esqueciSenha) {
                 return;
             }
 
-            alert('Enviamos uma nova senha temporária para o seu email!');
+            alert('Enviamos uma nova senha temporária para o seu email! Enquanto isso, você já pode definir a senha que quiser usar a partir de agora:');
+
+            // Abre a telinha para a empresa já escolher a senha definitiva dela
+            abrirModalRedefinirSenha(email);
         } catch (err) {
             console.error(err);
             alert(err.message || 'Ocorreu um erro ao tentar recuperar sua senha. Tente novamente.');
@@ -382,6 +385,92 @@ if (esqueciSenha) {
             esqueciSenha.textContent = textoOriginal;
         }
     };
+}
+
+// ========== MODAL: DEFINIR NOVA SENHA ==========
+const redefinirSenhaModal = document.getElementById('redefinirSenhaModal');
+const closeRedefinirModal = document.getElementById('closeRedefinirModal');
+const confirmarNovaSenhaBtn = document.getElementById('confirmarNovaSenhaBtn');
+
+let emailParaRedefinir = '';
+
+function abrirModalRedefinirSenha(email) {
+    emailParaRedefinir = email;
+    if (redefinirSenhaModal) redefinirSenhaModal.classList.add('open');
+}
+
+function fecharModalRedefinirSenha() {
+    if (redefinirSenhaModal) redefinirSenhaModal.classList.remove('open');
+}
+
+if (closeRedefinirModal) {
+    closeRedefinirModal.addEventListener('click', fecharModalRedefinirSenha);
+}
+
+if (redefinirSenhaModal) {
+    redefinirSenhaModal.addEventListener('click', function (e) {
+        if (e.target === redefinirSenhaModal) fecharModalRedefinirSenha();
+    });
+}
+
+if (confirmarNovaSenhaBtn) {
+    confirmarNovaSenhaBtn.addEventListener('click', async function () {
+        const novaSenhaInput = document.getElementById('novaSenhaInput');
+        const confirmarNovaSenhaInput = document.getElementById('confirmarNovaSenhaInput');
+
+        const novaSenha = novaSenhaInput ? novaSenhaInput.value : '';
+        const confirmarNovaSenha = confirmarNovaSenhaInput ? confirmarNovaSenhaInput.value : '';
+
+        if (!novaSenha || !confirmarNovaSenha) {
+            alert('Preencha as duas senhas.');
+            return;
+        }
+
+        if (novaSenha.length < 4) {
+            alert('A senha precisa ter pelo menos 4 caracteres.');
+            return;
+        }
+
+        if (novaSenha !== confirmarNovaSenha) {
+            alert('As senhas não são iguais. Digite a mesma senha nos dois campos.');
+            return;
+        }
+
+        if (!supabaseClient || !window.CryptoJS) {
+            alert('Não foi possível conectar ao servidor. Tente novamente mais tarde.');
+            return;
+        }
+
+        const textoOriginal = confirmarNovaSenhaBtn.textContent;
+        confirmarNovaSenhaBtn.disabled = true;
+        confirmarNovaSenhaBtn.textContent = 'Salvando...';
+
+        try {
+            const senhaHash = CryptoJS.SHA256(novaSenha).toString(CryptoJS.enc.Hex);
+
+            const { error } = await supabaseClient
+                .from('profissionais')
+                .update({ senha: senhaHash })
+                .eq('email', emailParaRedefinir);
+
+            if (error) {
+                alert('Erro ao salvar a nova senha: ' + error.message);
+                return;
+            }
+
+            alert('Senha atualizada com sucesso! Já pode entrar com a sua nova senha.');
+
+            novaSenhaInput.value = '';
+            confirmarNovaSenhaInput.value = '';
+            fecharModalRedefinirSenha();
+        } catch (err) {
+            console.error(err);
+            alert('Ocorreu um erro ao salvar a nova senha. Tente novamente.');
+        } finally {
+            confirmarNovaSenhaBtn.disabled = false;
+            confirmarNovaSenhaBtn.textContent = textoOriginal;
+        }
+    });
 }
 
 // ========== ENTER PARA ENVIAR ==========

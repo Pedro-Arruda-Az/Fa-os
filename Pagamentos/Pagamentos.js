@@ -1,85 +1,74 @@
 /* ============================================================
    FAÇOS - Pagamentos.js
-   Página de pagamentos e transações
+   Página de pagamentos e transações (com Mercado Pago real)
    ============================================================ */
 
-// ========== DADOS DE EXEMPLO ==========
-const transacoes = [
-    {
-        id: 1,
-        titulo: 'Limpeza completa',
-        descricao: 'LimpaMais Serviços',
-        data: '20 Abr 2026',
-        valor: -150.00,
-        tipo: 'servico'
-    },
-    {
-        id: 2,
-        titulo: 'Reparo elétrico',
-        descricao: 'Eletro Fix',
-        data: '18 Abr 2026',
-        valor: -200.00,
-        tipo: 'servico'
-    },
-    {
-        id: 3,
-        titulo: 'Crédito adicionado',
-        descricao: 'Cartão de crédito',
-        data: '17 Abr 2026',
-        valor: 300.00,
-        tipo: 'credito'
-    },
-    {
-        id: 4,
-        titulo: 'Montagem de móveis',
-        descricao: 'Montagem Express',
-        data: '15 Abr 2026',
-        valor: -180.00,
-        tipo: 'servico'
-    },
-    {
-        id: 5,
-        titulo: 'Limpeza pós-obra',
-        descricao: 'Clean House Pro',
-        data: '12 Abr 2026',
-        valor: -350.00,
-        tipo: 'servico'
-    },
-    {
-        id: 6,
-        titulo: 'Crédito adicionado',
-        descricao: 'PIX',
-        data: '10 Abr 2026',
-        valor: 300.00,
-        tipo: 'credito'
-    }
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
+
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+// ========== TRANSAÇÕES DE SERVIÇOS (DEMO) ==========
+// Os gastos com serviços continuam de exemplo por enquanto — a parte
+// real (Mercado Pago) é só a de crédito adicionado na carteira.
+const transacoesServicos = [
+    { titulo: 'Limpeza completa', descricao: 'LimpaMais Serviços', data: '20 Abr 2026', dataOrdenacao: '2026-04-20', valor: -150.00 },
+    { titulo: 'Reparo elétrico', descricao: 'Eletro Fix', data: '18 Abr 2026', dataOrdenacao: '2026-04-18', valor: -200.00 },
+    { titulo: 'Montagem de móveis', descricao: 'Montagem Express', data: '15 Abr 2026', dataOrdenacao: '2026-04-15', valor: -180.00 },
+    { titulo: 'Limpeza pós-obra', descricao: 'Clean House Pro', data: '12 Abr 2026', dataOrdenacao: '2026-04-12', valor: -350.00 }
 ];
+
+let usuario = null;
 
 // ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
         window.location.href = '/index.html';
+        return null;
     }
+    return JSON.parse(usuarioLogado);
 }
 
-// ========== CALCULAR TOTAIS ==========
-function calcularTotais() {
-    let totalGasto = 0;
-    let totalRecebido = 0;
+// ========== BUSCAR SALDO E PAGAMENTOS REAIS ==========
+async function buscarSaldoAtual(email) {
+    if (!supabaseClient) return 0;
+    const { data, error } = await supabaseClient
+        .from('usuarios')
+        .select('saldo')
+        .eq('email', email)
+        .single();
 
-    transacoes.forEach(t => {
-        if (t.valor < 0) {
-            totalGasto += Math.abs(t.valor);
-        } else {
-            totalRecebido += t.valor;
-        }
-    });
+    if (error || !data) return 0;
+    return Number(data.saldo || 0);
+}
 
-    // Saldo sempre positivo para exemplo (R$ 280,00)
-    const saldo = 280.00;
+async function buscarCreditosAprovados(email) {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient
+        .from('pagamentos')
+        .select('*')
+        .eq('usuario_email', email)
+        .eq('status', 'aprovado')
+        .order('criado_em', { ascending: false });
 
-    return { totalGasto, totalRecebido, saldo };
+    if (error || !data) return [];
+
+    return data.map((p) => ({
+        titulo: 'Crédito adicionado',
+        descricao: formatarFormaPagamento(p.forma_pagamento),
+        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        dataOrdenacao: p.criado_em,
+        valor: Number(p.valor)
+    }));
+}
+
+function formatarFormaPagamento(forma) {
+    const mapa = { cartao: 'Cartão de crédito', pix: 'PIX', boleto: 'Boleto' };
+    return mapa[forma] || 'Mercado Pago';
 }
 
 // ========== RENDERIZAR TRANSAÇÕES ==========
@@ -96,14 +85,14 @@ function renderTransacoes(lista) {
         return;
     }
 
-    lista.forEach(t => {
+    lista.forEach((t) => {
         const card = document.createElement('div');
         card.className = 'transacao-card';
 
-        const valorFormatado = t.valor < 0 
+        const valorFormatado = t.valor < 0
             ? `- R$ ${Math.abs(t.valor).toFixed(2).replace('.', ',')}`
             : `+ R$ ${t.valor.toFixed(2).replace('.', ',')}`;
-        
+
         const valorClass = t.valor < 0 ? 'negativo' : 'positivo';
 
         card.innerHTML = `
@@ -122,15 +111,31 @@ function renderTransacoes(lista) {
 }
 
 // ========== ATUALIZAR RESUMO ==========
-function atualizarResumo() {
-    const { totalGasto, saldo } = calcularTotais();
+function atualizarResumo(saldo, transacoesGasto) {
+    const totalGasto = transacoesGasto
+        .filter((t) => t.valor < 0)
+        .reduce((soma, t) => soma + Math.abs(t.valor), 0);
 
     const saldoElement = document.getElementById('saldoValor');
-    // Saldo sempre positivo e em verde
     saldoElement.textContent = `R$ ${saldo.toFixed(2).replace('.', ',')}`;
-    saldoElement.className = 'saldo-valor positivo'; // Adiciona classe verde
+    saldoElement.className = 'saldo-valor positivo';
 
     document.getElementById('totalGasto').textContent = `R$ ${totalGasto.toFixed(2).replace('.', ',')}`;
+}
+
+// ========== CARREGAR TUDO ==========
+async function carregarDados() {
+    const creditos = await buscarCreditosAprovados(usuario.email);
+    const saldo = await buscarSaldoAtual(usuario.email);
+
+    const todas = [...creditos, ...transacoesServicos].sort(
+        (a, b) => new Date(b.dataOrdenacao) - new Date(a.dataOrdenacao)
+    );
+
+    renderTransacoes(todas);
+    atualizarResumo(saldo, transacoesServicos);
+
+    return saldo;
 }
 
 // ========== LOGOUT ==========
@@ -170,7 +175,7 @@ function configurarSidebar() {
     }
 }
 
-// ========== MODAL ADICIONAR CRÉDITO ==========
+// ========== MODAL ADICIONAR CRÉDITO (MERCADO PAGO) ==========
 function configurarModalCredito() {
     const modal = document.getElementById('creditoModal');
     const abrirBtn = document.getElementById('adicionarCreditoBtn');
@@ -190,15 +195,15 @@ function configurarModalCredito() {
         if (e.target === modal) modal.classList.remove('open');
     });
 
-    document.querySelectorAll('.valor-btn').forEach(btn => {
+    document.querySelectorAll('.valor-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.valor-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.valor-btn').forEach((b) => b.classList.remove('active'));
             btn.classList.add('active');
             valorPersonalizado.value = btn.dataset.valor;
         });
     });
 
-    confirmarBtn.addEventListener('click', () => {
+    confirmarBtn.addEventListener('click', async () => {
         const valor = parseFloat(valorPersonalizado.value);
         if (!valor || valor <= 0) {
             alert('Por favor, insira um valor válido!');
@@ -206,42 +211,87 @@ function configurarModalCredito() {
         }
 
         const forma = document.getElementById('formaPagamento');
-        const formaTexto = forma.options[forma.selectedIndex].text;
+        const formaPagamento = forma.value;
 
-        const novaTransacao = {
-            id: transacoes.length + 1,
-            titulo: 'Crédito adicionado',
-            descricao: formaTexto,
-            data: new Date().toLocaleDateString('pt-BR', { 
-                day: '2-digit', 
-                month: 'short', 
-                year: 'numeric' 
-            }).replace('.', ''),
-            valor: valor,
-            tipo: 'credito'
-        };
+        const textoOriginal = confirmarBtn.textContent;
+        confirmarBtn.disabled = true;
+        confirmarBtn.textContent = 'Abrindo Mercado Pago...';
 
-        transacoes.push(novaTransacao);
-        
-        renderTransacoes(transacoes);
-        atualizarResumo();
+        try {
+            const resposta = await fetch('/api/criar-pagamento', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: usuario.email,
+                    nome: usuario.nome,
+                    valor,
+                    formaPagamento,
+                    origin: window.location.origin
+                })
+            });
 
-        modal.classList.remove('open');
-        valorPersonalizado.value = '';
-        document.querySelectorAll('.valor-btn').forEach(b => b.classList.remove('active'));
+            const resultado = await resposta.json();
 
-        alert(`Crédito de R$ ${valor.toFixed(2).replace('.', ',')} adicionado com sucesso!`);
+            if (!resposta.ok) {
+                throw new Error(resultado.error || 'Não foi possível iniciar o pagamento.');
+            }
+
+            // Redireciona para o checkout do Mercado Pago
+            window.location.href = resultado.init_point;
+        } catch (err) {
+            console.error(err);
+            alert(err.message || 'Ocorreu um erro ao iniciar o pagamento. Tente novamente.');
+            confirmarBtn.disabled = false;
+            confirmarBtn.textContent = textoOriginal;
+        }
     });
 }
 
+// ========== CONFIRMAR RETORNO DO MERCADO PAGO ==========
+async function verificarRetornoPagamento() {
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get('payment_id');
+    const externalReference = params.get('external_reference');
+
+    if (!paymentId || !externalReference) return;
+
+    try {
+        const resposta = await fetch(
+            `/api/verificar-pagamento?payment_id=${encodeURIComponent(paymentId)}&external_reference=${encodeURIComponent(externalReference)}`
+        );
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(resultado.error || 'Não foi possível confirmar o pagamento.');
+        }
+
+        if (resultado.status === 'aprovado' || resultado.status === 'ja_processado') {
+            alert(`Pagamento aprovado! Foi creditado R$ ${resultado.valor.toFixed(2).replace('.', ',')} na sua carteira.`);
+        } else if (resultado.status === 'pending' || resultado.status === 'in_process') {
+            alert('Seu pagamento ainda está sendo processado pelo Mercado Pago. Assim que for aprovado, o valor cai na sua carteira.');
+        } else {
+            alert('O pagamento não foi aprovado. Tente novamente.');
+        }
+    } catch (err) {
+        console.error(err);
+        alert(err.message || 'Ocorreu um erro ao confirmar seu pagamento.');
+    } finally {
+        // Limpa os parâmetros da URL pra não reprocessar num refresh
+        window.history.replaceState(null, '', window.location.pathname);
+    }
+}
+
 // ========== INICIALIZAR ==========
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
-    renderTransacoes(transacoes);
-    atualizarResumo();
+document.addEventListener('DOMContentLoaded', async () => {
+    usuario = verificarLogin();
+    if (!usuario) return;
+
     configurarModoEscuro();
     configurarSidebar();
     configurarModalCredito();
+
+    await verificarRetornoPagamento();
+    await carregarDados();
 
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
 });

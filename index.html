@@ -45,11 +45,11 @@
                 <p class="ajuda-sub">A FAÇOS resolve!</p>
 
                 <div class="botoes">
-                    <button class="login" id="loginBtn">Login</button>
-                    <button class="cadastro" id="cadastroBtn">Cadastro</button>
+                    <button class="login" id="loginBtn">login</button>
+                    <button class="cadastro" id="cadastroBtn">cadastro</button>
                 </div>
 
-                <a href="Profissional/login_profissional.html" class="seja-profissional">Seja um profissional</a>
+                <a href="Profissional/login_profissional.html" class="seja-profissional">seja um profissional</a>
             </div>
         </div>
     </div>
@@ -72,6 +72,19 @@
             <div class="fazer-login">
                 Ainda não tem uma conta? <a class="switch-to-cadastro">Cadastrar-se</a>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE REDEFINIR SENHA -->
+    <div id="redefinirSenhaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal close-redefinir">&times;</span>
+            <h2>Defina sua nova senha</h2>
+            <label>Nova senha</label>
+            <input type="password" id="novaSenhaInput" placeholder="Digite a nova senha">
+            <label>Confirmar nova senha</label>
+            <input type="password" id="confirmarNovaSenhaInput" placeholder="Confirme a nova senha">
+            <button class="entrar-btn" id="confirmarNovaSenhaBtn">Confirmar</button>
         </div>
     </div>
 
