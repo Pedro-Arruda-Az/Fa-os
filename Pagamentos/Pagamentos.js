@@ -11,16 +11,6 @@ if (window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-// ========== TRANSAÇÕES DE SERVIÇOS (DEMO) ==========
-// Os gastos com serviços continuam de exemplo por enquanto — a parte
-// real (Mercado Pago) é só a de crédito adicionado na carteira.
-const transacoesServicos = [
-    { titulo: 'Limpeza completa', descricao: 'LimpaMais Serviços', data: '20 Abr 2026', dataOrdenacao: '2026-04-20', valor: -150.00 },
-    { titulo: 'Reparo elétrico', descricao: 'Eletro Fix', data: '18 Abr 2026', dataOrdenacao: '2026-04-18', valor: -200.00 },
-    { titulo: 'Montagem de móveis', descricao: 'Montagem Express', data: '15 Abr 2026', dataOrdenacao: '2026-04-15', valor: -180.00 },
-    { titulo: 'Limpeza pós-obra', descricao: 'Clean House Pro', data: '12 Abr 2026', dataOrdenacao: '2026-04-12', valor: -350.00 }
-];
-
 let usuario = null;
 
 // ========== VERIFICAR LOGIN ==========
@@ -53,6 +43,7 @@ async function buscarCreditosAprovados(email) {
         .select('*')
         .eq('usuario_email', email)
         .eq('status', 'aprovado')
+        .eq('tipo', 'credito')
         .order('criado_em', { ascending: false });
 
     if (error || !data) return [];
@@ -66,8 +57,29 @@ async function buscarCreditosAprovados(email) {
     }));
 }
 
+async function buscarGastosAprovados(email) {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient
+        .from('pagamentos')
+        .select('*')
+        .eq('usuario_email', email)
+        .eq('status', 'aprovado')
+        .eq('tipo', 'gasto')
+        .order('criado_em', { ascending: false });
+
+    if (error || !data) return [];
+
+    return data.map((p) => ({
+        titulo: p.descricao || 'Serviço contratado',
+        descricao: formatarFormaPagamento(p.forma_pagamento),
+        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        dataOrdenacao: p.criado_em,
+        valor: -Number(p.valor)
+    }));
+}
+
 function formatarFormaPagamento(forma) {
-    const mapa = { cartao: 'Cartão de crédito', pix: 'PIX', boleto: 'Boleto' };
+    const mapa = { cartao: 'Cartão de crédito', pix: 'PIX', boleto: 'Boleto', carteira: 'Saldo da carteira' };
     return mapa[forma] || 'Mercado Pago';
 }
 
@@ -126,14 +138,15 @@ function atualizarResumo(saldo, transacoesGasto) {
 // ========== CARREGAR TUDO ==========
 async function carregarDados() {
     const creditos = await buscarCreditosAprovados(usuario.email);
+    const gastosReais = await buscarGastosAprovados(usuario.email);
     const saldo = await buscarSaldoAtual(usuario.email);
 
-    const todas = [...creditos, ...transacoesServicos].sort(
+    const todas = [...creditos, ...gastosReais].sort(
         (a, b) => new Date(b.dataOrdenacao) - new Date(a.dataOrdenacao)
     );
 
     renderTransacoes(todas);
-    atualizarResumo(saldo, transacoesServicos);
+    atualizarResumo(saldo, gastosReais);
 
     return saldo;
 }

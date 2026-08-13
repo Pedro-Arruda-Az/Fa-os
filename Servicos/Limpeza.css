@@ -517,6 +517,126 @@ body {
     transform: scale(1.02);
 }
 
+/* ── MODAL: FORMA DE PAGAMENTO ─────────────────────────── */
+.pagamento-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.3rem;
+}
+
+.pagamento-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    margin-bottom: 1.25rem;
+}
+
+.pagamento-resumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-cream);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.25rem;
+}
+
+.pagamento-resumo-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.pagamento-resumo-valor {
+    font-size: 1.2rem;
+    color: var(--brown);
+    font-weight: 700;
+}
+
+.pagamento-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.pagamento-opcao {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-cream);
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.pagamento-opcao:hover {
+    border-color: var(--yellow);
+    background: #FFF3D0;
+}
+
+.pagamento-opcao.active {
+    border-color: var(--yellow);
+    background: #FFF3D0;
+    transform: scale(1.01);
+}
+
+.pagamento-opcao:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagamento-opcao-icone {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.pagamento-opcao-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.pagamento-opcao-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.pagamento-opcao-sub {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.confirmar-pagamento-btn {
+    width: 100%;
+    background: var(--yellow);
+    color: var(--brown);
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, opacity 0.2s;
+}
+
+.confirmar-pagamento-btn:hover:not(:disabled) {
+    background: #e6b400;
+    transform: scale(1.02);
+}
+
+.confirmar-pagamento-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* ── HELP BUTTON ─────────────────────────────────────── */
 .help-button {
     position: fixed;
@@ -642,6 +762,34 @@ body.dark-mode .modal-info-item .info-label {
 
 body.dark-mode .modal-info-item .info-value {
     color: var(--text-dark);
+}
+
+body.dark-mode .pagamento-resumo {
+    background: #3A322A;
+}
+
+body.dark-mode .pagamento-opcao {
+    background: #3A322A;
+    border-color: var(--border);
+}
+
+body.dark-mode .pagamento-opcao:hover {
+    border-color: var(--yellow);
+    background: #4A3A2A;
+}
+
+body.dark-mode .pagamento-opcao.active {
+    border-color: var(--yellow);
+    background: #4A3A2A;
+}
+
+body.dark-mode .confirmar-pagamento-btn {
+    background: var(--yellow);
+    color: #5C3A1E;
+}
+
+body.dark-mode .confirmar-pagamento-btn:hover:not(:disabled) {
+    background: #d4a500;
 }
 
 body.dark-mode .modal-close {
