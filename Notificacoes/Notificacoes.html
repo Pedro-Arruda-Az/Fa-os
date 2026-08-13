@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Notificações</title>
     <link rel="stylesheet" href="Notificacoes.css">
+    <link rel="stylesheet" href="/Buzz/buzz.css">
 </head>
 <body>
 
@@ -14,15 +15,15 @@
             <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
         </div>
         <div class="header-right">
-            <a href="/Profissional/home_profissional.html" class="header-link">Seja um Profissional</a>
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
             <div class="header-icons">
-                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
-                    <img src="/imagens/casa.png" alt="Home" width="28">
-                </a>
                 <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
                     <img src="/imagens/pessoa.png" alt="Perfil" width="32">
                 </a>
-                <button class="logout-btn" id="logoutBtn">Sair</button>
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
             </div>
         </div>
     </header>
@@ -36,7 +37,7 @@
             <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
                 <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32">
             </a>
-            <a href="#" class="sidebar-icon" title="Localização">
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
                 <img src="/imagens/localizacao.png" alt="Localização" width="36">
             </a>
             <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
@@ -67,15 +68,15 @@
 
     <!-- BOTÃO AJUDA -->
     <button class="help-button">
-        <span>❓</span>
         Ajuda / Suporte
     </button>
 
     <!-- BOTÃO MODO ESCURO -->
     <button class="dark-mode-toggle" id="darkModeToggle">
-        🌙 Modo escuro
+        Modo escuro
     </button>
 
     <script src="Notificacoes.js"></script>
+    <script src="/Buzz/buzz.js"></script>
 </body>
 </html>

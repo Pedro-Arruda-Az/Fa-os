@@ -132,14 +132,14 @@ function configurarModoEscuro() {
 
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️ Modo claro';
+        darkModeToggle.textContent = 'Modo claro';
     }
 
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
         localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo escuro';
+        darkModeToggle.textContent = isDark ? 'Modo claro' : 'Modo escuro';
     });
 }
 

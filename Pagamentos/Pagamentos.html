@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Pagamentos</title>
     <link rel="stylesheet" href="Pagamentos.css">
+    <link rel="stylesheet" href="/Buzz/buzz.css">
 </head>
 <body>
 
@@ -16,11 +17,11 @@
             <!-- LINK ATUALIZADO -->
             <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
             <div class="header-icons">
-                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
-                    <img src="/imagens/casa.png" alt="Home" width="28">
-                </a>
                 <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
                     <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
                 </a>
                 <button class="logout-btn" id="logoutBtn">Sair</button>
             </div>
@@ -53,17 +54,17 @@
 
             <div class="saldo-container">
                 <div class="saldo-item saldo-principal">
-                    <span class="saldo-label">saldo disponível</span>
+                    <span class="saldo-label">Saldo disponível</span>
                     <span class="saldo-valor positivo" id="saldoValor">R$ 280,00</span>
                     <button class="adicionar-credito-btn" id="adicionarCreditoBtn">Adicionar crédito</button>
                 </div>
                 <div class="saldo-item total-gasto">
-                    <span class="saldo-label">total gasto</span>
+                    <span class="saldo-label">Total gasto</span>
                     <span class="saldo-valor gasto" id="totalGasto">R$ 880,00</span>
                 </div>
             </div>
 
-            <h2 class="section-title">histórico de transações</h2>
+            <h2 class="section-title">Histórico de transações</h2>
 
             <div class="transacoes-list" id="transacoesList">
             </div>
@@ -71,12 +72,11 @@
     </div>
 
     <button class="help-button">
-        <span>❓</span>
         Ajuda / Suporte
     </button>
 
     <button class="dark-mode-toggle" id="darkModeToggle">
-        🌙 Modo escuro
+        Modo escuro
     </button>
 
     <div class="modal-overlay" id="creditoModal">
@@ -111,5 +111,6 @@
     </div>
 
     <script src="Pagamentos.js"></script>
+    <script src="/Buzz/buzz.js"></script>
 </body>
 </html>

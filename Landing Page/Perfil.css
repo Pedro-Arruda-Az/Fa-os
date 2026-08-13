@@ -306,8 +306,8 @@ body {
     color: #FFE066;
     border: none;
     border-radius: 50px;
-    padding: 1rem 2rem;
-    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -350,7 +350,7 @@ body {
 
 /* ========== MODO ESCURO ========== */
 body.dark-mode {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #3d3d3d 100%);
+    background: #000000;
 }
 
 body.dark-mode .header {
@@ -362,13 +362,14 @@ body.dark-mode .header-link {
 }
 
 body.dark-mode .sidebar {
-    background: rgba(30, 30, 30, 0.9);
-    border-right-color: #4a4a4a;
+    background: #ffc70b;
+    border-right-color: #E6A800;
 }
 
 body.dark-mode .perfil-info-card,
 body.dark-mode .perfil-edit-card {
-    background: #2a2a2a;
+    background: #000000;
+    border: 1px solid #2a2a2a;
 }
 
 body.dark-mode .info-label {
@@ -404,13 +405,21 @@ body.dark-mode .senha-obs {
 }
 
 body.dark-mode .dark-mode-toggle-ini {
-    background-color: #FFC107;
-    color: #2a241e;
+    background-color: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .dark-mode-toggle-ini:hover {
+    background-color: #4A2E16;
 }
 
 body.dark-mode .help-button {
-    background-color: #FFC107;
-    color: #2a241e;
+    background-color: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .help-button:hover {
+    background-color: #4A2E16;
 }
 
 body.dark-mode .salvar-btn {

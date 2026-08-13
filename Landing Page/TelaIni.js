@@ -18,15 +18,15 @@ document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
 const darkModeToggleIni = document.getElementById('darkModeToggleIni');
 if (darkModeToggleIni) {
     // Verificar preferência salva
-    if (localStorage.getItem('darkModeIni') === 'enabled') {
+    if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
-        darkModeToggleIni.textContent = '☀️ Modo claro';
+        darkModeToggleIni.textContent = 'Modo claro';
     }
 
     darkModeToggleIni.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkModeIni', isDark ? 'enabled' : 'disabled');
-        darkModeToggleIni.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo escuro';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkModeToggleIni.textContent = isDark ? 'Modo claro' : 'Modo escuro';
     });
 }

@@ -333,3 +333,99 @@ body {
         font-size: 0.9rem;
     }
 }
+
+/* ========== BOTÃO MODO ESCURO ========== */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: var(--brown);
+    color: #FFE066;
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(139, 69, 19, 0.3);
+    z-index: 200;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.dark-mode-toggle:hover {
+    background: var(--brown-dark);
+    transform: translateY(-2px);
+}
+
+/* ========== MODO ESCURO ========== */
+body.dark-mode {
+    background: #121212;
+}
+
+body.dark-mode .logo,
+body.dark-mode .logo-sub {
+    color: #f0e6d0;
+}
+
+body.dark-mode .login-card,
+body.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    border: 1px solid rgba(255, 199, 11, 0.2);
+}
+
+body.dark-mode .login-card h1,
+body.dark-mode .modal-content h2 {
+    color: #f0e6d0;
+}
+
+body.dark-mode .form-group label {
+    color: #f0e6d0;
+}
+
+body.dark-mode .form-group input {
+    background-color: #1f1f1f;
+    border-color: #3a3a3a;
+    color: #f0e6d0;
+}
+
+body.dark-mode .form-group input:focus {
+    border-color: #ffc70b;
+    background-color: #232323;
+    box-shadow: 0 0 0 3px rgba(255, 199, 11, 0.15);
+}
+
+body.dark-mode .form-group input::placeholder {
+    color: #8a8a8a;
+}
+
+body.dark-mode .esqueci-senha,
+body.dark-mode .cadastrar-link a,
+body.dark-mode .fazer-login a {
+    color: #ffc70b;
+}
+
+body.dark-mode .cadastrar-link,
+body.dark-mode .fazer-login {
+    color: #f0e6d0;
+}
+
+body.dark-mode .close-modal {
+    color: #aaa;
+}
+
+body.dark-mode .close-modal:hover {
+    color: #f0e6d0;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background-color: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background-color: #4A2E16;
+}

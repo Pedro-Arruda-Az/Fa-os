@@ -441,7 +441,7 @@ body {
 
 /* ========== MODO ESCURO ========== */
 body.dark-mode {
-    --yellow: #e6b400;
+    --yellow: #ffc70b;
     --brown: #D2A679;
     --brown-dark: #C17A4A;
     --brown-light: #D9A066;
@@ -463,20 +463,20 @@ body.dark-mode .header {
 
 body.dark-mode .header-link,
 body.dark-mode .icon-btn {
-    color: #1E1A16;
+    color: #5C3A1E;
 }
 
 body.dark-mode .sidebar {
-    background: #1E1A16;
-    border-right-color: var(--border);
+    background: #ffc70b;
+    border-right-color: #E6A800;
 }
 
 body.dark-mode .sidebar-icon:hover {
-    background: #3A2E24;
+    background: rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode .list-panel {
-    background: #1E1A16;
+    background: #121212;
     border-right-color: var(--border);
 }
 
@@ -518,28 +518,28 @@ body.dark-mode .leaflet-popup-tip {
 }
 
 body.dark-mode .logout-btn {
-    background: #8B4513;
-    color: #fff;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .logout-btn:hover {
-    background: #6B3410;
+    background: #4A2E16;
 }
 
 body.dark-mode .dark-mode-toggle {
-    background: #8B4513;
-    color: #fff;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .dark-mode-toggle:hover {
-    background: #6B3410;
+    background: #4A2E16;
 }
 
 body.dark-mode .help-button {
-    background: #8B4513;
-    color: #fff;
+    background: #5C3A1E;
+    color: #FFE066;
 }
 
 body.dark-mode .help-button:hover {
-    background: #6B3410;
+    background: #4A2E16;
 }
