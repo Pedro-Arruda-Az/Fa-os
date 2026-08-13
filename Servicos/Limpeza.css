@@ -565,7 +565,7 @@ body.dark-mode {
     --text-mid: #E6C8A8;
     --text-light: #BFA88C;
     --bg-white: #1E1A16;
-    --bg-cream: #2A241E;
+    --bg-cream: #121212;
     --bg-card: #2E2822;
     --border: #4A3A2A;
     --shadow: 0 2px 12px rgba(0,0,0,0.3);
@@ -583,8 +583,8 @@ body.dark-mode .icon-btn {
 }
 
 body.dark-mode .sidebar {
-    background: #1E1A16;
-    border-right-color: var(--border);
+    background: #ffc70b;
+    border-right-color: #E6A800;
 }
 
 body.dark-mode .sidebar-icon:hover {
@@ -592,7 +592,7 @@ body.dark-mode .sidebar-icon:hover {
 }
 
 body.dark-mode .list-panel {
-    background: #1E1A16;
+    background: #121212;
     border-right-color: var(--border);
 }
 
@@ -688,6 +688,28 @@ body.dark-mode .leaflet-popup-tip {
 }
 
 body.dark-mode .dark-mode-toggle {
-    background: var(--yellow);
-    color: #2A241E;
+    background: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background: #4A2E16;
+}
+
+body.dark-mode .help-button {
+    background: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .help-button:hover {
+    background: #4A2E16;
+}
+
+body.dark-mode .logout-btn {
+    background: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .logout-btn:hover {
+    background: #4A2E16;
 }
