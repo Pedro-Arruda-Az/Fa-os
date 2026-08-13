@@ -6,6 +6,7 @@
     <title>Faços - Limpeza Residencial</title>
     <link rel="stylesheet" href="/Servicos/Limpeza.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <!-- BOTÃO MODO ESCURO -->
 <button class="dark-mode-toggle" id="darkModeToggle">
@@ -112,6 +113,39 @@
                 </div>
             </div>
             <button class="solicitar-btn" id="solicitarBtn">Solicitar atendimento</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE FORMA DE PAGAMENTO -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card">
+            <button class="modal-close" id="paymentModalClose">&times;</button>
+            <h2 class="pagamento-title">Forma de pagamento</h2>
+            <p class="pagamento-subtitle" id="pagamentoSubtitle">Como você quer pagar por esse serviço?</p>
+
+            <div class="pagamento-resumo">
+                <span class="pagamento-resumo-label">Valor do serviço</span>
+                <span class="pagamento-resumo-valor" id="pagamentoValor">R$ 0,00</span>
+            </div>
+
+            <div class="pagamento-opcoes">
+                <button class="pagamento-opcao" data-metodo="carteira">
+                    <span class="pagamento-opcao-icone"></span>
+                    <span class="pagamento-opcao-texto">
+                        <span class="pagamento-opcao-titulo">Saldo da carteira</span>
+                        <span class="pagamento-opcao-sub" id="saldoDisponivelTexto">Carregando saldo...</span>
+                    </span>
+                </button>
+                <button class="pagamento-opcao" data-metodo="mercadopago">
+                    <span class="pagamento-opcao-icone"></span>
+                    <span class="pagamento-opcao-texto">
+                        <span class="pagamento-opcao-titulo">Mercado Pago</span>
+                        <span class="pagamento-opcao-sub">Cartão, PIX ou boleto</span>
+                    </span>
+                </button>
+            </div>
+
+            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" disabled>Confirmar pagamento</button>
         </div>
     </div>
 
