@@ -1,0 +1,518 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #FFE066 0%, #FFC107 55%, #E6A800 100%);
+    min-height: 100vh;
+    color: #3E2711;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.auth-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    gap: 1.8rem;
+}
+
+.auth-page-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    width: 100%;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.auth-brand svg,
+.auth-brand .brand-icon {
+    width: 24px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.auth-brand span {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #2C1A0E;
+}
+
+.auth-card {
+    background: #FFF8E7;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 28px;
+    padding: 2.2rem 2rem;
+    box-shadow: 0 20px 50px rgba(92, 58, 30, 0.18);
+}
+
+.auth-card-larga {
+    max-width: 620px;
+}
+
+.auth-card h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2C1A0E;
+    text-align: center;
+}
+
+.auth-sub {
+    font-size: 0.88rem;
+    color: #7A6A5A;
+    text-align: center;
+    margin-top: 0.3rem;
+    margin-bottom: 1.6rem;
+}
+
+.auth-card label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5C4023;
+    margin-bottom: 0.35rem;
+    margin-top: 1rem;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 0.75rem 0.95rem;
+    border-radius: 10px;
+    border: 1px solid rgba(92, 58, 30, 0.22);
+    font-family: inherit;
+    font-size: 0.92rem;
+    background: #fff;
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: #FFC700;
+}
+
+.usuario-prefix {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid rgba(92, 58, 30, 0.22);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.usuario-prefix span {
+    padding: 0 0 0 0.95rem;
+    color: #A89880;
+    font-size: 0.92rem;
+}
+
+.usuario-prefix input {
+    border: none;
+    padding-left: 0.2rem;
+}
+
+.esqueci-senha {
+    display: block;
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #A9762F;
+    text-decoration: underline;
+    margin-top: 0.6rem;
+}
+
+.auth-btn {
+    width: 100%;
+    background: #5C3A1E;
+    color: #FFE066;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.auth-btn:hover {
+    background: #4A2E16;
+    transform: translateY(-1px);
+}
+
+.auth-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-troca {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #7A6A5A;
+    margin-top: 1.3rem;
+}
+
+.auth-troca a {
+    color: #5C3A1E;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.auth-link-profissional {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #3E2711;
+    text-decoration: underline;
+}
+
+/* ========== TELA DE LOGIN COM ABAS (EMPRESAS / PROFISSIONAIS) ========== */
+.hex-page {
+    background:
+        linear-gradient(180deg, rgba(253, 246, 201, 0.0) 0%, rgba(253, 246, 201, 0.0) 100%),
+        url('/imagens/hex-bg.svg') center / cover no-repeat;
+    background-color: #FDF6C9;
+}
+
+.auth-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.auth-logo-link {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-logo-full {
+    width: 230px;
+    max-width: 60vw;
+    object-fit: contain;
+}
+
+.auth-heading {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #5C2E0C;
+    text-align: center;
+}
+
+.auth-heading-sub {
+    font-size: 0.95rem;
+    color: #97655A;
+    text-align: center;
+    margin-top: -0.6rem;
+}
+
+.auth-card-tabs {
+    padding-top: 1.6rem;
+}
+
+.tab-switch {
+    display: flex;
+    background: #F4EED4;
+    border-radius: 50px;
+    padding: 5px;
+    gap: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-radius: 50px;
+    padding: 0.7rem 0.5rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #A8925F;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active {
+    background: #FFC107;
+    color: #3E2711;
+    box-shadow: 0 4px 10px rgba(92, 58, 30, 0.15);
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.auth-card-tabs .auth-btn {
+    background: #FFC107;
+    color: #3E2711;
+}
+
+.auth-card-tabs .auth-btn:hover {
+    background: #F0B400;
+}
+
+.auth-voltar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    color: #5C4023;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.auth-voltar svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pagina-voltar {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #FFF8E7;
+    border: 1px solid rgba(92, 58, 30, 0.15);
+    border-radius: 50px;
+    padding: 0.55rem 1rem;
+    color: #5C4023;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(92, 58, 30, 0.12);
+}
+
+.pagina-voltar svg {
+    width: 16px;
+    height: 16px;
+}
+
+.auth-card select {
+    width: 100%;
+    padding: 0.75rem 0.95rem;
+    border-radius: 10px;
+    border: 1px solid rgba(92, 58, 30, 0.22);
+    font-family: inherit;
+    font-size: 0.92rem;
+    background: #fff;
+    color: #3E2711;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C4023' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.auth-card select:focus {
+    outline: none;
+    border-color: #FFC700;
+}
+
+/* ========== ESCOLHA DE PERFIL (CADASTRO) ========== */
+.escolha-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+.escolha-card {
+    flex: 0 0 340px;
+    width: 340px;
+    height: 420px;
+    background: #fff;
+    padding: 4.4rem 3.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    filter: drop-shadow(0 18px 34px rgba(92, 58, 30, 0.18));
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.25s ease, background 0.3s ease;
+}
+
+.escolha-icone {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #FDEECA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+}
+
+.escolha-icone svg {
+    width: 24px;
+    height: 24px;
+    color: #5C3A1E;
+    transition: color 0.3s ease;
+}
+
+.escolha-titulo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #5C2E0C;
+    margin-bottom: 0.7rem;
+    transition: color 0.3s ease;
+}
+
+.escolha-desc {
+    font-size: 0.82rem;
+    color: #8B5A3C;
+    line-height: 1.45;
+    margin-bottom: 1.3rem;
+    transition: color 0.3s ease;
+}
+
+.escolha-btn {
+    background: none;
+    border: none;
+    color: #E6A400;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+/* ===== Estado colorido (hover / toque no favo) ===== */
+.escolha-card.ativo {
+    background: linear-gradient(160deg, #FFCA28 0%, #F0A500 100%);
+    transform: translateY(-6px);
+}
+
+.escolha-card.ativo .escolha-icone {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.escolha-card.ativo .escolha-icone svg {
+    color: #fff;
+}
+
+.escolha-card.ativo .escolha-titulo {
+    color: #fff;
+}
+
+.escolha-card.ativo .escolha-desc {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.escolha-card.ativo .escolha-btn {
+    color: #fff;
+    text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+    .escolha-card {
+        clip-path: none;
+        filter: none;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(92, 58, 30, 0.12);
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+        padding: 2.2rem 1.6rem;
+    }
+}
+
+/* ========== MODAL REDEFINIR SENHA ========== */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #FFF8E7;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 28px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.4rem;
+    color: #7A6A5A;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #3E2711;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.modal-content label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5C4023;
+    margin-top: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border-radius: 10px;
+    border: 1px solid rgba(92, 58, 30, 0.25);
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+    .escolha-grid {
+        flex-direction: column;
+    }
+}

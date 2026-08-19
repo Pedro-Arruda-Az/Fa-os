@@ -3,143 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faços - Soluções rápidas</title>
+    <title>Faços - Serviços domésticos e manutenção, na hora</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="adm-btn" id="admBtn" title="Login administrativo">ADM</button>
+    <!-- ========== CABEÇALHO ========== -->
+    <header class="site-header" id="topo">
+        <div class="header-inner">
+            <a href="#topo" class="brand-mark">
+                <img src="/imagens/facos-logo-completo.png" alt="Faços" class="brand-logo-full">
+            </a>
 
-    <div class="page">
-
-        <!-- COLUNA ESQUERDA -->
-        <div class="left-panel">
-            <nav class="nav-pills">
-                <button class="nav-pill active" data-tab="sobre">
-                    SOBRE
-                </button>
-                <button class="nav-pill" data-tab="diferencial">
-                    DIFERENCIAL
-                </button>
-                <button class="nav-pill" data-tab="funcionamento">
-                    FUNCIONAMENTO
-                </button>
-                <button class="nav-pill" data-tab="servicos">
-                    SERVIÇOS
-                </button>
+            <nav class="main-nav">
+                <a href="#sobre">Sobre</a>
+                <a href="#diferencial">Diferenciais</a>
+                <a href="#funcionamento">Funcionamento</a>
             </nav>
 
-            <h1 class="brand">FAÇOS</h1>
-            <p class="tagline">SERVIÇOS DOMÉSTICOS E MANUTENÇÃO</p>
+            <div class="header-actions">
+                <a href="login.html" class="btn-entrar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+                    Login
+                </a>
+                <a href="cadastro.html" class="btn-cadastrar">Cadastro</a>
+            </div>
+        </div>
+    </header>
 
-            <div class="info-card">
-                <div class="info-card-scroll" id="infoScroll">
-                    <div class="info-card-inner" id="infoContent">
-                        <!-- Conteúdo inserido dinamicamente pelo script.js -->
-                    </div>
+    <!-- ========== SOBRE ========== -->
+    <section class="secao secao-clara" id="sobre">
+        <div class="secao-inner secao-com-imagem">
+            <div class="secao-foto">
+                <img src="/imagens/foto-sobre-provisoria.jpg" alt="Profissional da Faços atendendo um cliente">
+            </div>
+            <div class="secao-texto">
+                <h2>Sobre a Faços</h2>
+                <p>A Faços é uma plataforma que conecta você a profissionais de serviços domésticos e manutenção de forma rápida e prática. Nosso objetivo é facilitar o seu dia a dia, eliminando a demora e a burocracia na hora de encontrar ajuda.</p>
+                <p>Com poucos cliques, você encontra profissionais qualificados próximos de você, prontos para atender sua necessidade no momento em que ela surge.</p>
+                <p class="texto-forte">Seja para uma emergência ou uma tarefa do dia a dia, a Faços resolve.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DIFERENCIAL ========== -->
+    <section class="secao secao-clara" id="diferencial">
+        <div class="secao-inner secao-com-imagem">
+            <div class="secao-texto">
+                <h2>Diferenciais</h2>
+                <p>Diferente dos serviços tradicionais, a Faços foi criada para atender demandas imediatas.</p>
+                <p>Nada de esperar dias por um agendamento. Nossa plataforma conecta você a profissionais disponíveis em tempo real, permitindo que o serviço seja realizado o mais rápido possível.</p>
+                <p>Além disso, garantimos mais segurança e confiança através de avaliações, perfis verificados e acompanhamento do serviço.</p>
+                <p class="texto-forte">Atendimento rápido, prático e no momento em que você precisa.</p>
+            </div>
+            <div class="secao-mascote">
+                <img src="/imagens/buzz-diferencial.png" alt="Buzz, a mascote da Faços, de braços abertos">
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== COMO FUNCIONA ========== -->
+    <section class="secao secao-cinza" id="funcionamento">
+        <div class="secao-inner secao-com-imagem inverter">
+            <div class="secao-mascote">
+                <img src="/imagens/buzz-funcionamento.png" alt="Buzz, a mascote da Faços, com uma dúvida">
+            </div>
+            <div class="secao-texto">
+                <h2>Como funciona?</h2>
+                <p class="secao-intro">Usar a Faços é simples e rápido:</p>
+                <ol class="passos-lista">
+                    <li><span class="passo-numero">1</span><div><strong>Escolha o serviço</strong><span>Selecione o tipo de ajuda que você precisa.</span></div></li>
+                    <li><span class="passo-numero">2</span><div><strong>Veja profissionais disponíveis</strong><span>Encontre prestadores próximos e disponíveis naquele momento.</span></div></li>
+                    <li><span class="passo-numero">3</span><div><strong>Solicite o atendimento</strong><span>Escolha um profissional e confirme o chamado.</span></div></li>
+                    <li><span class="passo-numero">4</span><div><strong>Acompanhe em tempo real</strong><span>Veja o status e o tempo estimado de chegada.</span></div></li>
+                    <li><span class="passo-numero">5</span><div><strong>Finalize e avalie</strong><span>Após o serviço, você pode avaliar a experiência.</span></div></li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RODAPÉ ========== -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col footer-brand">
+                <a href="#topo" class="brand-mark">
+                    <img src="/imagens/facos-logo-completo.png" alt="Faços" class="brand-logo-full brand-logo-footer">
+                </a>
+                <div class="footer-social">
+                    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+                    <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V8h4v2a6 6 0 0 1 2-2Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
                 </div>
             </div>
-        </div>
-
-        <!-- COLUNA DIREITA -->
-        <div class="right-panel">
-            <div class="right-content">
-                <h2 class="ajuda-titulo">Precisa de ajuda agora?</h2>
-                <p class="ajuda-sub">A FAÇOS resolve!</p>
-
-                <div class="botoes">
-                    <button class="login" id="loginBtn">Login</button>
-                    <button class="cadastro" id="cadastroBtn">Cadastro</button>
-                </div>
-
-                <a href="Profissional/login_profissional.html" class="seja-profissional">Seja um profissional</a>
+            <div class="footer-col">
+                <a href="#sobre">Sobre a Faços</a>
+                <a href="#diferencial">Diferenciais</a>
+                <a href="#funcionamento">Funcionamento</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <a href="mailto:facos.oficial@gmail.com">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                    facos.oficial@gmail.com
+                </a>
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    São Paulo — SP
+                </span>
             </div>
         </div>
-    </div>
-
-    <!-- MODAL DE LOGIN ADM -->
-    <div id="admModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal close-adm">&times;</span>
-            <h2>Login ADM</h2>
-            <label>Email</label>
-            <input type="email" id="admEmail" value="facos.oficial@gmail.com">
-            <label>Senha</label>
-            <input type="password" id="admSenha" value="1416">
-            <button class="entrar-btn" id="admConfirmarBtn">Confirmar</button>
-        </div>
-    </div>
-
-    <!-- MODAL DE LOGIN -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal close-login">&times;</span>
-            <h2>Bem-vindo de volta!</h2>
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="Digite seu email">
-            <label>CPF</label>
-            <input type="tel" id="loginCPF" placeholder="000.000.000-00" maxlength="14">
-            <label>Senha</label>
-            <input type="password" id="loginSenha" placeholder="Digite sua senha">
-            <a href="#" class="esqueci-senha">Esqueci minha senha</a>
-            <label>Telefone</label>
-            <input type="tel" id="loginTelefone" placeholder="(00)00000-0000" maxlength="14">
-            <button class="entrar-btn" id="entrarBtn">Entrar</button>
-            <div class="fazer-login">
-                Ainda não tem uma conta? <a class="switch-to-cadastro">Cadastrar-se</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE REDEFINIR SENHA -->
-    <div id="redefinirSenhaModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal close-redefinir">&times;</span>
-            <h2>Defina sua nova senha</h2>
-            <label>Nova senha</label>
-            <input type="password" id="novaSenhaInput" placeholder="Digite a nova senha">
-            <label>Confirmar nova senha</label>
-            <input type="password" id="confirmarNovaSenhaInput" placeholder="Confirme a nova senha">
-            <button class="entrar-btn" id="confirmarNovaSenhaBtn">Confirmar</button>
-        </div>
-    </div>
-
-    <!-- MODAL DE CADASTRO -->
-    <div id="cadastroModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal close-cadastro">&times;</span>
-            <h2>Crie sua conta!</h2>
-            <label>Nome completo</label>
-            <input type="text" id = "cadastroNome" placeholder="Digite seu nome completo">
-            <label>Email</label>
-            <input type="email" id = "cadastroEmail" placeholder="Digite seu email">
-            <label>Nome de usuário</label>
-            <div class="usuario-prefix">
-                <span>@</span>
-                <input type="text" id = "cadastroUsuario" placeholder="usuario">
-            </div>
-            <label>Telefone</label>
-            <input type="tel" id = "cadastroTelefone" placeholder="(00)00000-0000" maxlength="14">
-            <label>CPF</label>
-            <input type="tel" id = "cadastroCPF" maxlength="14" placeholder="000.000.000-00">
-            <label>Senha</label>
-            <input type="password" id="cadastroSenha" placeholder="Digite sua senha">
-            <button class="criar-btn">Criar conta</button>
-            <div class="fazer-login">
-                Já tem uma conta? <a class="switch-to-login">Fazer login</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- TELA DE SUCESSO -->
-    <div id="successOverlay" class="success-overlay">
-        <div class="success-modal">
-            <h3>Login concluído com sucesso!</h3>
-            <p>Bem-vindo(a) à Faços!</p>
-        </div>
-    </div>
+        <p class="footer-copy">© 2026 Faços. Todos os direitos reservados. · <a href="Profissional/login_profissional.html">Seja um profissional</a></p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
