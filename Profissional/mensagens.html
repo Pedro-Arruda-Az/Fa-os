@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Mensagens com Clientes</title>
     <link rel="stylesheet" href="mensagens.css">
+    <script src="theme.js"></script>
 </head>
 <body>
 
@@ -12,13 +13,7 @@
     <header class="header">
         <div class="header-left">
             <a href="/index.html" class="brand-link">
-                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
-                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
-                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
-                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
-                </svg>
-                <span class="header-title">painel profissional</span>
+                <img src="/imagens/facos-logo-marrom.png" alt="Faços" class="logo-full">
             </a>
         </div>
         <div class="header-right">
@@ -37,7 +32,7 @@
             <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
             </a>
-            <h1 class="page-title">mensagens com clientes</h1>
+            <h1 class="page-title" data-i18n="titulo.mensagens">mensagens com clientes</h1>
         </div>
 
         <div class="mensagens-layout">
@@ -46,61 +41,13 @@
             <section class="conversas-panel">
                 <h2 class="panel-title">conversas</h2>
                 <div class="conversas-list" id="conversasList">
-
-                    <button class="conversa-item active" data-id="joao">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">João Silva</span>
-                            <span class="conversa-hora">10:38</span>
-                        </div>
-                        <p class="conversa-preview">Ok, até logo!</p>
-                    </button>
-
-                    <button class="conversa-item" data-id="maria">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">Maria Santos</span>
-                            <span class="conversa-hora">09:15</span>
-                        </div>
-                        <p class="conversa-preview">Obrigada pelo serviço!</p>
-                    </button>
-
-                    <button class="conversa-item" data-id="pedro">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">Pedro Costa</span>
-                            <span class="conversa-hora">Ontem</span>
-                        </div>
-                        <p class="conversa-preview">Isso, às 14h</p>
-                    </button>
-
-                    <button class="conversa-item" data-id="ana">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">Ana Lima</span>
-                            <span class="conversa-hora">Ontem</span>
-                        </div>
-                        <p class="conversa-preview">Pode fazer orçamento?</p>
-                    </button>
-
-                    <button class="conversa-item" data-id="carlos">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">Carlos Mendes</span>
-                            <span class="conversa-hora">Seg</span>
-                        </div>
-                        <p class="conversa-preview">Chegou aí?</p>
-                    </button>
-
-                    <button class="conversa-item" data-id="beatriz">
-                        <div class="conversa-top">
-                            <span class="conversa-nome">Beatriz Souza</span>
-                            <span class="conversa-hora">Dom</span>
-                        </div>
-                        <p class="conversa-preview">Muito obrigada!</p>
-                    </button>
-
+                    <!-- conversas inseridas via JS -->
                 </div>
             </section>
 
             <!-- ===== JANELA DE CHAT ===== -->
             <section class="chat-panel">
-                <h2 class="chat-contato-nome" id="chatContatoNome">João Silva</h2>
+                <h2 class="chat-contato-nome" id="chatContatoNome">Selecione uma conversa</h2>
                 <div class="chat-divider"></div>
 
                 <div class="chat-mensagens" id="chatMensagens">
@@ -116,6 +63,8 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="i18n.js"></script>
     <script src="mensagens.js"></script>
 </body>
 </html>

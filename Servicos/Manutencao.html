@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Manutenção</title>
+    <link rel="stylesheet" href="/Servicos/Manutencao.css">
+    <link rel="stylesheet" href="/Buzz/buzz.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<!-- BOTÃO MODO ESCURO -->
+<button class="dark-mode-toggle" id="darkModeToggle">
+    Modo escuro
+</button>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+        </div>
+        <div class="header-right">
+            <a href="/Profissional/login_profissional.html" class="header-link">Seja um Profissional</a>
+            <div class="header-icons">
+                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
+                    <img src="/imagens/pessoa.png" alt="Perfil" width="32">
+                </a>
+                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
+                    <img src="/imagens/casa.png" alt="Home" width="28">
+                </a>
+                <button class="logout-btn" id="logoutBtn">sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar-trigger"></div>
+        <aside class="sidebar">
+            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
+                <img src="/imagens/balao-de-bate-papo.png" alt="Chat" width="32px">
+            </a>
+            <!-- LOCALIZAÇÃO - LINK ATUALIZADO -->
+            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
+                <img src="/imagens/localizacao.png" alt="Localização" width="36">
+            </a>
+            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
+                <img src="/imagens/prancheta.png" alt="Pedidos" width="28">
+            </a>
+            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
+                <img src="/imagens/cartao.png" alt="Pagamento" width="28">
+            </a>
+            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
+                <img src="/imagens/notificacao.png" alt="Notificações" width="28">
+            </a>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Recolher">&#8249;</button>
+        </aside>
+
+        <section class="list-panel">
+            <div class="search-box">
+                <span class="search-icon">&#128269;</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="procurar por serviço / profissional"
+                    value="Manutenção"
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="results-count" id="resultsCount">0 profissionais encontrados</div>
+
+            <div class="professionals-list" id="professionalsList">
+                <!-- Cards gerados pelo JS -->
+            </div>
+        </section>
+
+        <!-- PAINEL DIREITO: mapa -->
+        <section class="map-panel" id="mapPanel">
+            <div id="map"></div>
+            <div class="map-overlay-label">São Paulo</div>
+        </section>
+
+    </div>
+
+    <!-- MODAL DE PERFIL DO PROFISSIONAL -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <div class="modal-avatar" id="modalAvatar">?</div>
+                <div>
+                    <h2 class="modal-name" id="modalName">—</h2>
+                    <p class="modal-service" id="modalService">—</p>
+                    <div class="modal-stars" id="modalStars"></div>
+                </div>
+            </div>
+            <div class="modal-info">
+                <div class="modal-info-item">
+                    <span class="info-label">Distância</span>
+                    <span class="info-value" id="modalDist">—</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="info-label">Avaliação</span>
+                    <span class="info-value" id="modalRating">—</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="info-label">Serviços</span>
+                    <span class="info-value" id="modalServices">—</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="info-label">Preço</span>
+                    <span class="info-value" id="modalPrice">—</span>
+                </div>
+            </div>
+            <button class="solicitar-btn" id="solicitarBtn">Solicitar atendimento</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE FORMA DE PAGAMENTO -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card">
+            <button class="modal-close" id="paymentModalClose">&times;</button>
+            <h2 class="pagamento-title">Forma de pagamento</h2>
+            <p class="pagamento-subtitle" id="pagamentoSubtitle">Como você quer pagar por esse serviço?</p>
+
+            <div class="pagamento-resumo">
+                <span class="pagamento-resumo-label">Valor do serviço</span>
+                <span class="pagamento-resumo-valor" id="pagamentoValor">R$ 0,00</span>
+            </div>
+
+            <div class="pagamento-opcoes">
+                <button class="pagamento-opcao" data-metodo="carteira">
+                    <span class="pagamento-opcao-icone">💰</span>
+                    <span class="pagamento-opcao-texto">
+                        <span class="pagamento-opcao-titulo">Saldo da carteira</span>
+                        <span class="pagamento-opcao-sub" id="saldoDisponivelTexto">Carregando saldo...</span>
+                    </span>
+                </button>
+                <button class="pagamento-opcao" data-metodo="mercadopago">
+                    <span class="pagamento-opcao-icone">💳</span>
+                    <span class="pagamento-opcao-texto">
+                        <span class="pagamento-opcao-titulo">Mercado Pago</span>
+                        <span class="pagamento-opcao-sub">Cartão, PIX ou boleto</span>
+                    </span>
+                </button>
+            </div>
+
+            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" disabled>Confirmar pagamento</button>
+        </div>
+    </div>
+
+    <!-- BOTÃO AJUDA - MANTIDO -->
+    <button class="help-button">
+        Ajuda / Suporte
+    </button>
+
+    <!-- Leaflet (mapa open-source, sem API key) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/Servicos/Manutencao.js"></script>
+    <script src="/Buzz/buzz.js"></script>
+</body>
+</html>

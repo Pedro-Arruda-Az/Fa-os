@@ -13,68 +13,65 @@ if (window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-const professionals = [
-    {
-        id: 1,
-        name: 'LimpaMais Servicos',
-        service: 'Limpeza residencial',
-        rating: 4.8,
-        distance: 1.2,
-        lat: -23.5590,
-        lng: -46.6530,
-        services: 'Limpeza completa, pos-obra',
-        price: 'R$ 120 - R$ 250',
-        priceValue: 150.00,
-        initials: 'LM'
-    },
-    {
-        id: 2,
-        name: 'Clean House Pro',
-        service: 'Limpeza residencial',
-        rating: 4.9,
-        distance: 2.5,
-        lat: -23.5620,
-        lng: -46.6560,
-        services: 'Limpeza completa, passagem',
-        price: 'R$ 150 - R$ 300',
-        priceValue: 200.00,
-        initials: 'CH'
-    },
-    {
-        id: 3,
-        name: 'Joao Silva - Faxineiro',
-        service: 'Limpeza residencial',
-        rating: 4.7,
-        distance: 3.1,
-        lat: -23.5555,
-        lng: -46.6600,
-        services: 'Faxina, janelas, piso',
-        price: 'R$ 100 - R$ 200',
-        priceValue: 130.00,
-        initials: 'JS'
-    },
-    {
-        id: 4,
-        name: 'Brilho Total',
-        service: 'Limpeza residencial',
-        rating: 4.6,
-        distance: 4.0,
-        lat: -23.5650,
-        lng: -46.6490,
-        services: 'Limpeza completa, lavagem',
-        price: 'R$ 130 - R$ 270',
-        priceValue: 180.00,
-        initials: 'BT'
+// Profissionais reais cadastrados com área de atuação = "Limpeza".
+// Preenchido de verdade pela função buscarProfissionais() abaixo.
+let professionals = [];
+
+// Centro de referência (São Paulo) pra posicionar no mapa quem ainda não
+// tem latitude/longitude cadastrada.
+const CENTRO_SP = { lat: -23.5874, lng: -46.6576 };
+
+function gerarIniciais(nome) {
+    const partes = (nome || '').trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 0) return '?';
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+}
+
+async function buscarProfissionais() {
+    if (!supabaseClient) return [];
+
+    const { data, error } = await supabaseClient
+        .from('profissionais')
+        .select('*')
+        .eq('area_atuacao', 'Limpeza')
+        .eq('status', 'ativo');
+
+    if (error) {
+        console.error('Erro ao buscar profissionais:', error);
+        return [];
     }
-];
+
+    return (data || []).map((row, index) => {
+        // Pequeno deslocamento determinístico pra quem ainda não tem
+        // localização cadastrada não ficar todo mundo empilhado no mesmo pino.
+        const jitter = (index % 6) * 0.006 - 0.015;
+
+        return {
+            id: row.id,
+            name: row.nome_empresa,
+            email: row.email,
+            service: 'Limpeza residencial',
+            rating: 5.0,
+            distance: Number((1 + (index % 5) * 0.7).toFixed(1)),
+            lat: row.latitude != null ? Number(row.latitude) : CENTRO_SP.lat + jitter,
+            lng: row.longitude != null ? Number(row.longitude) : CENTRO_SP.lng + jitter,
+            services: row.descricao || 'Limpeza residencial completa',
+            price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
+            priceValue: Number(row.preco_servico || 0),
+            initials: gerarIniciais(row.nome_empresa)
+        };
+    });
+}
 
 let map = null;
 let markers = {};
 let activePro = null;
 let usuarioAtual = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     usuarioAtual = verificarLogin();
+    professionals = await buscarProfissionais();
     initMap();
     renderCards(professionals);
     bindEvents();
@@ -144,7 +141,7 @@ function renderCards(list) {
     container.innerHTML = '';
 
     if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:#A0826D;padding:2rem;font-size:0.95rem;">Nenhum profissional encontrado.</p>`;
+        container.innerHTML = `<p style="text-align:center;color:#A0826D;padding:2rem;font-size:0.95rem;">Nenhum profissional de limpeza disponível ainda. Assim que um profissional se cadastrar nessa área, ele aparece aqui.</p>`;
         return;
     }
 
@@ -296,6 +293,83 @@ async function registrarPedido(pro, formaPagamento) {
     }
 }
 
+async function creditarProfissional(pro) {
+    if (!supabaseClient || !pro.email) return;
+
+    // Busca o saldo atual do profissional pra somar em cima (evita
+    // sobrescrever um saldo que mudou entre a leitura e a gravação).
+    const { data: profissional, error: erroBusca } = await supabaseClient
+        .from('profissionais')
+        .select('saldo')
+        .eq('email', pro.email)
+        .single();
+
+    if (erroBusca) {
+        console.error('Erro ao buscar saldo do profissional:', erroBusca);
+        return;
+    }
+
+    const novoSaldo = Math.round((Number(profissional.saldo || 0) + pro.priceValue) * 100) / 100;
+
+    const { error: erroUpdate } = await supabaseClient
+        .from('profissionais')
+        .update({ saldo: novoSaldo })
+        .eq('email', pro.email);
+
+    if (erroUpdate) {
+        console.error('Erro ao creditar o profissional:', erroUpdate);
+        return;
+    }
+
+    // Registra o ganho no histórico de transações do profissional
+    const { error: erroPagamento } = await supabaseClient
+        .from('pagamentos')
+        .insert([{
+            usuario_email: usuarioAtual.email,
+            profissional_email: pro.email,
+            valor: pro.priceValue,
+            forma_pagamento: 'carteira',
+            status: 'aprovado',
+            tipo: 'ganho',
+            descricao: `${pro.service} - ${usuarioAtual.nome || usuarioAtual.email}`
+        }]);
+
+    if (erroPagamento) {
+        console.error('Erro ao registrar o ganho do profissional:', erroPagamento);
+    }
+}
+
+async function criarConversa(pro) {
+    if (!supabaseClient || !usuarioAtual || !pro.email) return;
+
+    // Já existe conversa entre esse cliente e esse profissional?
+    const { data: existente } = await supabaseClient
+        .from('conversas')
+        .select('id')
+        .eq('usuario_email', usuarioAtual.email)
+        .eq('profissional_email', pro.email)
+        .maybeSingle();
+
+    if (existente) return; // já tem conversa, não precisa criar de novo
+
+    const { error } = await supabaseClient
+        .from('conversas')
+        .insert([{
+            usuario_email: usuarioAtual.email,
+            usuario_nome: usuarioAtual.nome || usuarioAtual.email,
+            profissional_email: pro.email,
+            profissional_nome: pro.name,
+            servico: pro.service,
+            ultima_mensagem: 'Conversa iniciada após contratação do serviço.',
+        }]);
+
+    if (error) {
+        console.error('Erro ao criar a conversa:', error);
+        // Não bloqueia o fluxo do usuário — a pessoa ainda pode abrir o
+        // chat manualmente depois.
+    }
+}
+
 async function pagarComCarteira(pro) {
     const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
     const textoOriginal = confirmarBtn.textContent;
@@ -342,6 +416,12 @@ async function pagarComCarteira(pro) {
         // Registra o pedido para aparecer no Histórico de Pedidos
         await registrarPedido(pro, 'carteira');
 
+        // Abre uma conversa com o profissional pra poder conversar sobre o serviço
+        await criarConversa(pro);
+
+        // Credita o profissional na hora, já que o pagamento é confirmado na hora
+        await creditarProfissional(pro);
+
         alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
         closePaymentModal();
     } catch (err) {
@@ -370,7 +450,7 @@ async function iniciarPagamento(pro) {
             body: JSON.stringify({
                 items: [
                     {
-                        title: `Servico de Limpeza - ${pro.name}`,
+                        title: `Serviço - ${pro.service} - ${pro.name}`,
                         quantity: 1,
                         currency_id: 'BRL',
                         unit_price: pro.priceValue
@@ -392,10 +472,14 @@ async function iniciarPagamento(pro) {
             // automática de volta, registramos o pedido já aqui (o Mercado
             // Pago também manda um e-mail de confirmação pro cliente).
             await registrarPedido(pro, 'mercadopago');
+            await criarConversa(pro);
+            await creditarProfissional(pro);
             window.open(data.init_point, '_blank');
             closePaymentModal();
         } else if (data.sandbox_init_point) {
             await registrarPedido(pro, 'mercadopago');
+            await criarConversa(pro);
+            await creditarProfissional(pro);
             window.open(data.sandbox_init_point, '_blank');
             closePaymentModal();
         } else {

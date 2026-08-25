@@ -153,11 +153,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const empresaCNPJInput = document.getElementById('cadastroEmpresaCNPJ');
     const profTelefoneInput = document.getElementById('cadastroTelefone');
     const profCPFInput = document.getElementById('cadastroCPF');
+    const profPrecoInput = document.getElementById('cadastroPreco');
 
     if (empresaTelefoneInput) empresaTelefoneInput.addEventListener('input', function () { mascararTelefone(this); });
     if (empresaCNPJInput) empresaCNPJInput.addEventListener('input', function () { mascararCNPJ(this); });
     if (profTelefoneInput) profTelefoneInput.addEventListener('input', function () { mascararTelefone(this); });
     if (profCPFInput) profCPFInput.addEventListener('input', function () { mascararCPF(this); });
+
+    if (profPrecoInput) {
+        profPrecoInput.addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '');
+            if (!v) { this.value = ''; return; }
+            v = (parseInt(v, 10) / 100).toFixed(2);
+            this.value = v.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\,)/g, '.');
+        });
+    }
 
     // ========== CRIAR CONTA (EMPRESA) ==========
     const criarContaEmpresaBtn = document.getElementById('criarContaEmpresaBtn');
@@ -245,11 +255,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const endereco = document.getElementById('cadastroEndereco').value.trim();
             const cpf = document.getElementById('cadastroCPF').value.replace(/\D/g, '');
             const area_atuacao = document.getElementById('cadastroAreaAtuacao').value;
+            const precoTexto = document.getElementById('cadastroPreco').value.trim();
             const senha = document.getElementById('cadastroSenha').value;
             const senha2 = document.getElementById('cadastroSenha2').value;
 
-            if (!nome_empresa || !email || !telefone || !endereco || !cpf || !area_atuacao || !senha || !senha2) {
+            if (!nome_empresa || !email || !telefone || !endereco || !cpf || !area_atuacao || !precoTexto || !senha || !senha2) {
                 alert('Preencha todos os campos!');
+                return;
+            }
+
+            const preco_servico = parseFloat(precoTexto.replace(/\./g, '').replace(',', '.'));
+
+            if (isNaN(preco_servico) || preco_servico <= 0) {
+                alert('Digite um valor válido para o seu serviço (ex: 150,00).');
                 return;
             }
 
@@ -289,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         endereco,
                         cpf,
                         area_atuacao,
+                        preco_servico,
                         senha: senhaHash,
                         data_cadastro: new Date().toISOString(),
                         status: 'ativo'

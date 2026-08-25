@@ -3,17 +3,29 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #171717;
+    --bg-dark: #211E29;
     --card-bg: #262626;
     --item-bg: #404040;
     --item-bg-hover: #4a4a4a;
     --border: rgba(255,255,255,0.09);
     --text-dark: #171717;
+    --text-main: #ffffff;
     --text-muted: #9CA3AF;
     --green: #34D399;
     --red: #F87171;
     --blue: #60A5FA;
     --header-height: 92px;
+}
+
+html.light-mode {
+    --bg-dark: #FFF8DC;
+    --card-bg: #FFFFFF;
+    --item-bg: #F0EAD6;
+    --item-bg-hover: #E6DCC0;
+    --border: rgba(44,26,14,0.12);
+    --text-main: #2C1A0E;
+    --text-muted: #7A6A5A;
+    color: #2C1A0E;
 }
 
 * {
@@ -25,7 +37,7 @@
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     background: var(--bg-dark);
-    color: #fff;
+    color: var(--text-main);
     min-height: 100vh;
 }
 
@@ -51,16 +63,10 @@ body {
     text-decoration: none;
 }
 
-.logo-mark {
-    width: 30px;
-    height: 33px;
-    flex-shrink: 0;
-}
-
-.header-title {
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    font-weight: 500;
+.logo-full {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
 }
 
 .header-right {
@@ -134,7 +140,7 @@ body {
 
 .btn-marcar-lidas {
     background: var(--item-bg);
-    color: #E5E5E5;
+    color: var(--text-main);
     border: none;
     border-radius: 10px;
     padding: 0.65rem 1.1rem;
@@ -279,7 +285,7 @@ body {
 .notif-titulo {
     font-size: 1rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-main);
 }
 
 .notif-pagamento.is-unread .notif-titulo {
@@ -339,7 +345,7 @@ body {
     align-items: center;
     justify-content: space-between;
     font-size: 0.95rem;
-    color: #E5E5E5;
+    color: var(--text-main);
     margin-bottom: 0.9rem;
 }
 
@@ -359,7 +365,7 @@ body {
     align-items: center;
     justify-content: space-between;
     font-size: 0.95rem;
-    color: #E5E5E5;
+    color: var(--text-main);
     margin-bottom: 1rem;
     cursor: pointer;
 }
@@ -386,7 +392,7 @@ body {
     width: 100%;
     text-align: left;
     background: var(--item-bg);
-    color: #E5E5E5;
+    color: var(--text-main);
     border: none;
     border-radius: 10px;
     padding: 0.75rem 1rem;

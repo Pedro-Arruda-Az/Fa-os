@@ -3,14 +3,26 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #171717;
+    --bg-dark: #211E29;
     --panel-bg: #262626;
     --item-bg: #404040;
     --item-bg-hover: #4a4a4a;
     --border: rgba(255,255,255,0.09);
     --text-dark: #171717;
+    --text-main: #ffffff;
     --text-muted: #9CA3AF;
     --header-height: 92px;
+}
+
+html.light-mode {
+    --bg-dark: #FFF8DC;
+    --panel-bg: #FFFFFF;
+    --item-bg: #F0EAD6;
+    --item-bg-hover: #E6DCC0;
+    --border: rgba(44,26,14,0.12);
+    --text-main: #2C1A0E;
+    --text-muted: #7A6A5A;
+    color: #2C1A0E;
 }
 
 * {
@@ -22,7 +34,7 @@
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     background: var(--bg-dark);
-    color: #fff;
+    color: var(--text-main);
     min-height: 100vh;
 }
 
@@ -48,16 +60,10 @@ body {
     text-decoration: none;
 }
 
-.logo-mark {
-    width: 30px;
-    height: 33px;
-    flex-shrink: 0;
-}
-
-.header-title {
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    font-weight: 500;
+.logo-full {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
 }
 
 .header-right {
@@ -208,7 +214,7 @@ body {
 }
 
 .conversa-preview {
-    color: #E5E5E5;
+    color: var(--text-main);
     font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
@@ -273,7 +279,7 @@ body {
 }
 
 .msg-recebida .msg-texto {
-    color: #fff;
+    color: var(--text-main);
 }
 
 .msg-recebida .msg-hora {
@@ -290,7 +296,7 @@ body {
 }
 
 .msg-enviada .msg-hora {
-    color: rgba(23,23,23,0.65);
+    color: var(--text-muted);
 }
 
 /* ========== INPUT DE MENSAGEM ========== */
@@ -306,7 +312,7 @@ body {
     border: none;
     border-radius: 12px;
     padding: 0.9rem 1.1rem;
-    color: #fff;
+    color: var(--text-main);
     font-family: inherit;
     font-size: 0.95rem;
 }

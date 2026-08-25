@@ -81,7 +81,7 @@ img {
 }
 
 .brand-logo-full {
-    height: 34px;
+    height: 48px;
     width: auto;
     object-fit: contain;
 }
@@ -105,12 +105,12 @@ img {
 .main-nav a {
     font-size: 0.92rem;
     font-weight: 600;
-    color: #5C4023;
+    color: #922800;
     transition: color 0.2s;
 }
 
 .main-nav a:hover {
-    color: #A9762F;
+    color: #6E1E00;
 }
 
 .header-actions {
@@ -302,7 +302,7 @@ img {
 .secao h2 {
     font-size: 1.9rem;
     font-weight: 800;
-    color: #2C1A0E;
+    color: #922800;
     margin-bottom: 1.2rem;
 }
 
@@ -360,6 +360,10 @@ img {
 
 #funcionamento .secao-mascote {
     margin-top: 4.5rem;
+}
+
+#diferencial .secao-mascote img {
+    max-width: 480px;
 }
 
 .secao-foto {

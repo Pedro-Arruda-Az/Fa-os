@@ -127,20 +127,53 @@ function fazerLogout() {
 
 // ========== MODO ESCURO ==========
 function configurarModoEscuro() {
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (!darkModeToggle) return;
+    const modoClaroBtn = document.getElementById('modoClaroBtn');
+    const modoClaroLabel = document.getElementById('modoClaroLabel');
+    if (!modoClaroBtn) return;
 
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = 'Modo claro';
+    function aplicarModo(escuro) {
+        document.body.classList.toggle('dark-mode', escuro);
+        if (modoClaroLabel) {
+            modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
+            if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
+        }
     }
 
-    darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? 'Modo claro' : 'Modo escuro';
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        aplicarModo(true);
+    }
+
+    modoClaroBtn.addEventListener('click', () => {
+        const escuro = !document.body.classList.contains('dark-mode');
+        aplicarModo(escuro);
+        localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
     });
+}
+
+// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
+function configurarMenuConfiguracoes() {
+    const configBtn = document.getElementById('configBtn');
+    const configMenu = document.getElementById('configMenu');
+    if (!configBtn || !configMenu) return;
+
+    configBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        configMenu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!configMenu.contains(e.target) && e.target !== configBtn) {
+            configMenu.classList.remove('open');
+        }
+    });
+
+    const idiomaBtn = document.getElementById('idiomaBtn');
+    if (idiomaBtn) {
+        idiomaBtn.addEventListener('click', function () {
+            if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+        });
+    }
 }
 
 // ========== SIDEBAR TOGGLE ==========
@@ -161,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     renderNotificacoes(notificacoes);
     configurarModoEscuro();
+    configurarMenuConfiguracoes();
     configurarSidebar();
 
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);

@@ -6,6 +6,7 @@
     <title>Faços - Notificações</title>
     <link rel="stylesheet" href="notificacoes.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
+    <script src="theme.js"></script>
 </head>
 <body>
 
@@ -13,13 +14,7 @@
     <header class="header">
         <div class="header-left">
             <a href="/index.html" class="brand-link">
-                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
-                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
-                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
-                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
-                </svg>
-                <span class="header-title">painel profissional</span>
+                <img src="/imagens/facos-logo-marrom.png" alt="Faços" class="logo-full">
             </a>
         </div>
         <div class="header-right">
@@ -38,7 +33,7 @@
             <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
             </a>
-            <h1 class="page-title">notificações</h1>
+            <h1 class="page-title" data-i18n="titulo.notificacoes">notificações</h1>
 
             <button class="btn-marcar-lidas" id="marcarLidasBtn">Marcar todas como lidas</button>
         </div>
@@ -201,6 +196,7 @@
         Ajuda / Suporte
     </button>
 
+    <script src="i18n.js"></script>
     <script src="notificacoes.js"></script>
     <script src="/Buzz/buzz.js"></script>
 </body>

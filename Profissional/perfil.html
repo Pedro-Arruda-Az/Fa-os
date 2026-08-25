@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Meu Perfil</title>
+    <link rel="stylesheet" href="perfil.css">
+    <link rel="stylesheet" href="/Buzz/buzz.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/Profissional/dashboard.html" class="brand-link">
+                <img src="/imagens/facos-logo-marrom.png" alt="Faços" class="logo-full">
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/Profissional/dashboard.html" class="icon-btn" title="Painel" aria-label="Painel">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+            </a>
+            <a href="/Profissional/perfil.html" class="icon-btn icon-btn-ativo" title="Perfil" aria-label="Perfil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="page">
+        <div class="page-title-row">
+            <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </a>
+            <h1 class="page-title">Meu perfil</h1>
+        </div>
+
+        <div class="perfil-grid">
+
+            <!-- ===== CARTÃO DE RESUMO ===== -->
+            <div class="perfil-info-card">
+                <div class="avatar-circle" id="avatarCircle">
+                    <span id="avatarIniciais">FP</span>
+                </div>
+
+                <h2 class="perfil-nome" id="perfilNomeEmpresa">Nome da empresa</h2>
+                <span class="perfil-area" id="perfilArea">Área de atuação</span>
+
+                <button class="logout-btn" id="logoutBtn">Sair da conta</button>
+            </div>
+
+            <!-- ===== CARTÃO DE EDIÇÃO ===== -->
+            <div class="perfil-edit-card">
+                <h2 class="edit-title">Editar seu perfil</h2>
+
+                <div class="edit-form">
+                    <div class="form-group">
+                        <label>Nome da empresa</label>
+                        <input type="text" id="editNome" placeholder="Faços Serviços LTDA">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="tel" id="editTelefone" placeholder="(11) 99999-9999" maxlength="14">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input type="text" id="editEndereco" placeholder="Rua, número, cidade">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Área de atuação</label>
+                        <select id="editAreaAtuacao">
+                            <option value="" disabled>Selecione uma área</option>
+                            <option value="Limpeza">Limpeza</option>
+                            <option value="Casa e instalações">Casa e instalações</option>
+                            <option value="Eletricista">Eletricista</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Tecnologia e assistência">Tecnologia e assistência</option>
+                            <option value="Beleza e estética">Beleza e estética</option>
+                            <option value="Alimentação">Alimentação</option>
+                            <option value="Eventos">Eventos</option>
+                            <option value="Jardinagem e áreas externas">Jardinagem e áreas externas</option>
+                            <option value="Aulas e educação">Aulas e educação</option>
+                            <option value="Design e criação">Design e criação</option>
+                            <option value="Redação e tradução">Redação e tradução</option>
+                            <option value="Serviços administrativos">Serviços administrativos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sobre</label>
+                        <textarea id="editSobre" rows="4" placeholder="Conte um pouco sobre você e os serviços que oferece"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" id="editSenha" placeholder="••••••••">
+                        <small class="senha-obs">Deixe em branco para manter a mesma senha</small>
+                    </div>
+
+                    <button class="salvar-btn" id="salvarBtn">Salvar alterações</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== BOTÃO AJUDA ========== -->
+    <button class="help-button" id="helpBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Ajuda / Suporte
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="perfil.js"></script>
+    <script src="/Buzz/buzz.js"></script>
+</body>
+</html>

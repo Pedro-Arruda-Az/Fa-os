@@ -1,75 +1,104 @@
 /* ============================================================
    FAÇOS - Chat.js
-   Página de mensagens com profissionais
+   Página de mensagens com profissionais (dados reais do Supabase)
    ============================================================ */
 
-// ========== DADOS DE EXEMPLO ==========
-const conversations = [
-    {
-        id: 1,
-        name: 'LimpaMais Serviços',
-        initials: 'LM',
-        online: true,
-        lastMessage: 'Obrigado pela preferência!',
-        time: '10:30',
-        unread: 2,
-        messages: [
-            { from: 'pro', text: 'Olá! Claro, qual seria o serviço?', time: '09:47' },
-            { from: 'user', text: 'Perfeito! Podemos ir hoje às 15h?', time: '09:50' },
-            { from: 'pro', text: 'Obrigado pela preferência!', time: '10:30' }
-        ]
-    },
-    {
-        id: 2,
-        name: 'Clean House Pro',
-        initials: 'CH',
-        online: true,
-        lastMessage: 'Estaremos aí amanhã às 14h',
-        time: '09:15',
-        unread: 0,
-        messages: [
-            { from: 'user', text: 'Bom dia! Gostaria de agendar uma limpeza', time: '08:30' },
-            { from: 'pro', text: 'Estaremos aí amanhã às 14h', time: '09:15' }
-        ]
-    },
-    {
-        id: 3,
-        name: 'João Silva - Faxineiro',
-        initials: 'JS',
-        online: false,
-        lastMessage: 'Tudo bem! Pode marcar',
-        time: 'Ontem',
-        unread: 0,
-        messages: [
-            { from: 'user', text: 'Olá João, tem disponibilidade hoje?', time: 'Ontem 14:20' },
-            { from: 'pro', text: 'Tudo bem! Pode marcar', time: 'Ontem 14:25' }
-        ]
-    },
-    {
-        id: 4,
-        name: 'Brilho Total',
-        initials: 'BT',
-        online: false,
-        lastMessage: 'Muito obrigado!',
-        time: 'Segunda',
-        unread: 0,
-        messages: [
-            { from: 'pro', text: 'Serviço concluído com sucesso!', time: 'Segunda 17:00' },
-            { from: 'user', text: 'Muito obrigado!', time: 'Segunda 17:05' }
-        ]
-    }
-];
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+let conversations = [];
 let activeChatId = null;
 let currentUser = null;
+let mensagensChannel = null;
+let conversasChannel = null;
+let mensagensRenderizadas = new Set();
 
 // ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
         window.location.href = '/index.html';
+        return null;
     }
-    currentUser = JSON.parse(usuarioLogado);
+    return JSON.parse(usuarioLogado);
+}
+
+// ========== INICIAIS A PARTIR DO NOME ==========
+function gerarIniciais(nome) {
+    const partes = (nome || '').trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 0) return '?';
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+}
+
+// ========== FORMATAR HORA/DATA ==========
+function formatarQuando(isoString) {
+    const data = new Date(isoString);
+    const hoje = new Date();
+    const ontem = new Date();
+    ontem.setDate(hoje.getDate() - 1);
+
+    const mesmoDay = (a, b) => a.toDateString() === b.toDateString();
+
+    if (mesmoDay(data, hoje)) {
+        return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+    if (mesmoDay(data, ontem)) {
+        return 'Ontem';
+    }
+    return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+}
+
+// ========== BUSCAR CONVERSAS REAIS ==========
+async function buscarConversas() {
+    if (!supabaseClient || !currentUser) return [];
+
+    const { data, error } = await supabaseClient
+        .from('conversas')
+        .select('*')
+        .eq('usuario_email', currentUser.email)
+        .order('ultima_mensagem_em', { ascending: false });
+
+    if (error) {
+        console.error('Erro ao buscar conversas:', error);
+        return [];
+    }
+
+    return (data || []).map((c) => ({
+        id: c.id,
+        name: c.profissional_nome || c.profissional_email,
+        initials: gerarIniciais(c.profissional_nome),
+        lastMessage: c.ultima_mensagem || '',
+        time: formatarQuando(c.ultima_mensagem_em),
+        profissionalEmail: c.profissional_email
+    }));
+}
+
+// ========== BUSCAR MENSAGENS DE UMA CONVERSA ==========
+async function buscarMensagens(conversaId) {
+    if (!supabaseClient) return [];
+
+    const { data, error } = await supabaseClient
+        .from('mensagens_chat')
+        .select('*')
+        .eq('conversa_id', conversaId)
+        .order('criado_em', { ascending: true });
+
+    if (error) {
+        console.error('Erro ao buscar mensagens:', error);
+        return [];
+    }
+
+    return (data || []).map((m) => ({
+        from: m.remetente === 'cliente' ? 'user' : 'pro',
+        text: m.texto,
+        time: new Date(m.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    }));
 }
 
 // ========== RENDERIZAR LISTA DE CONVERSAS ==========
@@ -81,7 +110,7 @@ function renderConversations(list) {
     container.innerHTML = '';
 
     if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.95rem;">Nenhuma conversa encontrada.</p>`;
+        container.innerHTML = `<p style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.95rem;">Nenhuma conversa ainda. Quando você contrata um serviço, a conversa com o profissional aparece aqui.</p>`;
         return;
     }
 
@@ -91,16 +120,12 @@ function renderConversations(list) {
         card.dataset.id = conv.id;
 
         card.innerHTML = `
-            <div class="conv-avatar">
-                ${conv.initials}
-                ${conv.online ? '<span class="online-dot"></span>' : ''}
-            </div>
+            <div class="conv-avatar">${conv.initials}</div>
             <div class="conv-info">
                 <div class="conv-name">${conv.name}</div>
                 <div class="conv-last-msg">${conv.lastMessage}</div>
             </div>
             <div class="conv-time">${conv.time}</div>
-            ${conv.unread > 0 ? `<div class="conv-unread">${conv.unread}</div>` : ''}
         `;
 
         card.addEventListener('click', () => openChat(conv.id));
@@ -109,42 +134,103 @@ function renderConversations(list) {
 }
 
 // ========== ABRIR CHAT ==========
-function openChat(chatId) {
+async function openChat(chatId) {
     const conv = conversations.find(c => c.id === chatId);
     if (!conv) return;
 
     activeChatId = chatId;
 
-    // Atualizar lista
     document.querySelectorAll('.conv-card').forEach(c => c.classList.remove('active'));
     const card = document.querySelector(`.conv-card[data-id="${chatId}"]`);
     if (card) card.classList.add('active');
 
-    // Mostrar chat ativo
     document.getElementById('chatPlaceholder').style.display = 'none';
     document.getElementById('chatActive').style.display = 'flex';
 
-    // Preencher cabeçalho
     document.getElementById('chatAvatar').textContent = conv.initials;
     document.getElementById('chatContactName').textContent = conv.name;
-    document.getElementById('chatContactStatus').textContent = conv.online ? 'Online' : 'Offline';
-    document.getElementById('chatContactStatus').style.color = conv.online ? 'var(--online-color)' : 'var(--text-light)';
+    document.getElementById('chatContactStatus').textContent = '';
 
-    // Renderizar mensagens
-    renderMessages(conv.messages);
-
-    // Limpar unread
-    conv.unread = 0;
-    renderConversations(conversations);
-
-    // Scroll para o final
+    mensagensRenderizadas = new Set();
+    const mensagens = await buscarMensagens(chatId);
+    renderMessages(mensagens);
+    mensagens.forEach(m => m.id && mensagensRenderizadas.add(m.id));
     scrollToBottom();
+
+    escutarMensagensEmTempoReal(chatId);
+}
+
+// ========== TEMPO REAL: NOVAS MENSAGENS NESSA CONVERSA ==========
+function escutarMensagensEmTempoReal(chatId) {
+    if (!supabaseClient) return;
+
+    if (mensagensChannel) {
+        supabaseClient.removeChannel(mensagensChannel);
+        mensagensChannel = null;
+    }
+
+    mensagensChannel = supabaseClient
+        .channel(`mensagens-cliente-${chatId}`)
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'mensagens_chat',
+            filter: `conversa_id=eq.${chatId}`
+        }, (payload) => {
+            adicionarMensagemNaTela(payload.new);
+        })
+        .subscribe();
+}
+
+function adicionarMensagemNaTela(msg) {
+    if (mensagensRenderizadas.has(msg.id)) return;
+    mensagensRenderizadas.add(msg.id);
+
+    const container = document.getElementById('chatMessages');
+    const vazio = container.querySelector('.chat-vazio-aviso');
+    if (vazio) vazio.remove();
+
+    const div = document.createElement('div');
+    div.className = msg.remetente === 'cliente' ? 'msg-sent' : 'msg-received';
+    div.innerHTML = `
+        ${msg.texto}
+        <span class="msg-time">${new Date(msg.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+    `;
+    container.appendChild(div);
+    scrollToBottom();
+}
+
+// ========== TEMPO REAL: LISTA DE CONVERSAS ==========
+function escutarConversasEmTempoReal() {
+    if (!supabaseClient || !currentUser) return;
+
+    conversasChannel = supabaseClient
+        .channel(`conversas-cliente-${currentUser.email}`)
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'conversas',
+            filter: `usuario_email=eq.${currentUser.email}`
+        }, async () => {
+            conversations = await buscarConversas();
+            renderConversations(conversations);
+            if (activeChatId) {
+                const card = document.querySelector(`.conv-card[data-id="${activeChatId}"]`);
+                if (card) card.classList.add('active');
+            }
+        })
+        .subscribe();
 }
 
 // ========== RENDERIZAR MENSAGENS ==========
 function renderMessages(messages) {
     const container = document.getElementById('chatMessages');
     container.innerHTML = '';
+
+    if (messages.length === 0) {
+        container.innerHTML = `<p class="chat-vazio-aviso" style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.9rem;">Nenhuma mensagem ainda. Diga oi pro profissional!</p>`;
+        return;
+    }
 
     messages.forEach(msg => {
         const div = document.createElement('div');
@@ -158,50 +244,35 @@ function renderMessages(messages) {
 }
 
 // ========== ENVIAR MENSAGEM ==========
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('chatMessageInput');
     const text = input.value.trim();
-    if (!text || activeChatId === null) return;
+    if (!text || activeChatId === null || !supabaseClient) return;
 
     const conv = conversations.find(c => c.id === activeChatId);
     if (!conv) return;
 
-    // Adicionar mensagem do usuário
-    const now = new Date();
-    const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-    
-    conv.messages.push({ from: 'user', text: text, time: time });
-    conv.lastMessage = text;
-    conv.time = time;
-
-    // Renderizar
-    renderMessages(conv.messages);
-    scrollToBottom();
-
-    // Limpar input
     input.value = '';
 
-    // Atualizar lista
-    renderConversations(conversations);
+    const { error: erroMsg } = await supabaseClient
+        .from('mensagens_chat')
+        .insert([{
+            conversa_id: activeChatId,
+            remetente: 'cliente',
+            texto: text
+        }]);
 
-    // Simular resposta do profissional (1-2 segundos)
-    const responses = [
-        'Entendi! Vou verificar a disponibilidade.',
-        'Claro! Podemos agendar para amanhã?',
-        'Perfeito! Já estou a caminho.',
-        'Obrigado pela mensagem!',
-        'Vou confirmar com a equipe e te aviso.'
-    ];
-    
-    setTimeout(() => {
-        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-        conv.messages.push({ from: 'pro', text: randomResponse, time: time });
-        conv.lastMessage = randomResponse;
-        
-        renderMessages(conv.messages);
-        scrollToBottom();
-        renderConversations(conversations);
-    }, 1000 + Math.random() * 1500);
+    if (erroMsg) {
+        console.error('Erro ao enviar mensagem:', erroMsg);
+        alert('Não foi possível enviar a mensagem. Tente novamente.');
+        return;
+    }
+
+    // A própria mensagem aparece na tela via tempo real (evento INSERT).
+    await supabaseClient
+        .from('conversas')
+        .update({ ultima_mensagem: text, ultima_mensagem_em: new Date().toISOString() })
+        .eq('id', activeChatId);
 }
 
 // ========== SCROLL PARA O FINAL ==========
@@ -218,20 +289,53 @@ function fazerLogout() {
 
 // ========== MODO ESCURO ==========
 function configurarModoEscuro() {
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (!darkModeToggle) return;
+    const modoClaroBtn = document.getElementById('modoClaroBtn');
+    const modoClaroLabel = document.getElementById('modoClaroLabel');
+    if (!modoClaroBtn) return;
 
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = 'Modo claro';
+    function aplicarModo(escuro) {
+        document.body.classList.toggle('dark-mode', escuro);
+        if (modoClaroLabel) {
+            modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
+            if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
+        }
     }
 
-    darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? 'Modo claro' : 'Modo escuro';
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        aplicarModo(true);
+    }
+
+    modoClaroBtn.addEventListener('click', () => {
+        const escuro = !document.body.classList.contains('dark-mode');
+        aplicarModo(escuro);
+        localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
     });
+}
+
+// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
+function configurarMenuConfiguracoes() {
+    const configBtn = document.getElementById('configBtn');
+    const configMenu = document.getElementById('configMenu');
+    if (!configBtn || !configMenu) return;
+
+    configBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        configMenu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!configMenu.contains(e.target) && e.target !== configBtn) {
+            configMenu.classList.remove('open');
+        }
+    });
+
+    const idiomaBtn = document.getElementById('idiomaBtn');
+    if (idiomaBtn) {
+        idiomaBtn.addEventListener('click', function () {
+            if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+        });
+    }
 }
 
 // ========== SIDEBAR TOGGLE ==========
@@ -261,17 +365,21 @@ function configurarBackButton() {
 }
 
 // ========== INICIALIZAR ==========
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
-    renderConversations(conversations);
+document.addEventListener('DOMContentLoaded', async () => {
+    currentUser = verificarLogin();
+    if (!currentUser) return;
+
     configurarModoEscuro();
+    configurarMenuConfiguracoes();
     configurarSidebar();
     configurarBackButton();
 
-    // Logout
+    conversations = await buscarConversas();
+    renderConversations(conversations);
+    escutarConversasEmTempoReal();
+
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
 
-    // Enviar mensagem (Enter ou clique)
     const input = document.getElementById('chatMessageInput');
     const sendBtn = document.getElementById('chatSendBtn');
 
@@ -281,17 +389,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sendBtn.addEventListener('click', sendMessage);
 
-    // Busca
     const searchInput = document.getElementById('searchChat');
     searchInput.addEventListener('input', () => {
         const q = searchInput.value.toLowerCase().trim();
-        const filtered = conversations.filter(c => 
+        const filtered = conversations.filter(c =>
             !q || c.name.toLowerCase().includes(q)
         );
         renderConversations(filtered);
     });
 
-    // Abrir primeira conversa por padrão (se houver)
     if (conversations.length > 0) {
         openChat(conversations[0].id);
     }
