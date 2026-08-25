@@ -12,21 +12,60 @@ function fazerLogout() {
 
 verificarLogin();
 
-document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
+document.addEventListener('DOMContentLoaded', () => {
+    // ===== MENU DA ENGRENAGEM =====
+    const configBtn = document.getElementById('configBtn');
+    const configMenu = document.getElementById('configMenu');
 
-// MODO ESCURO para TelaIni
-const darkModeToggleIni = document.getElementById('darkModeToggleIni');
-if (darkModeToggleIni) {
-    // Verificar preferência salva
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggleIni.textContent = 'Modo claro';
+    if (configBtn && configMenu) {
+        configBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            configMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!configMenu.contains(e.target) && e.target !== configBtn) {
+                configMenu.classList.remove('open');
+            }
+        });
     }
 
-    darkModeToggleIni.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggleIni.textContent = isDark ? 'Modo claro' : 'Modo escuro';
-    });
-}
+    // ===== MODO CLARO / ESCURO =====
+    const modoClaroBtn = document.getElementById('modoClaroBtn');
+    const modoClaroLabel = document.getElementById('modoClaroLabel');
+
+    function aplicarModo(escuro) {
+        document.body.classList.toggle('dark-mode', escuro);
+        if (modoClaroLabel) {
+            modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
+            if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
+        }
+    }
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        aplicarModo(true);
+    }
+
+    if (modoClaroBtn) {
+        modoClaroBtn.addEventListener('click', function () {
+            const escuro = !document.body.classList.contains('dark-mode');
+            aplicarModo(escuro);
+            localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
+        });
+    }
+
+    // ===== IDIOMA (PT/EN) =====
+    const idiomaBtn = document.getElementById('idiomaBtn');
+    if (idiomaBtn) {
+        idiomaBtn.addEventListener('click', function () {
+            if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+        });
+    }
+
+    // ===== SAIR =====
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', fazerLogout);
+    }
+});

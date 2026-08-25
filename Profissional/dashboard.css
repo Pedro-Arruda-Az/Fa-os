@@ -3,13 +3,34 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #171717;
-    --card-bg: #262626;
-    --card-border: rgba(255,255,255,0.09);
-    --card-border-hover: rgba(255,199,0,0.55);
+    --bg-dark: #211E29;
+    --card-bg: #403C3B;
+    --tag-bg: #34313A;
     --text-dark: #171717;
+    --text-muted: #978A7E;
+    --text-cream: #FDF8E3;
     --red: #FB2C36;
     --header-height: 92px;
+    --menu-bg: #2E2A38;
+}
+
+html.light-mode {
+    --bg-dark: #FFF8DC;
+    --card-bg: #FFFFFF;
+    --tag-bg: #F2E4C4;
+    --text-cream: #2C1A0E;
+    --text-muted: #7A6A5A;
+    --menu-bg: #FFFFFF;
+    color: #2C1A0E;
+}
+
+html.light-mode .config-menu {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    border: 1px solid rgba(44,26,14,0.08);
+}
+
+html.light-mode .config-item:hover {
+    background: rgba(255,199,0,0.18);
 }
 
 * {
@@ -21,7 +42,7 @@
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     background: var(--bg-dark);
-    color: #fff;
+    color: var(--text-cream);
     min-height: 100vh;
 }
 
@@ -29,12 +50,10 @@ body {
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
-    border-top: 5px solid #141414;
-    border-bottom: 5px solid #141414;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2.5rem;
+    padding: 0 1.5rem;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -43,122 +62,245 @@ body {
 .brand-link {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.6rem;
     text-decoration: none;
 }
 
-.logo-mark {
-    width: 30px;
-    height: 33px;
-    flex-shrink: 0;
-}
-
-.header-title {
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    font-weight: 500;
+.logo-full {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.5rem;
+    padding-right: 0.5rem;
 }
 
 .icon-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 29px;
+    height: 29px;
     color: var(--text-dark);
     text-decoration: none;
     transition: opacity 0.2s, transform 0.2s;
+    position: relative;
 }
 
-.icon-btn svg {
-    width: 24px;
-    height: 24px;
+.icon-btn img {
+    width: 29px;
+    height: 29px;
+    object-fit: contain;
 }
 
 .icon-btn:hover {
-    opacity: 0.65;
     transform: translateY(-1px);
+}
+
+/* ========== MENU DE CONFIGURAÇÕES ========== */
+.config-wrap {
+    width: auto;
+    height: auto;
+}
+
+.config-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+.config-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    background: var(--menu-bg);
+    border-radius: 14px;
+    padding: 0.5rem;
+    min-width: 200px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    flex-direction: column;
+    z-index: 300;
+}
+
+.config-menu.open {
+    display: flex;
+}
+
+.config-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: none;
+    border: none;
+    color: var(--text-cream);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    padding: 0.7rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.config-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--yellow);
+}
+
+.config-item:hover {
+    background: rgba(255,199,0,0.1);
+}
+
+.config-item-sair {
+    color: #FF8A80;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0.3rem;
+    padding-top: 0.9rem;
+}
+
+.config-item-sair svg {
+    color: #FF8A80;
 }
 
 /* ========== CONTEÚDO ========== */
 .page {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2.75rem 3.5rem 6rem;
 }
 
-.greeting {
-    font-size: 2.1rem;
-    font-weight: 500;
-    color: var(--yellow);
-    margin-bottom: 2.25rem;
+.titulo-painel {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text-cream);
+    margin-bottom: 1.75rem;
 }
 
-.greeting span {
-    color: var(--yellow);
-}
-
-/* ========== GRID DE CARDS ========== */
-.cards-grid {
+.painel-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    align-items: start;
 }
 
-.card {
+/* ========== RESUMO DO DIA ========== */
+.resumo-card {
     background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 1.6rem 1.75rem;
+    border-radius: 20px;
+    padding: 1.75rem 2rem 2rem;
+    min-height: 380px;
     display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    text-decoration: none;
-    cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    min-height: 108px;
+    flex-direction: column;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    border-color: var(--card-border-hover);
-    background: #2c2c2c;
+.resumo-label {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
 }
 
-.card-icon {
-    position: relative;
+.resumo-corpo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.resumo-numeros {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.resumo-atendimentos {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-cream);
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+.resumo-valor {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--yellow);
+}
+
+.resumo-buzz {
+    width: 150px;
     flex-shrink: 0;
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: var(--yellow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dark);
+    margin-top: -0.5rem;
 }
 
-.card-icon svg {
+.resumo-tags {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 2rem;
+}
+
+.tag {
+    background: var(--tag-bg);
+    color: var(--text-cream);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.6rem 1.1rem;
+    border-radius: 50px;
+}
+
+/* ========== LISTA DE ATALHOS ========== */
+.lista-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+}
+
+.lista-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.15rem 0.6rem;
+    color: var(--text-cream);
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 10px;
+    position: relative;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.lista-item svg {
     width: 26px;
     height: 26px;
+    color: var(--yellow);
+    flex-shrink: 0;
 }
 
-.card-label {
-    font-size: 1.15rem;
-    font-weight: 500;
-    color: var(--yellow);
+.lista-item:hover {
+    background: rgba(255, 199, 0, 0.08);
+    transform: translateX(3px);
 }
 
 .badge {
     position: absolute;
-    top: -6px;
-    right: -6px;
+    right: 0.5rem;
     background: var(--red);
     color: #fff;
     font-size: 0.7rem;
@@ -169,7 +311,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--bg-dark);
 }
 
 /* ========== BOTÃO AJUDA ========== */
@@ -209,26 +350,22 @@ body {
     .page {
         padding: 2rem 1.5rem 6rem;
     }
-    .cards-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .painel-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 560px) {
     .header {
-        padding: 0 1.25rem;
+        padding: 0 1rem;
     }
     .header-title {
         font-size: 1rem;
     }
-    .greeting {
+    .titulo-painel {
         font-size: 1.5rem;
     }
-    .cards-grid {
-        grid-template-columns: 1fr;
-    }
-    .card {
-        padding: 1.25rem 1.4rem;
+    .resumo-buzz {
+        display: none;
     }
 }
-

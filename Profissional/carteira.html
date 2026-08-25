@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Carteira</title>
     <link rel="stylesheet" href="carteira.css">
+    <script src="theme.js"></script>
 </head>
 <body>
 
@@ -12,13 +13,7 @@
     <header class="header">
         <div class="header-left">
             <a href="/index.html" class="brand-link">
-                <svg class="logo-mark" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 2C8.6 2 5 5.6 5 10c0 6.5 8 12.5 8 12.5S21 16.5 21 10c0-4.4-3.6-8-8-8Z" fill="#141414"/>
-                    <circle cx="13" cy="10" r="3.4" fill="#FFC700"/>
-                    <rect x="1.5" y="21.5" width="20" height="6" rx="3" transform="rotate(-32 1.5 21.5)" fill="#141414"/>
-                    <rect x="4.5" y="30.5" width="16" height="6" rx="3" transform="rotate(-32 4.5 30.5)" fill="#141414"/>
-                </svg>
-                <span class="header-title">painel profissional</span>
+                <img src="/imagens/facos-logo-marrom.png" alt="Faços" class="logo-full">
             </a>
         </div>
         <div class="header-right">
@@ -37,36 +32,18 @@
             <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
             </a>
-            <h1 class="page-title">carteira</h1>
+            <h1 class="page-title" data-i18n="titulo.carteira">carteira</h1>
         </div>
 
-        <!-- ===== CARDS DE SALDO ===== -->
+        <!-- ===== CARD DE SALDO ===== -->
         <div class="saldo-row">
             <div class="saldo-card saldo-principal">
                 <div class="saldo-topo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
                     <span>Saldo disponível</span>
                 </div>
-                <span class="saldo-valor">R$ 1.280,00</span>
+                <span class="saldo-valor" id="saldoValor">R$ 0,00</span>
                 <span class="saldo-sub">Disponível para saque</span>
-            </div>
-
-            <div class="saldo-card">
-                <div class="saldo-topo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                    <span>Saldo pendente</span>
-                </div>
-                <span class="saldo-valor">R$ 330,00</span>
-                <span class="saldo-sub">Em processamento</span>
-            </div>
-
-            <div class="saldo-card">
-                <div class="saldo-topo">
-                    <svg class="icon-verde" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 12 12 8 8 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>
-                    <span>Ganhos de abril</span>
-                </div>
-                <span class="saldo-valor valor-verde">R$ 2.150,00</span>
-                <span class="saldo-sub">+15% vs mês anterior</span>
             </div>
         </div>
 
@@ -100,91 +77,7 @@
                 </div>
 
                 <div class="transacoes-list" id="transacoesList">
-
-                    <div class="transacao-item" data-tipo="ganhos">
-                        <div class="transacao-icon icon-positivo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Limpeza residencial - João Silva</span>
-                            <span class="transacao-data">23/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-positivo">+R$ 150,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
-                    <div class="transacao-item" data-tipo="ganhos">
-                        <div class="transacao-icon icon-positivo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Limpeza residencial - Pedro Costa</span>
-                            <span class="transacao-data">23/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-positivo">+R$ 150,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
-                    <div class="transacao-item" data-tipo="taxas">
-                        <div class="transacao-icon icon-negativo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Taxa da plataforma (8%)</span>
-                            <span class="transacao-data">23/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-negativo">R$ 24,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
-                    <div class="transacao-item" data-tipo="ganhos">
-                        <div class="transacao-icon icon-positivo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Limpeza residencial - Maria Santos</span>
-                            <span class="transacao-data">22/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-positivo">+R$ 180,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
-                    <div class="transacao-item" data-tipo="saques">
-                        <div class="transacao-icon icon-negativo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Saque via Pix</span>
-                            <span class="transacao-data">21/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-negativo">R$ 500,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
-                    <div class="transacao-item" data-tipo="ganhos">
-                        <div class="transacao-icon icon-positivo">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-                        </div>
-                        <div class="transacao-info">
-                            <span class="transacao-nome">Limpeza residencial - Carlos Mendes</span>
-                            <span class="transacao-data">21/04/2026</span>
-                        </div>
-                        <div class="transacao-valor-col">
-                            <span class="transacao-valor valor-positivo">+R$ 200,00</span>
-                            <span class="status-pago">pago</span>
-                        </div>
-                    </div>
-
+                    <!-- transações inseridas via JS -->
                 </div>
             </section>
 
@@ -196,17 +89,17 @@
 
                     <div class="dado-item">
                         <span class="dado-label">Chave Pix</span>
-                        <span class="dado-valor">empresa@email.com</span>
+                        <span class="dado-valor" id="dadoChavePix">Não cadastrada</span>
                     </div>
 
                     <div class="dado-item">
                         <span class="dado-label">CNPJ</span>
-                        <span class="dado-valor">00.000.000/0000-00</span>
+                        <span class="dado-valor" id="dadoCnpj">—</span>
                     </div>
 
                     <div class="dado-item">
                         <span class="dado-label">Banco</span>
-                        <span class="dado-valor">Banco do Brasil</span>
+                        <span class="dado-valor" id="dadoBanco">Não cadastrado</span>
                     </div>
 
                     <button class="btn-editar" id="editarDadosBtn">Editar dados</button>
@@ -252,6 +145,24 @@
         </div>
     </main>
 
+    <!-- ===== MODAL: EDITAR DADOS DE PAGAMENTO ===== -->
+    <div class="modal-overlay" id="editarDadosModal">
+        <div class="modal-card">
+            <button class="modal-close" id="fecharEditarDadosModal">&times;</button>
+            <h2 class="card-titulo">Editar dados de pagamento</h2>
+
+            <label class="form-label">Chave Pix</label>
+            <input type="text" id="inputChavePix" class="form-input" placeholder="email, telefone, CPF/CNPJ ou chave aleatória">
+
+            <label class="form-label">Banco</label>
+            <input type="text" id="inputBanco" class="form-input" placeholder="Ex: Banco do Brasil, Nubank...">
+
+            <button class="btn-editar" id="salvarDadosBtn" style="margin-top:1rem;">Salvar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="i18n.js"></script>
     <script src="carteira.js"></script>
 </body>
 </html>

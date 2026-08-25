@@ -3,10 +3,11 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #171717;
+    --bg-dark: #211E29;
     --card-bg: #262626;
     --border: rgba(255,255,255,0.09);
     --text-dark: #171717;
+    --text-main: #ffffff;
     --text-muted: #9CA3AF;
     --header-height: 92px;
 
@@ -23,6 +24,17 @@
     --cancelado-text: #F87171;
 }
 
+html.light-mode {
+    --bg-dark: #FFF8DC;
+    --card-bg: #FFFFFF;
+    --item-bg: #F0EAD6;
+    --item-bg-hover: #E6DCC0;
+    --border: rgba(44,26,14,0.12);
+    --text-main: #2C1A0E;
+    --text-muted: #7A6A5A;
+    color: #2C1A0E;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +44,7 @@
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     background: var(--bg-dark);
-    color: #fff;
+    color: var(--text-main);
     min-height: 100vh;
 }
 
@@ -58,16 +70,10 @@ body {
     text-decoration: none;
 }
 
-.logo-mark {
-    width: 30px;
-    height: 33px;
-    flex-shrink: 0;
-}
-
-.header-title {
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    font-weight: 500;
+.logo-full {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
 }
 
 .header-right {
@@ -207,7 +213,7 @@ body {
 }
 
 .pedido-servico {
-    color: #C9C9C9;
+    color: var(--text-main);
     font-size: 0.95rem;
 }
 
