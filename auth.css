@@ -186,10 +186,12 @@ a {
 
 /* ========== TELA DE LOGIN COM ABAS (EMPRESAS / PROFISSIONAIS) ========== */
 .hex-page {
-    background:
-        linear-gradient(180deg, rgba(253, 246, 201, 0.0) 0%, rgba(253, 246, 201, 0.0) 100%),
-        url('/imagens/hex-bg.svg') center / cover no-repeat;
     background-color: #FDF6C9;
+    background-image: url('/imagens/hex-bg-cluster.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .auth-hero {

@@ -37,8 +37,6 @@ function carregarDadosPerfil() {
     // Cartão de resumo
     const iniciais = nomeEmpresa.trim().substring(0, 2).toUpperCase();
     document.getElementById('avatarIniciais').textContent = iniciais;
-    document.getElementById('perfilNomeEmpresa').textContent = nomeEmpresa;
-    document.getElementById('perfilArea').textContent = areaAtuacao || 'Área não definida';
 
     // Formulário de edição
     document.getElementById('editNome').value = nomeEmpresa;
@@ -131,9 +129,57 @@ async function salvarAlteracoes() {
 document.addEventListener('DOMContentLoaded', () => {
     carregarDadosPerfil();
 
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
+    // ===== MENU DA ENGRENAGEM =====
+    const configBtn = document.getElementById('configBtn');
+    const configMenu = document.getElementById('configMenu');
+
+    if (configBtn && configMenu) {
+        configBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            configMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!configMenu.contains(e.target) && e.target !== configBtn) {
+                configMenu.classList.remove('open');
+            }
+        });
+    }
+
+    const modoClaroBtn = document.getElementById('modoClaroBtn');
+    const modoClaroLabel = document.getElementById('modoClaroLabel');
+
+    function aplicarModo(claro) {
+        document.documentElement.classList.toggle('light-mode', claro);
+        if (modoClaroLabel) {
+            modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
+            if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+    }
+
+    if (localStorage.getItem('painelModoClaro') === 'true') {
+        aplicarModo(true);
+    }
+
+    if (modoClaroBtn) {
+        modoClaroBtn.addEventListener('click', function () {
+            const claro = !document.documentElement.classList.contains('light-mode');
+            aplicarModo(claro);
+            localStorage.setItem('painelModoClaro', claro ? 'true' : 'false');
+        });
+    }
+
+    const idiomaBtn = document.getElementById('idiomaBtn');
+    if (idiomaBtn) {
+        idiomaBtn.addEventListener('click', function () {
+            if (window.facosTrocarIdioma) facosTrocarIdioma();
+        });
+    }
+
+    const sairBtn = document.getElementById('sairBtn');
+    if (sairBtn) {
+        sairBtn.addEventListener('click', () => {
             if (confirm('Deseja sair do painel profissional?')) {
                 fazerLogout();
             }
