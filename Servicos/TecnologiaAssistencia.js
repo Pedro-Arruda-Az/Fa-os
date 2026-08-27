@@ -1,6 +1,6 @@
 /* ============================================================
    FAÇOS - limpeza.js
-   Tela de busca de profissionais com mapa (Leaflet)
+   Tela de busca de profissionais, com painel de detalhes/pagamento
    ============================================================ */
 
 const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
@@ -64,15 +64,12 @@ async function buscarProfissionais() {
     });
 }
 
-let map = null;
-let markers = {};
 let activePro = null;
 let usuarioAtual = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     usuarioAtual = verificarLogin();
     professionals = await buscarProfissionais();
-    initMap();
     renderCards(professionals);
     bindEvents();
 });
@@ -84,53 +81,6 @@ function verificarLogin() {
         return null;
     }
     return JSON.parse(usuarioLogado);
-}
-
-function initMap() {
-    const center = [-23.5874, -46.6576];
-
-    map = L.map('map', {
-        center,
-        zoom: 14,
-        zoomControl: true,
-        scrollWheelZoom: true
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19
-    }).addTo(map);
-
-    professionals.forEach(pro => {
-        const icon = L.divIcon({
-            className: '',
-            html: `<div style="
-                background:#ffc70b;
-                border:2px solid #8B4513;
-                border-radius:50%;
-                width:38px; height:38px;
-                display:flex; align-items:center; justify-content:center;
-                font-weight:700; font-size:0.7rem;
-                color:#5A3A1A;
-                box-shadow:0 3px 8px rgba(0,0,0,0.2);
-                font-family:'Sora',sans-serif;
-                cursor:pointer;
-            ">${pro.initials}</div>`,
-            iconSize: [38, 38],
-            iconAnchor: [19, 19]
-        });
-
-        const marker = L.marker([pro.lat, pro.lng], { icon })
-            .addTo(map)
-            .bindPopup(`
-                <div class="popup-name">${pro.name}</div>
-                <div class="popup-service">${pro.service}</div>
-                <div class="popup-dist">📍 ${pro.distance} km • ⭐ ${pro.rating}</div>
-            `, { offset: [0, -10] });
-
-        marker.on('click', () => selectPro(pro.id));
-        markers[pro.id] = marker;
-    });
 }
 
 function renderCards(list) {
@@ -197,12 +147,16 @@ function selectPro(id) {
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    if (map) {
-        map.setView([pro.lat, pro.lng], 15, { animate: true });
-        markers[id].openPopup();
-    }
-
     activePro = pro;
+}
+
+// Alterna qual "tela" aparece no painel direito, no lugar de onde antes
+// ficava o mapa: vazio (nada selecionado), perfil do profissional ou
+// forma de pagamento.
+function showDetailView(view) {
+    document.getElementById('detailEmpty').style.display = view === 'empty' ? 'flex' : 'none';
+    document.getElementById('detailProfile').classList.toggle('open', view === 'profile');
+    document.getElementById('detailPayment').classList.toggle('open', view === 'payment');
 }
 
 function openModal(pro) {
@@ -214,11 +168,11 @@ function openModal(pro) {
     document.getElementById('modalRating').textContent = `${pro.rating} / 5.0`;
     document.getElementById('modalServices').textContent = pro.services;
     document.getElementById('modalPrice').textContent = pro.price;
-    document.getElementById('profileModal').classList.add('open');
+    showDetailView('profile');
 }
 
 function closeModal() {
-    document.getElementById('profileModal').classList.remove('open');
+    showDetailView('empty');
 }
 
 // ========== MODAL: FORMA DE PAGAMENTO ==========
@@ -233,8 +187,7 @@ async function abrirModalPagamento(pro) {
     document.querySelectorAll('.pagamento-opcao').forEach((el) => el.classList.remove('active'));
     document.getElementById('confirmarPagamentoBtn').disabled = true;
 
-    closeModal();
-    document.getElementById('paymentModal').classList.add('open');
+    showDetailView('payment');
 
     const saldoTexto = document.getElementById('saldoDisponivelTexto');
     saldoTexto.textContent = 'Carregando saldo...';
@@ -251,8 +204,10 @@ async function abrirModalPagamento(pro) {
     }
 }
 
+// Botão de voltar (seta) na tela de pagamento: volta pro perfil do
+// profissional em vez de fechar tudo.
 function closePaymentModal() {
-    document.getElementById('paymentModal').classList.remove('open');
+    showDetailView('profile');
 }
 
 function formatarMoeda(valor) {
@@ -423,7 +378,7 @@ async function pagarComCarteira(pro) {
         await creditarProfissional(pro);
 
         alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
-        closePaymentModal();
+        closeModal();
     } catch (err) {
         console.error(err);
         alert('Ocorreu um erro ao processar o pagamento com a carteira.');
@@ -475,13 +430,13 @@ async function iniciarPagamento(pro) {
             await criarConversa(pro);
             await creditarProfissional(pro);
             window.open(data.init_point, '_blank');
-            closePaymentModal();
+            closeModal();
         } else if (data.sandbox_init_point) {
             await registrarPedido(pro, 'mercadopago');
             await criarConversa(pro);
             await creditarProfissional(pro);
             window.open(data.sandbox_init_point, '_blank');
-            closePaymentModal();
+            closeModal();
         } else {
             throw new Error(data.message || 'Link de pagamento nao retornado');
         }
@@ -520,18 +475,12 @@ function bindEvents() {
     });
 
     document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('profileModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('profileModal')) closeModal();
-    });
 
     document.getElementById('solicitarBtn').addEventListener('click', () => {
         if (activePro) abrirModalPagamento(activePro);
     });
 
     document.getElementById('paymentModalClose').addEventListener('click', closePaymentModal);
-    document.getElementById('paymentModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('paymentModal')) closePaymentModal();
-    });
 
     document.querySelectorAll('.pagamento-opcao').forEach((opcao) => {
         opcao.addEventListener('click', () => {
@@ -558,28 +507,57 @@ function bindEvents() {
     sidebarToggle.addEventListener('click', () => {
         const pinned = sidebar.classList.toggle('pinned');
         sidebarToggle.textContent = pinned ? '‹' : '›';
-        setTimeout(() => map && map.invalidateSize(), 320);
     });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
 }
-// MODO ESCURO
-const darkModeToggle = document.getElementById('darkModeToggle');
-if (darkModeToggle) {
-    // Verificar preferência salva
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = 'Modo claro';
-    }
+// MENU DA ENGRENAGEM (config)
+const configBtn = document.getElementById('configBtn');
+const configMenu = document.getElementById('configMenu');
 
-    darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        darkModeToggle.textContent = isDark ? 'Modo claro' : 'Modo escuro';
-        // Atualizar tamanho do mapa após mudança de estilo (opcional)
-        if (map) setTimeout(() => map.invalidateSize(), 100);
+if (configBtn && configMenu) {
+    configBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        configMenu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!configMenu.contains(e.target) && e.target !== configBtn) {
+            configMenu.classList.remove('open');
+        }
+    });
+}
+
+// MODO CLARO / ESCURO
+const modoClaroBtn = document.getElementById('modoClaroBtn');
+const modoClaroLabel = document.getElementById('modoClaroLabel');
+
+function aplicarModo(escuro) {
+    document.body.classList.toggle('dark-mode', escuro);
+    if (modoClaroLabel) {
+        modoClaroLabel.textContent = escuro ? 'Modo claro' : 'Modo escuro';
+    }
+}
+
+if (localStorage.getItem('darkMode') === 'enabled') {
+    aplicarModo(true);
+}
+
+if (modoClaroBtn) {
+    modoClaroBtn.addEventListener('click', () => {
+        const escuro = !document.body.classList.contains('dark-mode');
+        aplicarModo(escuro);
+        localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
+    });
+}
+
+// IDIOMA (PT/EN)
+const idiomaBtn = document.getElementById('idiomaBtn');
+if (idiomaBtn) {
+    idiomaBtn.addEventListener('click', () => {
+        if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
     });
 }

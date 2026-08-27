@@ -72,6 +72,88 @@ body {
     gap: 1.75rem;
 }
 
+.icon-btn img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
+.config-wrap {
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.config-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+.config-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    background: #2E2A38;
+    border-radius: 14px;
+    padding: 0.5rem;
+    min-width: 200px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    flex-direction: column;
+    z-index: 300;
+}
+
+.config-menu.open {
+    display: flex;
+}
+
+.config-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    padding: 0.7rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+}
+
+.config-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--yellow);
+}
+
+.config-item:hover {
+    background: rgba(255,199,0,0.1);
+}
+
+.config-item-sair {
+    color: #FF8A80;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0.3rem;
+    padding-top: 0.9rem;
+}
+
+.config-item-sair svg {
+    color: #FF8A80;
+}
+
 .icon-btn {
     display: flex;
     align-items: center;

@@ -26,7 +26,7 @@ function carregarDados() {
 // ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
-    window.location.href = '/Profissional/login_profissional.html';
+    window.location.href = '/index.html';
 }
 
 // ========== INICIALIZAR ==========

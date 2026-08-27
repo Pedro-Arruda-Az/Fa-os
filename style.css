@@ -9,7 +9,12 @@
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     color: #3E2711;
-    background: #FFF8DC;
+    background-color: #FFF8DC;
+    background-image: url('/imagens/hex-bg-cluster.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
 }
@@ -60,7 +65,7 @@ img {
 .header-inner {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 1rem 0.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -266,11 +271,11 @@ img {
 }
 
 .secao-clara {
-    background: #FDFAC2;
+    background: rgba(253, 250, 194, 0.85);
 }
 
 .secao-cinza {
-    background: #FDFAC2;
+    background: rgba(253, 250, 194, 0.85);
 }
 
 .secao-escura {
