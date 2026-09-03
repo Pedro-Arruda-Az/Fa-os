@@ -89,15 +89,6 @@ a {
     margin-bottom: 1.6rem;
 }
 
-.cnpj-status {
-    font-size: 0.82rem;
-    margin: -0.6rem 0 0.8rem;
-    min-height: 1.1em;
-}
-.cnpj-status.carregando { color: #7A6A5A; }
-.cnpj-status.sucesso { color: #2E7D32; font-weight: 600; }
-.cnpj-status.erro { color: #C62828; }
-
 .auth-card label {
     display: block;
     font-size: 0.85rem;
