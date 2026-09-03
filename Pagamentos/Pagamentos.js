@@ -209,17 +209,6 @@ function configurarMenuConfiguracoes() {
 }
 
 // ========== SIDEBAR TOGGLE ==========
-function configurarSidebar() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            const pinned = sidebar.classList.toggle('pinned');
-            sidebarToggle.textContent = pinned ? '‹' : '›';
-        });
-    }
-}
 
 // ========== MODAL ADICIONAR CRÉDITO (MERCADO PAGO) ==========
 function configurarModalCredito() {
@@ -334,7 +323,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarSidebar();
     configurarModalCredito();
 
     await verificarRetornoPagamento();

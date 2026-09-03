@@ -34,7 +34,7 @@ body {
     flex-direction: column;
 }
 
-/* ── HEADER ─────────────────────────────────────────── */
+
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -100,7 +100,7 @@ body {
     transform: scale(1.04);
 }
 
-/* ── MAIN LAYOUT ─────────────────────────────────────── */
+
 .main-container {
     display: flex;
     flex: 1;
@@ -109,7 +109,7 @@ body {
     position: relative;
 }
 
-/* Gatilho invisível — fica sobre a borda esquerda */
+
 .sidebar-trigger {
     position: absolute;
     left: 0;
@@ -120,7 +120,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ── SIDEBAR ─────────────────────────────────────────── */
+
 .sidebar {
     width: 0;
     background: var(--bg-white);
@@ -137,7 +137,7 @@ body {
     z-index: 150;
 }
 
-/* Sidebar aberto: empurra o list-panel para a direita */
+
 .sidebar-trigger:hover ~ .sidebar,
 .sidebar:hover,
 .sidebar.pinned {
@@ -176,7 +176,7 @@ body {
 }
 .sidebar-toggle:hover { background: #FFF3D0; }
 
-/* ── LIST PANEL ─────────────────────────────────────── */
+
 .list-panel {
     width: 380px;
     flex-shrink: 0;
@@ -189,12 +189,12 @@ body {
     gap: 0.75rem;
 }
 
-/* Scrollbar */
+
 .list-panel::-webkit-scrollbar { width: 5px; }
 .list-panel::-webkit-scrollbar-track { background: transparent; }
 .list-panel::-webkit-scrollbar-thumb { background: #DDB880; border-radius: 4px; }
 
-/* ── SEARCH BOX ─────────────────────────────────────── */
+
 .search-box {
     display: flex;
     align-items: center;
@@ -233,7 +233,7 @@ body {
     padding-left: 0.25rem;
 }
 
-/* ── PROFESSIONAL CARDS ─────────────────────────────── */
+
 .professionals-list {
     display: flex;
     flex-direction: column;
@@ -350,7 +350,7 @@ body {
     color: var(--text-dark);
 }
 
-/* ── MAP PANEL ──────────────────────────────────────── */
+
 .map-panel {
     flex: 1;
     position: relative;
@@ -378,7 +378,6 @@ body {
     font-family: inherit;
 }
 
-/* Leaflet popup customization */
 .leaflet-popup-content-wrapper {
     border-radius: 12px !important;
     font-family: 'Sora', sans-serif !important;
@@ -389,7 +388,6 @@ body {
 .popup-service { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
 .popup-dist { font-size: 0.8rem; color: var(--brown); margin-top: 4px; font-weight: 600; }
 
-/* ── MODAL ──────────────────────────────────────────── */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -517,7 +515,6 @@ body {
     transform: scale(1.02);
 }
 
-/* ── HELP BUTTON ─────────────────────────────────────── */
 .help-button {
     position: fixed;
     bottom: 1.5rem;
@@ -543,7 +540,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ── RESPONSIVIDADE ─────────────────────────────────── */
 @media (max-width: 900px) {
     .list-panel { width: 320px; }
 }
@@ -555,7 +551,7 @@ body {
     .map-panel { height: 50vh; }
     .header-link { display: none; }
 }
-/* ── MODO ESCURO ─────────────────────────────────────────── */
+
 body.dark-mode {
     --yellow: #e6b400;
     --brown: #D2A679;
@@ -661,7 +657,6 @@ body.dark-mode .leaflet-popup-tip {
     background: #2A241E !important;
 }
 
-/* Botão toggle modo escuro */
 .dark-mode-toggle {
     position: fixed;
     bottom: 20px;

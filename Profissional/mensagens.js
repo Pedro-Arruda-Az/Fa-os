@@ -269,6 +269,20 @@ async function enviarMensagem() {
         .from('conversas')
         .update({ ultima_mensagem: texto, ultima_mensagem_em: new Date().toISOString() })
         .eq('id', conversaAtivaId);
+
+    // Notifica o cliente que recebeu a mensagem
+    const conversaAtual = conversas.find((c) => c.id === conversaAtivaId);
+    if (conversaAtual) {
+        await supabaseClient
+            .from('notificacoes_app')
+            .insert([{
+                destinatario_tipo: 'cliente',
+                destinatario_email: conversaAtual.usuario_email,
+                tipo: 'mensagem',
+                titulo: 'Nova mensagem',
+                descricao: `${profissionalAtual.nome_empresa || profissionalAtual.email} enviou uma mensagem`
+            }]);
+    }
 }
 
 if (enviarBtn) {

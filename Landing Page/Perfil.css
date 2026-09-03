@@ -20,7 +20,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header-left {
@@ -176,11 +178,30 @@ body {
     padding: 2rem 0;
     gap: 2rem;
     background-color: #ffc70b;
+    position: sticky;
+    top: 84px;
+    height: calc(100vh - 84px);
+    align-self: flex-start;
 }
 
 .sidebar img {
     cursor: pointer;
     transition: transform 0.2s;
+}
+
+.sidebar .config-wrap {
+    margin-top: auto;
+    position: relative;
+}
+
+.config-trigger img { filter: brightness(0.9); }
+.config-trigger:hover img { filter: brightness(1); transform: scale(1.1); }
+
+.config-menu-sidebar {
+    top: auto;
+    bottom: 0;
+    left: calc(100% + 14px);
+    right: auto;
 }
 
 .sidebar img:hover {
@@ -544,4 +565,26 @@ body.dark-mode .salvar-btn:hover {
         padding: 0.6rem 1.2rem;
         font-size: 0.8rem;
     }
+}
+
+.sidebar-icon {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    background: #E53935;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
 }

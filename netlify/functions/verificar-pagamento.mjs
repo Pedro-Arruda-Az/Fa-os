@@ -1,10 +1,3 @@
-// ============================================================
-// FAÇOS - verificar-pagamento.mjs
-// Confirma um pagamento no Mercado Pago (direto na API deles,
-// nunca confiando só nos parâmetros da URL) e credita o saldo
-// do usuário no Supabase.
-// ============================================================
-
 const SUPABASE_URL = "https://fbgnvpcqwpvbwqtmqpzj.supabase.co";
 const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc";
@@ -123,8 +116,6 @@ export default async function verificarPagamento(request) {
             });
         }
 
-        // Confirma o pagamento direto na API do Mercado Pago —
-        // nunca confiamos apenas nos parâmetros que voltam na URL
         const respostaMp = await fetch(
             `https://api.mercadopago.com/v1/payments/${paymentId}`,
             {
@@ -157,7 +148,6 @@ export default async function verificarPagamento(request) {
             });
         }
 
-        // Pagamento aprovado: credita o saldo do usuário
         const valor = Number(pagamento.valor);
         const saldoAtual = await buscarSaldoUsuario(pagamento.usuario_email);
         const novoSaldo = Math.round((saldoAtual + valor) * 100) / 100;

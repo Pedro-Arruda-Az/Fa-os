@@ -9,11 +9,11 @@
 <body>
     <div class="auth-page hex-page">
         <div class="auth-hero">
-            <a href="index.html" class="auth-logo-link">
+            <a href="/index.html" class="auth-logo-link">
                 <img src="/imagens/facos-logo-completo.png" alt="Faços" class="auth-logo-full">
             </a>
 
-            <h1 class="auth-heading">Bem-Vindo de volta!</h1>
+            <h1 class="auth-heading">Bem-vindo de volta!</h1>
             <p class="auth-heading-sub">Entre na sua conta para acessar a plataforma</p>
         </div>
 
@@ -23,7 +23,7 @@
                 <button type="button" class="tab-btn" id="tabProfissionais" data-tab="profissionais">Profissionais</button>
             </div>
 
-         
+            <!-- ===== LOGIN EMPRESAS ===== -->
             <div class="tab-panel active" id="painelEmpresas">
                 <label>Email</label>
                 <input type="email" id="empresaEmail" placeholder="voce@email.com">
@@ -41,7 +41,7 @@
                 <p class="auth-troca">Não tem uma conta? <a href="cadastro.html"><strong>Cadastre-se!</strong></a></p>
             </div>
 
-
+            <!-- ===== LOGIN PROFISSIONAIS (CPF) ===== -->
             <div class="tab-panel" id="painelProfissionais">
                 <label>Email</label>
                 <input type="email" id="profEmail" placeholder="voce@email.com">
@@ -61,6 +61,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE REDEFINIR SENHA -->
     <div id="redefinirSenhaModal" class="modal">
         <div class="modal-content">
             <span class="close-modal close-redefinir">&times;</span>

@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- ========== HEADER ========== -->
     <header class="header">
         <div class="header-left">
             <a href="/index.html" class="brand-link">
@@ -43,13 +42,11 @@
         </div>
     </header>
 
-    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
     <main class="page">
         <h1 class="titulo-painel" data-i18n="painel.titulo">Painel profissional</h1>
 
         <div class="painel-grid">
 
-            <!-- RESUMO DO DIA -->
             <div class="resumo-card">
                 <span class="resumo-label" data-i18n="painel.resumoDoDia">Resumo do dia</span>
 
@@ -67,7 +64,6 @@
                 </div>
             </div>
 
-            <!-- LISTA DE ATALHOS -->
             <nav class="lista-card">
                 <a href="/Profissional/mensagens.html" class="lista-item" id="mensagensCard">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
@@ -80,7 +76,7 @@
                 <a href="/Profissional/notificacoes.html" class="lista-item" id="notificacoesCard">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                     <span data-i18n="painel.notificacoes">Notificações</span>
-                    <span class="badge" id="notifBadge">3</span>
+                    <span class="badge" id="notifBadge" data-notif-badge style="display:none;">0</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="lista-item" id="mapaCard">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -93,15 +89,23 @@
             </nav>
 
         </div>
+
+        <div class="ultimas-notif-header">
+            <h2 class="secao-titulo-painel" data-i18n="painel.ultimasNotificacoes">Últimas notificações</h2>
+            <a href="/Profissional/notificacoes.html" class="ver-todas-link" data-i18n="painel.verTodas">Ver todas</a>
+        </div>
+        <div class="ultimas-notif-grid" id="ultimasNotifGrid">
+        </div>
     </main>
 
-    <!-- ========== BOTÃO AJUDA ========== -->
     <button class="help-button" id="helpBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span data-i18n="painel.ajudaSuporte">Ajuda e suporte</span>
     </button>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
+    <script src="/Shared/notificacoes-badge.js"></script>
     <script src="dashboard.js"></script>
     <script src="/Buzz/buzz.js"></script>
 </body>

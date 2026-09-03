@@ -1,21 +1,3 @@
--- ============================================================
--- FAÇOS - Script mestre único do banco de dados
--- ============================================================
--- Esse é o ÚNICO arquivo que você precisa guardar e rodar
--- daqui pra frente. Toda vez que o banco precisar de uma
--- mudança nova, a gente EDITA esse mesmo arquivo (não cria
--- um novo) e você cola o conteúdo inteiro por cima do mesmo
--- snippet salvo no SQL Editor do Supabase.
---
--- É seguro rodar esse arquivo inteiro quantas vezes quiser,
--- mesmo que parte dele já tenha sido aplicada antes — nenhum
--- comando aqui apaga ou duplica dado nenhum.
--- ============================================================
-
-
--- ─────────────────────────────────────────────────────────────
--- 1) TABELA "usuarios" (cadastro de EMPRESA — quem contrata)
--- ─────────────────────────────────────────────────────────────
 create table if not exists usuarios (
     id bigserial primary key,
     nome varchar(255) not null,
@@ -38,10 +20,6 @@ create unique index if not exists usuarios_cnpj_key
 create unique index if not exists usuarios_cpf_key
     on usuarios (cpf) where cpf is not null;
 
-
--- ─────────────────────────────────────────────────────────────
--- 2) TABELA "profissionais" (cadastro de PROFISSIONAL — quem presta serviço)
--- ─────────────────────────────────────────────────────────────
 create table if not exists profissionais (
     id bigserial primary key,
     nome_empresa varchar(255) not null,
@@ -78,28 +56,18 @@ create unique index if not exists profissionais_cpf_key
 create unique index if not exists profissionais_cnpj_key
     on profissionais (cnpj) where cnpj is not null;
 
--- Se quiser remover a coluna "cnpj" antiga da tabela profissionais
--- depois de confirmar que não precisa mais dela, rode à parte:
--- alter table profissionais drop column if exists cnpj;
-
-
--- ─────────────────────────────────────────────────────────────
--- 3) TABELA "pagamentos"
---    Créditos adicionados via Mercado Pago + gastos pagos com
---    saldo da carteira ou Mercado Pago. (Usada de verdade pelo site.)
--- ─────────────────────────────────────────────────────────────
 create table if not exists pagamentos (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
     valor numeric(10,2) not null,
     forma_pagamento text,
-    status text not null default 'pendente',           -- pendente | aprovado | rejeitado
+    status text not null default 'pendente',           
     mp_payment_id text,
     mp_preference_id text,
     external_reference text,
     criado_em timestamptz not null default now(),
     atualizado_em timestamptz,
-    tipo text not null default 'credito',               -- credito | gasto
+    tipo text not null default 'credito',               
     descricao text
 );
 
@@ -114,19 +82,15 @@ create index if not exists idx_pagamentos_tipo on pagamentos (tipo);
 create index if not exists idx_pagamentos_profissional_email on pagamentos (profissional_email);
 
 
--- ─────────────────────────────────────────────────────────────
--- 4) TABELA "pedidos"
---    Histórico de pedidos (tela "Histórico de Pedidos"). (Usada de verdade pelo site.)
--- ─────────────────────────────────────────────────────────────
 create table if not exists pedidos (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
     titulo text not null,
     profissional text not null,
     valor numeric(10,2) not null,
-    status text not null default 'em_andamento',        -- em_andamento | concluido | cancelado
+    status text not null default 'em_andamento',        
     avaliacao numeric(2,1),
-    forma_pagamento text,                                -- carteira | mercadopago
+    forma_pagamento text,                                
     criado_em timestamptz not null default now()
 );
 
@@ -134,11 +98,6 @@ create index if not exists idx_pedidos_usuario_email on pedidos (usuario_email);
 create index if not exists idx_pedidos_status on pedidos (status);
 
 
--- ─────────────────────────────────────────────────────────────
--- 4.1) TABELAS "conversas" e "mensagens_chat"
---      Chat de verdade entre cliente (empresa) e profissional,
---      criado automaticamente quando um serviço é pago.
--- ─────────────────────────────────────────────────────────────
 create table if not exists conversas (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
@@ -164,8 +123,7 @@ create index if not exists idx_conversas_usuario_email on conversas (usuario_ema
 create index if not exists idx_conversas_profissional_email on conversas (profissional_email);
 create index if not exists idx_mensagens_chat_conversa_id on mensagens_chat (conversa_id);
 
--- Ativa o "tempo real" do Supabase nessas duas tabelas — sem isso, o
--- chat só atualiza quando a página é recarregada.
+
 do $$
 begin
     if not exists (
@@ -184,12 +142,33 @@ begin
 end $$;
 
 
--- ─────────────────────────────────────────────────────────────
--- 5) TABELAS DE PLANEJAMENTO ANTIGO
---    Ainda não são usadas pelo site (nenhuma tela lê ou escreve
---    nelas hoje), mas ficam criadas aqui pra não perder esse
---    desenho caso você queira usá-las no futuro.
--- ─────────────────────────────────────────────────────────────
+
+create table if not exists notificacoes_app (
+    id uuid primary key default gen_random_uuid(),
+    destinatario_tipo text not null,      
+    destinatario_email text not null,
+    tipo text not null,                   
+    titulo text not null,
+    descricao text,
+    lida boolean not null default false,
+    criado_em timestamptz not null default now()
+);
+
+create index if not exists idx_notificacoes_app_destinatario
+    on notificacoes_app (destinatario_email, destinatario_tipo);
+
+do $$
+begin
+    if not exists (
+        select 1 from pg_publication_tables
+        where pubname = 'supabase_realtime' and tablename = 'notificacoes_app'
+    ) then
+        alter publication supabase_realtime add table notificacoes_app;
+    end if;
+end $$;
+
+
+
 create table if not exists service (
     id_servico bigserial unique,
     tipo_servico varchar(50) unique,
@@ -289,20 +268,13 @@ create index if not exists idx_profissional_servico_serv on profissional_servico
 create index if not exists idx_avaliacao_profissional on avaliacao(id_profissional);
 create index if not exists idx_agenda_profissional on agenda(id_profissional);
 
-
--- ─────────────────────────────────────────────────────────────
--- 6) RLS (Row Level Security)
---    Desativado em todas as tabelas do projeto pra manter a
---    mesma política de acesso já usada em "usuarios" no resto
---    do site (a chave usada no navegador não tem permissão de
---    escrita se RLS estiver ativo sem uma política liberando).
--- ─────────────────────────────────────────────────────────────
 alter table usuarios disable row level security;
 alter table profissionais disable row level security;
 alter table pagamentos disable row level security;
 alter table pedidos disable row level security;
 alter table conversas disable row level security;
 alter table mensagens_chat disable row level security;
+alter table notificacoes_app disable row level security;
 alter table service disable row level security;
 alter table contrato disable row level security;
 alter table pagamento disable row level security;

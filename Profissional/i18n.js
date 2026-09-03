@@ -21,6 +21,8 @@ const FACOS_I18N = {
     'painel.atendimentos': { pt: 'atendimentos', en: 'appointments' },
     'painel.mensagens': { pt: 'Mensagens', en: 'Messages' },
     'painel.pedidos': { pt: 'Pedidos', en: 'Orders' },
+    'painel.ultimasNotificacoes': { pt: 'Últimas notificações', en: 'Latest notifications' },
+    'painel.verTodas': { pt: 'Ver todas', en: 'See all' },
     'painel.notificacoes': { pt: 'Notificações', en: 'Notifications' },
     'painel.localizacao': { pt: 'Localização', en: 'Location' },
     'painel.carteira': { pt: 'Carteira', en: 'Wallet' },

@@ -1,9 +1,3 @@
-/* ============================================================
-   FAÇOS - Localizacao.js
-   Página de serviços próximos com mapa
-   ============================================================ */
-
-// ========== DADOS DE EXEMPLO ==========
 const professionals = [
     {
         id: 1,
@@ -56,7 +50,6 @@ let map = null;
 let markers = {};
 let activePro = null;
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -64,7 +57,6 @@ function verificarLogin() {
     }
 }
 
-// ========== INICIALIZAR MAPA ==========
 function initMap() {
     const center = [-23.5874, -46.6576];
 
@@ -104,7 +96,7 @@ function initMap() {
             .bindPopup(`
                 <div class="popup-name">${pro.name}</div>
                 <div class="popup-service">${pro.service}</div>
-                <div class="popup-dist">📍 ${pro.distance} km</div>
+                <div class="popup-dist">${pro.distance} km</div>
             `, { offset: [0, -10] });
 
         marker.on('click', () => selectPro(pro.id));
@@ -112,12 +104,11 @@ function initMap() {
     });
 }
 
-// ========== RENDERIZAR CARDS ==========
 function renderCards(list) {
     const container = document.getElementById('professionalsList');
     const countEl = document.getElementById('resultsCount');
 
-    countEl.textContent = `${list.length} profissional${list.length !== 1 ? 'is' : ''} encontrado${list.length !== 1 ? 's' : ''}`;
+    countEl.textContent = `${list.length} ${list.length !== 1 ? 'profissionais' : 'profissional'} encontrado${list.length !== 1 ? 's' : ''}`;
     container.innerHTML = '';
 
     if (list.length === 0) {
@@ -144,7 +135,6 @@ function renderCards(list) {
     });
 }
 
-// ========== SELECIONAR PROFISSIONAL ==========
 function selectPro(id) {
     const pro = professionals.find(p => p.id === id);
     if (!pro) return;
@@ -164,13 +154,11 @@ function selectPro(id) {
     activePro = pro;
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -196,7 +184,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -222,21 +209,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
-function configurarSidebar() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            const pinned = sidebar.classList.toggle('pinned');
-            sidebarToggle.textContent = pinned ? '‹' : '›';
-            setTimeout(() => map && map.invalidateSize(), 320);
-        });
-    }
-}
-
-// ========== BUSCA ==========
 function configurarBusca() {
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
@@ -248,14 +220,12 @@ function configurarBusca() {
     });
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     initMap();
     renderCards(professionals);
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarSidebar();
     configurarBusca();
 
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);

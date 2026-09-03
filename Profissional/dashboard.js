@@ -3,6 +3,16 @@
    Painel do profissional
    ============================================================ */
 
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
+
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+let profissionalAtual = null;
+
 // ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
@@ -23,6 +33,115 @@ function carregarDados() {
     }
 }
 
+// ========== ÍCONES POR TIPO ==========
+const ICONE_POR_TIPO = {
+    mensagem: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+    pagamento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1.1-3 2.5 1.3 2.2 3 2.5c1.7.3 3 1.1 3 2.5s-1.3 2.5-3 2.5-3-1.1-3-2.5"/></svg>',
+    sistema: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+};
+
+const LINK_POR_TIPO = {
+    mensagem: '/Profissional/mensagens.html',
+    pagamento: '/Profissional/carteira.html',
+    sistema: null
+};
+
+// ========== FORMATAR TEMPO RELATIVO ==========
+function formatarTempoRelativo(isoString) {
+    const data = new Date(isoString);
+    const diffMin = Math.floor((new Date() - data) / 60000);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) return 'Agora';
+    if (diffMin < 60) return `${diffMin} min atrás`;
+    if (diffHoras < 24) return `${diffHoras}h atrás`;
+    if (diffDias === 1) return 'Ontem';
+    return `${diffDias} dias atrás`;
+}
+
+// ========== BUSCAR E RENDERIZAR AS 3 ÚLTIMAS NOTIFICAÇÕES ==========
+async function carregarUltimasNotificacoes() {
+    const grid = document.getElementById('ultimasNotifGrid');
+    if (!grid || !supabaseClient || !profissionalAtual) return;
+
+    const { data, error } = await supabaseClient
+        .from('notificacoes_app')
+        .select('*')
+        .eq('destinatario_email', profissionalAtual.email)
+        .eq('destinatario_tipo', 'profissional')
+        .order('criado_em', { ascending: false })
+        .limit(3);
+
+    if (error) {
+        console.error('Erro ao buscar últimas notificações:', error);
+        return;
+    }
+
+    renderUltimasNotificacoes(data || []);
+}
+
+function renderUltimasNotificacoes(lista) {
+    const grid = document.getElementById('ultimasNotifGrid');
+    grid.innerHTML = '';
+
+    if (lista.length === 0) {
+        grid.innerHTML = `<p class="ultima-notif-vazio">Nenhuma notificação ainda.</p>`;
+        return;
+    }
+
+    lista.forEach((notif) => {
+        const icone = ICONE_POR_TIPO[notif.tipo] || ICONE_POR_TIPO.sistema;
+        const link = LINK_POR_TIPO[notif.tipo];
+
+        const card = document.createElement('div');
+        card.className = `ultima-notif-card${!notif.lida ? ' nao-lida' : ''}`;
+        card.dataset.id = notif.id;
+
+        card.innerHTML = `
+            <span class="ultima-notif-icone">${icone}</span>
+            <div class="ultima-notif-corpo">
+                <div class="ultima-notif-textos">
+                    <span class="ultima-notif-titulo">${notif.titulo}</span>
+                    <span class="ultima-notif-texto">${notif.descricao || ''}</span>
+                </div>
+                <span class="ultima-notif-tempo">${formatarTempoRelativo(notif.criado_em)}</span>
+            </div>
+        `;
+
+        card.addEventListener('click', async () => {
+            if (!notif.lida && supabaseClient) {
+                await supabaseClient
+                    .from('notificacoes_app')
+                    .update({ lida: true })
+                    .eq('id', notif.id);
+            }
+            if (link) {
+                window.location.href = link;
+            } else {
+                card.classList.remove('nao-lida');
+            }
+        });
+
+        grid.appendChild(card);
+    });
+}
+
+// ========== TEMPO REAL: ATUALIZA A PRÉVIA QUANDO CHEGA NOTIFICAÇÃO NOVA ==========
+function escutarUltimasNotificacoesEmTempoReal() {
+    if (!supabaseClient || !profissionalAtual) return;
+
+    supabaseClient
+        .channel(`ultimas-notif-${profissionalAtual.email}`)
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'notificacoes_app',
+            filter: `destinatario_email=eq.${profissionalAtual.email}`
+        }, () => carregarUltimasNotificacoes())
+        .subscribe();
+}
+
 // ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
@@ -32,6 +151,12 @@ function fazerLogout() {
 // ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     carregarDados();
+    profissionalAtual = verificarLogin();
+
+    if (profissionalAtual) {
+        carregarUltimasNotificacoes();
+        escutarUltimasNotificacoesEmTempoReal();
+    }
 
     // Ícone de perfil no header (link real para /Profissional/perfil.html,
     // nada a fazer aqui além de deixar o navegador seguir o link)

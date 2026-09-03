@@ -1,17 +1,9 @@
-/* ============================================================
-   FAÇOS - Perfil.js
-   Gerenciamento de perfil do usuário
-   ============================================================ */
-
-// ========== CONFIGURAÇÃO DO SUPABASE ==========
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
 // ========== VERIFICAÇÃO DE LOGIN ==========
 /**
- * Verifica se o usuário está logado
- * Se não estiver, redireciona para a página de login
- * @returns {Object|null} Dados do usuário ou null
+ * @returns {Object|null}
  */
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');

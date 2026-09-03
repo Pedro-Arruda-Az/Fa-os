@@ -16,7 +16,7 @@
     --shadow-hover: 0 6px 24px rgba(139,69,19,0.18);
     --radius: 16px;
     --sidebar-width: 82px;
-    --header-height: 64px;
+    --header-height: 92px;
     --status-concluido: #22c55e;
     --status-andamento: #f59e0b;
     --status-cancelado: #ef4444;
@@ -37,7 +37,7 @@ body {
     flex-direction: column;
 }
 
-/* ========== HEADER ========== */
+
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -48,11 +48,11 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .logo-img {
-    height: 40px;
+    width: 100px;
+    height: auto;
     object-fit: contain;
 }
 
@@ -78,7 +78,6 @@ body {
     gap: 1rem;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -183,50 +182,28 @@ body {
     transform: scale(1.04);
 }
 
-/* ========== MAIN LAYOUT ========== */
 .main-container {
     display: flex;
-    flex: 1;
     height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
     overflow: hidden;
     position: relative;
 }
 
-/* Gatilho da sidebar */
-.sidebar-trigger {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    z-index: 200;
-    flex-shrink: 0;
-}
-
-/* ========== SIDEBAR ========== */
 .sidebar {
-    width: 0;
-    background: var(--bg-white);
-    border-right: 0px solid var(--border);
+    width: var(--sidebar-width);
+    background: var(--yellow);
+    border-right: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
+    padding: 1.5rem 0;
     gap: 1.5rem;
     flex-shrink: 0;
-    overflow: hidden;
-    transition: width 0.3s ease, padding 0.3s ease, border-width 0.3s ease;
-    position: relative;
-    z-index: 150;
-}
-
-.sidebar-trigger:hover ~ .sidebar,
-.sidebar:hover,
-.sidebar.pinned {
-    width: var(--sidebar-width);
-    padding: 1.5rem 0;
-    border-right-width: 1px;
-    box-shadow: 4px 0 20px rgba(139,69,19,0.10);
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+    align-self: flex-start;
 }
 
 .sidebar-icon {
@@ -241,30 +218,11 @@ body {
     text-decoration: none;
 }
 .sidebar-icon:hover {
-    background: #FFF3D0;
+    background: rgba(255,255,255,0.35);
     opacity: 1;
     transform: scale(1.08);
 }
-.sidebar-icon.active {
-    background: #FFF3D0;
-    opacity: 1;
-    border: 2px solid var(--yellow);
-}
 
-.sidebar-toggle {
-    margin-top: auto;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    color: var(--brown);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-.sidebar-toggle:hover { background: #FFF3D0; }
-
-/* ========== CONTEÚDO ========== */
 .pedidos-content {
     flex: 1;
     padding: 2rem 3rem;
@@ -279,11 +237,10 @@ body {
 .page-title {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: #922800;
     margin-bottom: 2rem;
 }
 
-/* ========== FILTROS ========== */
 .filtros {
     display: flex;
     gap: 0.8rem;
@@ -315,7 +272,6 @@ body {
     color: var(--brown);
 }
 
-/* ========== CARDS DE PEDIDOS ========== */
 .pedidos-list {
     display: flex;
     flex-direction: column;
@@ -437,7 +393,6 @@ body {
     color: var(--status-cancelado);
 }
 
-/* ========== BOTÃO MODO ESCURO ========== */
 .dark-mode-toggle {
     position: fixed;
     bottom: 1.5rem;
@@ -488,7 +443,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 700px) {
     .main-container {
         flex-direction: column;
@@ -511,7 +465,6 @@ body {
     .page-title { font-size: 1.5rem; }
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     --yellow: #ffc70b;
     --brown: #D2A679;
@@ -613,4 +566,37 @@ body.dark-mode .help-button {
 
 body.dark-mode .help-button:hover {
     background: #4A2E16;
+}
+
+.sidebar .config-wrap {
+    margin-top: auto;
+}
+
+.config-menu-sidebar {
+    top: auto;
+    bottom: 0;
+    left: calc(100% + 14px);
+    right: auto;
+}
+
+.sidebar-icon {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    background: #E53935;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
 }

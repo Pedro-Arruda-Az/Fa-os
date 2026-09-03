@@ -8,7 +8,7 @@ const notificacoes = [
     {
         id: 1,
         tipo: 'message',
-        icone: '💬',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
         titulo: 'Nova mensagem',
         descricao: 'LimpaMais Serviços enviou uma mensagem',
         tempo: '5 min atrás',
@@ -17,7 +17,7 @@ const notificacoes = [
     {
         id: 2,
         tipo: 'payment',
-        icone: '💳',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>',
         titulo: 'Pagamento confirmado',
         descricao: 'Pagamento de R$ 150,00 foi processado',
         tempo: '2 horas atrás',
@@ -26,7 +26,7 @@ const notificacoes = [
     {
         id: 3,
         tipo: 'star',
-        icone: '⭐',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3 6 6.5 1-4.7 4.6L18 20l-6-3.2L6 20l1.2-6.4L2.5 9l6.5-1 3-6Z"/></svg>',
         titulo: 'Avalie o serviço',
         descricao: 'Avalie o serviço da Clean House Pro',
         tempo: '1 dia atrás',
@@ -35,7 +35,7 @@ const notificacoes = [
     {
         id: 4,
         tipo: 'check',
-        icone: '✅',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
         titulo: 'Serviço concluído',
         descricao: 'Seu pedido de limpeza foi concluído',
         tempo: '2 dias atrás',
@@ -44,7 +44,7 @@ const notificacoes = [
     {
         id: 5,
         tipo: 'message',
-        icone: '💬',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
         titulo: 'Nova mensagem',
         descricao: 'João Silva enviou uma mensagem',
         tempo: '3 dias atrás',
@@ -53,7 +53,7 @@ const notificacoes = [
     {
         id: 6,
         tipo: 'payment',
-        icone: '💳',
+        icone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>',
         titulo: 'Crédito adicionado',
         descricao: 'R$ 500,00 foram adicionados à sua conta',
         tempo: '5 dias atrás',
@@ -88,7 +88,6 @@ function renderNotificacoes() {
             card.dataset.id = notif.id;
 
             card.innerHTML = `
-                <div class="notif-icon icon-${notif.tipo}">${notif.icone}</div>
                 <div class="notif-body">
                     <div class="notif-title">${notif.titulo}</div>
                     <div class="notif-desc">${notif.descricao}</div>

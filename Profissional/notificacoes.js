@@ -1,8 +1,18 @@
 /* ============================================================
    FAÇOS - notificacoes.js
-   Painel do profissional - Notificações
+   Painel do profissional - Notificações (dados reais do Supabase)
    ============================================================ */
 
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
+
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+let profissionalAtual = null;
+let notificacoes = [];
 let filtroAtivo = null;
 
 // ========== VERIFICAR LOGIN ==========
@@ -10,38 +20,179 @@ function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
         window.location.href = '/Profissional/login_profissional.html';
+        return null;
     }
-    return profissional ? JSON.parse(profissional) : null;
+    return JSON.parse(profissional);
+}
+
+// ========== MAPEIA tipo do banco -> tipo/ícone/link usados na tela ==========
+const CONFIG_TIPO = {
+    pagamento: {
+        dataTipo: 'pagamentos',
+        iconeNaoLido: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1.1-3 2.5 1.3 2.2 3 2.5c1.7.3 3 1.1 3 2.5s-1.3 2.5-3 2.5-3-1.1-3-2.5"/></svg>',
+        classeIcone: 'icon-pagamento',
+        classeIconeLido: 'icon-pagamento-lido',
+        classeCard: 'notif-pagamento',
+        link: '/Profissional/carteira.html',
+        linkTexto: 'Ver detalhes'
+    },
+    mensagem: {
+        dataTipo: 'mensagens',
+        iconeNaoLido: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+        classeIcone: 'icon-mensagem',
+        classeIconeLido: 'icon-mensagem',
+        classeCard: 'notif-mensagem',
+        link: '/Profissional/mensagens.html',
+        linkTexto: 'Ver mensagem'
+    },
+    sistema: {
+        dataTipo: 'lembretes',
+        iconeNaoLido: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+        classeIcone: 'icon-lembrete',
+        classeIconeLido: 'icon-lembrete-lido',
+        classeCard: 'notif-lembrete',
+        link: null,
+        linkTexto: null
+    }
+};
+
+// ========== FORMATAR TEMPO RELATIVO ==========
+function formatarTempoRelativo(isoString) {
+    const data = new Date(isoString);
+    const agora = new Date();
+    const diffMin = Math.floor((agora - data) / 60000);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) return 'Agora';
+    if (diffMin < 60) return `${diffMin} min`;
+    if (diffHoras < 24) return `${diffHoras}h`;
+    if (diffDias === 1) return 'Ontem';
+    return `${diffDias} dias`;
+}
+
+// ========== BUSCAR NOTIFICAÇÕES REAIS ==========
+async function buscarNotificacoes() {
+    if (!supabaseClient || !profissionalAtual) return [];
+
+    const { data, error } = await supabaseClient
+        .from('notificacoes_app')
+        .select('*')
+        .eq('destinatario_email', profissionalAtual.email)
+        .eq('destinatario_tipo', 'profissional')
+        .order('criado_em', { ascending: false })
+        .limit(50);
+
+    if (error) {
+        console.error('Erro ao buscar notificações:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+// ========== CRIAR CARD DE NOTIFICAÇÃO ==========
+function criarCard(notif) {
+    const cfg = CONFIG_TIPO[notif.tipo] || CONFIG_TIPO.sistema;
+
+    const card = document.createElement('div');
+    card.className = `notif-card${!notif.lida ? ` ${cfg.classeCard} is-unread` : ''}`;
+    card.dataset.id = notif.id;
+    card.dataset.tipo = cfg.dataTipo;
+
+    const linkHtml = (cfg.link && !notif.lida)
+        ? `<a href="${cfg.link}" class="notif-link">${cfg.linkTexto}</a>`
+        : '';
+
+    card.innerHTML = `
+        <span class="notif-icon ${notif.lida ? cfg.classeIconeLido : cfg.classeIcone}">
+            ${cfg.iconeNaoLido}
+        </span>
+        <div class="notif-corpo">
+            <div class="notif-topo">
+                <span class="notif-titulo">${notif.titulo}</span>
+                <span class="notif-tempo">${formatarTempoRelativo(notif.criado_em)}</span>
+            </div>
+            <p class="notif-texto">${notif.descricao || ''}</p>
+            ${linkHtml}
+        </div>
+    `;
+
+    return card;
+}
+
+// ========== RENDERIZAR TUDO ==========
+function renderNotificacoes(lista) {
+    const containerNovas = document.getElementById('notifNovas');
+    const containerAnteriores = document.getElementById('notifAnteriores');
+
+    containerNovas.innerHTML = '';
+    containerAnteriores.innerHTML = '';
+
+    const naoLidas = lista.filter(n => !n.lida);
+    const lidas = lista.filter(n => n.lida);
+
+    if (naoLidas.length === 0) {
+        containerNovas.innerHTML = `<p style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">Nenhuma notificação nova.</p>`;
+    } else {
+        naoLidas.forEach(n => containerNovas.appendChild(criarCard(n)));
+    }
+
+    if (lidas.length === 0) {
+        containerAnteriores.innerHTML = `<p style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">Nada por aqui ainda.</p>`;
+    } else {
+        lidas.slice(0, 20).forEach(n => containerAnteriores.appendChild(criarCard(n)));
+    }
+
+    configurarLinksNotif();
+    atualizarResumo(lista);
 }
 
 // ========== ATUALIZAR RESUMO ==========
-function atualizarResumo() {
-    const todas = document.querySelectorAll('.notif-card');
-    const novas = document.querySelectorAll('#notifNovas .notif-card');
-    const naoLidas = document.querySelectorAll('.notif-card.is-unread');
+function atualizarResumo(lista) {
+    const naoLidas = lista.filter(n => !n.lida).length;
 
-    document.getElementById('resumoTotal').textContent = todas.length;
-    document.getElementById('resumoNovas').textContent = novas.length;
-    document.getElementById('resumoNaoLidas').textContent = naoLidas.length;
+    document.getElementById('resumoNovas').textContent = naoLidas;
+    document.getElementById('resumoNaoLidas').textContent = naoLidas;
+    document.getElementById('resumoTotal').textContent = lista.length;
 }
 
 // ========== MARCAR TODAS COMO LIDAS ==========
-function marcarTodasComoLidas() {
-    document.querySelectorAll('.notif-card.is-unread').forEach(card => {
-        card.classList.remove('is-unread');
-    });
-    atualizarResumo();
+async function marcarTodasComoLidas() {
+    const idsNaoLidos = notificacoes.filter(n => !n.lida).map(n => n.id);
+    if (idsNaoLidos.length === 0) return;
+
+    notificacoes.forEach(n => { n.lida = true; });
+    renderNotificacoes(notificacoes);
+
+    if (supabaseClient) {
+        await supabaseClient
+            .from('notificacoes_app')
+            .update({ lida: true })
+            .in('id', idsNaoLidos);
+    }
 }
 
 // ========== MARCAR UMA COMO LIDA (ao clicar no link) ==========
 function configurarLinksNotif() {
     document.querySelectorAll('.notif-link').forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
             const card = link.closest('.notif-card');
-            if (card) {
-                card.classList.remove('is-unread');
-                atualizarResumo();
+            if (!card) return;
+            const id = card.dataset.id;
+            const notif = notificacoes.find(n => n.id === id);
+            const destino = link.getAttribute('href');
+
+            if (notif && !notif.lida) {
+                notif.lida = true;
+                if (supabaseClient) {
+                    await supabaseClient.from('notificacoes_app').update({ lida: true }).eq('id', id);
+                }
+                renderNotificacoes(notificacoes);
             }
+
+            if (destino) window.location.href = destino;
         });
     });
 }
@@ -65,7 +216,6 @@ function aplicarFiltro(filtro) {
     const botoes = document.querySelectorAll('.filtro-rapido-btn');
     const cards = document.querySelectorAll('.notif-card');
 
-    // Se clicar no filtro já ativo, desativa (mostra tudo)
     if (filtroAtivo === filtro) {
         filtroAtivo = null;
         botoes.forEach(b => b.classList.remove('active'));
@@ -99,11 +249,29 @@ function fazerLogout() {
     window.location.href = '/index.html';
 }
 
+// ========== TEMPO REAL: NOVAS NOTIFICAÇÕES ==========
+function escutarNotificacoesEmTempoReal() {
+    if (!supabaseClient || !profissionalAtual) return;
+
+    supabaseClient
+        .channel(`notificacoes-profissional-${profissionalAtual.email}`)
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'notificacoes_app',
+            filter: `destinatario_email=eq.${profissionalAtual.email}`
+        }, async () => {
+            notificacoes = await buscarNotificacoes();
+            renderNotificacoes(notificacoes);
+        })
+        .subscribe();
+}
+
 // ========== INICIALIZAR ==========
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
-    atualizarResumo();
-    configurarLinksNotif();
+document.addEventListener('DOMContentLoaded', async () => {
+    profissionalAtual = verificarLogin();
+    if (!profissionalAtual) return;
+
     configurarPreferencias();
     configurarFiltrosRapidos();
 
@@ -169,11 +337,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Botão de ajuda/suporte
     const helpBtn = document.getElementById('helpBtn');
     if (helpBtn) {
         helpBtn.addEventListener('click', function () {
             alert('Precisa de ajuda? Em breve você poderá falar com nosso suporte por aqui.');
         });
     }
+
+    notificacoes = await buscarNotificacoes();
+    renderNotificacoes(notificacoes);
+    escutarNotificacoesEmTempoReal();
 });
