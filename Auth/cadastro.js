@@ -37,6 +37,60 @@ function testaCNPJ(strCNPJ) {
     return resultado === parseInt(digitos.charAt(1));
 }
 
+async function buscarDadosCNPJ(cnpj) {
+    const statusEl = document.getElementById('cnpjStatus');
+    const nomeEmpresaInput = document.getElementById('cadastroEmpresaUsuario');
+    const emailInput = document.getElementById('cadastroEmpresaEmail');
+    const telefoneInput = document.getElementById('cadastroEmpresaTelefone');
+
+    if (statusEl) {
+        statusEl.textContent = 'Buscando dados do CNPJ...';
+        statusEl.className = 'cnpj-status carregando';
+    }
+
+    try {
+        const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+
+        if (!resposta.ok) {
+            if (statusEl) {
+                statusEl.textContent = 'CNPJ não encontrado na Receita Federal. Preencha os dados manualmente.';
+                statusEl.className = 'cnpj-status erro';
+            }
+            return;
+        }
+
+        const dados = await resposta.json();
+
+        const nomeEmpresa = dados.nome_fantasia || dados.razao_social || '';
+        if (nomeEmpresa && nomeEmpresaInput) {
+            nomeEmpresaInput.value = nomeEmpresa;
+        }
+
+        if (dados.email && emailInput && !emailInput.value.trim()) {
+            emailInput.value = dados.email;
+        }
+
+        const dddTelefone = dados.ddd_telefone_1 || '';
+        if (dddTelefone && telefoneInput && !telefoneInput.value.trim()) {
+            telefoneInput.value = dddTelefone;
+            mascararTelefone(telefoneInput);
+        }
+
+        if (statusEl) {
+            statusEl.textContent = nomeEmpresa
+                ? `Empresa identificada: ${nomeEmpresa}`
+                : 'CNPJ encontrado, mas sem nome cadastrado na Receita. Preencha manualmente se precisar.';
+            statusEl.className = 'cnpj-status sucesso';
+        }
+    } catch (erro) {
+        console.error('Erro ao buscar CNPJ:', erro);
+        if (statusEl) {
+            statusEl.textContent = 'Não foi possível consultar o CNPJ agora. Preencha os dados manualmente.';
+            statusEl.className = 'cnpj-status erro';
+        }
+    }
+}
+
 function testaCPF(strCPF) {
     const cpf = (strCPF || '').replace(/\D/g, '');
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
@@ -150,7 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const profPrecoInput = document.getElementById('cadastroPreco');
 
     if (empresaTelefoneInput) empresaTelefoneInput.addEventListener('input', function () { mascararTelefone(this); });
-    if (empresaCNPJInput) empresaCNPJInput.addEventListener('input', function () { mascararCNPJ(this); });
+    if (empresaCNPJInput) {
+        empresaCNPJInput.addEventListener('input', function () {
+            mascararCNPJ(this);
+            const digitos = this.value.replace(/\D/g, '');
+            if (digitos.length === 14) {
+                buscarDadosCNPJ(digitos);
+            }
+        });
+    }
     if (profTelefoneInput) profTelefoneInput.addEventListener('input', function () { mascararTelefone(this); });
     if (profCPFInput) profCPFInput.addEventListener('input', function () { mascararCPF(this); });
 
@@ -207,10 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
+                const cnpjHash = CryptoJS.SHA256(cnpj).toString(CryptoJS.enc.Hex);
+                const telefoneHash = CryptoJS.SHA256(telefone).toString(CryptoJS.enc.Hex);
 
                 const { error } = await supabaseClient
                     .from('usuarios')
-                    .insert([{ nome, nome_user, cnpj, email, telefone, endereco, senha: senhaHash }])
+                    .insert([{ nome, nome_user, cnpj: cnpjHash, email, telefone: telefoneHash, endereco, senha: senhaHash }])
                     .select();
 
                 if (error) {
@@ -289,15 +353,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
+                const cpfHash = CryptoJS.SHA256(cpf).toString(CryptoJS.enc.Hex);
+                const telefoneHash = CryptoJS.SHA256(telefone).toString(CryptoJS.enc.Hex);
 
                 const { error } = await supabaseClient
                     .from('profissionais')
                     .insert([{
                         nome_empresa,
                         email,
-                        telefone,
+                        telefone: telefoneHash,
                         endereco,
-                        cpf,
+                        cpf: cpfHash,
                         area_atuacao,
                         preco_servico,
                         senha: senhaHash,

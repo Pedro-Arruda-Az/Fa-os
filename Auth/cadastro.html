@@ -53,14 +53,14 @@
                 <h1>Cadastro de Empresa</h1>
                 <p class="auth-sub">Preencha seus dados para criar sua conta</p>
 
-                <label>Nome da empresa</label>
+                <label>Nome completo</label>
                 <input type="text" id="cadastroEmpresaNome" placeholder="Maria Silva">
-
-                <label>Empresa</label>
-                <input type="text" id="cadastroEmpresaUsuario" placeholder="Nome da empresa">
 
                 <label>CNPJ</label>
                 <input type="tel" id="cadastroEmpresaCNPJ" placeholder="00.000.000/0000-00" maxlength="18">
+                <p class="cnpj-status" id="cnpjStatus"></p>
+
+                <input type="hidden" id="cadastroEmpresaUsuario">
 
                 <label>E-mail</label>
                 <input type="email" id="cadastroEmpresaEmail" placeholder="voce@email.com">
@@ -97,7 +97,7 @@
                 <h1>Cadastro de Profissional</h1>
                 <p class="auth-sub">Preencha os dados da sua empresa para começar</p>
 
-                <label>Nome completo</label>
+                <label>Nome da empresa</label>
                 <input type="text" id="cadastroNome" placeholder="Faços Serviços LTDA">
 
                 <label>E-mail</label>

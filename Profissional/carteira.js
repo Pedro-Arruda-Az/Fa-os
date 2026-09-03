@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('saldoValor').textContent = formatarMoeda(dados.saldo);
         document.getElementById('dadoChavePix').textContent = dados.chave_pix || 'Não cadastrada';
         document.getElementById('dadoBanco').textContent = dados.banco || 'Não cadastrado';
-        document.getElementById('dadoCnpj').textContent = dados.cnpj || dados.cpf || '—';
+        document.getElementById('dadoCnpj').textContent = (dados.cnpj || dados.cpf) ? 'Cadastrado' : '—';
     }
 
     configurarEdicaoDados(dados);

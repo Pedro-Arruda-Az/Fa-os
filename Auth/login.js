@@ -140,12 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
+                const cnpjHash = CryptoJS.SHA256(cnpj).toString(CryptoJS.enc.Hex);
 
                 const { data: empresas, error } = await supabaseClient
                     .from('usuarios')
                     .select('*')
                     .eq('email', email)
-                    .eq('cnpj', cnpj)
+                    .eq('cnpj', cnpjHash)
                     .eq('senha', senhaHash);
 
                 if (error) throw new Error(error.message);
@@ -199,12 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
+                const cpfHash = CryptoJS.SHA256(cpf).toString(CryptoJS.enc.Hex);
 
                 const { data: profissionais, error } = await supabaseClient
                     .from('profissionais')
                     .select('*')
                     .eq('email', email)
-                    .eq('cpf', cpf)
+                    .eq('cpf', cpfHash)
                     .eq('senha', senhaHash);
 
                 if (error) throw new Error(error.message);
