@@ -151,12 +151,13 @@ if (entrarBtn) {
         if (supabaseClient && window.CryptoJS) {
             try {
                 const senhaHash = CryptoJS.SHA256(senha).toString(CryptoJS.enc.Hex);
-                
+                const cnpjHash = CryptoJS.SHA256(cnpj).toString(CryptoJS.enc.Hex);
+
                 const { data: profissionais, error } = await supabaseClient
                     .from('profissionais')
                     .select('*')
                     .eq('email', email)
-                    .eq('cnpj', cnpj)
+                    .eq('cnpj', cnpjHash)
                     .eq('senha', senhaHash);
 
                 if (error) {

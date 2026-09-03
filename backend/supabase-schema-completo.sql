@@ -4,15 +4,17 @@ create table if not exists usuarios (
     nome_user varchar(255),
     email varchar(255) not null unique,
     senha varchar(255) not null,
-    telefone varchar(50),
+    telefone text,
     data_cadastro timestamptz not null default now()
 );
 
 alter table usuarios add column if not exists endereco text;
 alter table usuarios add column if not exists cnpj text;
-alter table usuarios add column if not exists cpf varchar(14);
+alter table usuarios add column if not exists cpf text;
 alter table usuarios add column if not exists saldo numeric(10,2) not null default 0;
 alter table usuarios alter column cpf drop not null;
+alter table usuarios alter column telefone type text;
+alter table usuarios alter column cpf type text;
 
 create unique index if not exists usuarios_cnpj_key
     on usuarios (cnpj) where cnpj is not null;
@@ -25,7 +27,7 @@ create table if not exists profissionais (
     nome_empresa varchar(255) not null,
     email varchar(255) not null unique,
     senha varchar(255) not null,
-    telefone varchar(50),
+    telefone text,
     descricao text,
     categoria varchar(100),
     avaliacao decimal(3,2) default 0,
@@ -41,10 +43,13 @@ create table if not exists profissionais (
 alter table profissionais add column if not exists endereco text;
 alter table profissionais add column if not exists area_atuacao text;
 alter table profissionais add column if not exists sobre text;
-alter table profissionais add column if not exists cpf varchar(14);
-alter table profissionais add column if not exists cnpj varchar(18);
+alter table profissionais add column if not exists cpf text;
+alter table profissionais add column if not exists cnpj text;
 alter table profissionais add column if not exists preco_servico numeric(10,2);
 alter table profissionais alter column cnpj drop not null;
+alter table profissionais alter column telefone type text;
+alter table profissionais alter column cpf type text;
+alter table profissionais alter column cnpj type text;
 
 alter table profissionais add column if not exists saldo numeric(10,2) not null default 0;
 alter table profissionais add column if not exists chave_pix text;
