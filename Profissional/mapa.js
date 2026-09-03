@@ -1,9 +1,4 @@
-/* ============================================================
-   FAÇOS - mapa.js
-   Painel do profissional - Mapa de atendimentos
-   ============================================================ */
 
-// ========== DADOS DE EXEMPLO ==========
 const atendimentos = [
     {
         id: 1,
@@ -25,7 +20,6 @@ const atendimentos = [
 
 let map = null;
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -34,7 +28,6 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
-// ========== INICIALIZAR MAPA ==========
 function initMap() {
     const centro = [-23.592, -46.65];
 
@@ -50,7 +43,6 @@ function initMap() {
         maxZoom: 19
     }).addTo(map);
 
-    // Linha da rota entre os atendimentos
     const pontosRota = atendimentos.map(a => [a.lat, a.lng]);
     L.polyline(pontosRota, {
         color: '#3B82F6',
@@ -58,7 +50,6 @@ function initMap() {
         opacity: 0.85
     }).addTo(map);
 
-    // Marcadores
     atendimentos.forEach(a => {
         const cor = a.status === 'atendido' ? '#34D399' : '#FFC700';
         const icon = L.divIcon({
@@ -87,20 +78,17 @@ function initMap() {
     map.fitBounds(bounds, { padding: [50, 50] });
 }
 
-// ========== NAVEGAÇÃO (abre Google Maps) ==========
 function navegarPara(atendimento) {
     if (!atendimento) return;
     const url = `https://www.google.com/maps/dir/?api=1&destination=${atendimento.lat},${atendimento.lng}`;
     window.open(url, '_blank');
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
     window.location.href = '/index.html';
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     initMap();
@@ -117,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btnIniciarNavegacao.addEventListener('click', () => navegarPara(proximoCliente));
     }
 
-    // ===== MENU DA ENGRENAGEM =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -143,6 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 
@@ -174,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Botão de ajuda/suporte
     const helpBtn = document.getElementById('helpBtn');
     if (helpBtn) {
         helpBtn.addEventListener('click', function () {

@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - Chat.js
-   Página de mensagens com profissionais (dados reais do Supabase)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -18,7 +14,6 @@ let mensagensChannel = null;
 let conversasChannel = null;
 let mensagensRenderizadas = new Set();
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -28,7 +23,6 @@ function verificarLogin() {
     return JSON.parse(usuarioLogado);
 }
 
-// ========== INICIAIS A PARTIR DO NOME ==========
 function gerarIniciais(nome) {
     const partes = (nome || '').trim().split(/\s+/).filter(Boolean);
     if (partes.length === 0) return '?';
@@ -36,7 +30,6 @@ function gerarIniciais(nome) {
     return (partes[0][0] + partes[1][0]).toUpperCase();
 }
 
-// ========== FORMATAR HORA/DATA ==========
 function formatarQuando(isoString) {
     const data = new Date(isoString);
     const hoje = new Date();
@@ -54,7 +47,6 @@ function formatarQuando(isoString) {
     return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 }
 
-// ========== BUSCAR CONVERSAS REAIS ==========
 async function buscarConversas() {
     if (!supabaseClient || !currentUser) return [];
 
@@ -79,7 +71,6 @@ async function buscarConversas() {
     }));
 }
 
-// ========== BUSCAR MENSAGENS DE UMA CONVERSA ==========
 async function buscarMensagens(conversaId) {
     if (!supabaseClient) return [];
 
@@ -101,7 +92,6 @@ async function buscarMensagens(conversaId) {
     }));
 }
 
-// ========== RENDERIZAR LISTA DE CONVERSAS ==========
 function renderConversations(list) {
     const container = document.getElementById('conversationsList');
     const countEl = document.getElementById('chatCount');
@@ -133,7 +123,6 @@ function renderConversations(list) {
     });
 }
 
-// ========== ABRIR CHAT ==========
 async function openChat(chatId) {
     const conv = conversations.find(c => c.id === chatId);
     if (!conv) return;
@@ -160,7 +149,6 @@ async function openChat(chatId) {
     escutarMensagensEmTempoReal(chatId);
 }
 
-// ========== TEMPO REAL: NOVAS MENSAGENS NESSA CONVERSA ==========
 function escutarMensagensEmTempoReal(chatId) {
     if (!supabaseClient) return;
 
@@ -200,7 +188,6 @@ function adicionarMensagemNaTela(msg) {
     scrollToBottom();
 }
 
-// ========== TEMPO REAL: LISTA DE CONVERSAS ==========
 function escutarConversasEmTempoReal() {
     if (!supabaseClient || !currentUser) return;
 
@@ -222,7 +209,6 @@ function escutarConversasEmTempoReal() {
         .subscribe();
 }
 
-// ========== RENDERIZAR MENSAGENS ==========
 function renderMessages(messages) {
     const container = document.getElementById('chatMessages');
     container.innerHTML = '';
@@ -243,7 +229,6 @@ function renderMessages(messages) {
     });
 }
 
-// ========== ENVIAR MENSAGEM ==========
 async function sendMessage() {
     const input = document.getElementById('chatMessageInput');
     const text = input.value.trim();
@@ -268,13 +253,11 @@ async function sendMessage() {
         return;
     }
 
-    // A própria mensagem aparece na tela via tempo real (evento INSERT).
     await supabaseClient
         .from('conversas')
         .update({ ultima_mensagem: text, ultima_mensagem_em: new Date().toISOString() })
         .eq('id', activeChatId);
 
-    // Notifica o profissional que recebeu a mensagem
     await supabaseClient
         .from('notificacoes_app')
         .insert([{
@@ -286,19 +269,16 @@ async function sendMessage() {
         }]);
 }
 
-// ========== SCROLL PARA O FINAL ==========
 function scrollToBottom() {
     const container = document.getElementById('chatMessages');
     container.scrollTop = container.scrollHeight;
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -310,6 +290,26 @@ function configurarModoEscuro() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -323,7 +323,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -349,9 +348,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
-
-// ========== BACK BUTTON (MOBILE) ==========
 function configurarBackButton() {
     const backBtn = document.getElementById('chatBackBtn');
     if (backBtn) {
@@ -364,7 +360,6 @@ function configurarBackButton() {
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     currentUser = verificarLogin();
     if (!currentUser) return;

@@ -1,10 +1,6 @@
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
-// ========== VERIFICAÇÃO DE LOGIN ==========
-/**
- * @returns {Object|null}
- */
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -13,48 +9,31 @@ function verificarLogin() {
     return usuarioLogado ? JSON.parse(usuarioLogado) : null;
 }
 
-// ========== CARREGAR DADOS DO PERFIL ==========
-/**
- * Carrega os dados do usuário e preenche o formulário
- */
 function carregarDadosPerfil() {
     const usuario = verificarLogin();
     if (!usuario) return;
 
-    // Extrair dados do usuário
     const nome = usuario.nome || '';
     const nomeUsuario = usuario.nome_user || usuario.email?.split('@')[0] || 'usuario';
     const telefone = usuario.telefone || '(00) 00000-0000';
     const endereco = usuario.endereco || 'Rua XXXXX, 000 - Cidade, Estado';
     const sexo = usuario.sexo || 'Prefiro não dizer';
 
-    // Gerar iniciais para o avatar
     const iniciais = nome ? nome.substring(0, 2).toUpperCase() : nomeUsuario.substring(0, 2).toUpperCase();
 
-    // Preencher elementos da página
     document.getElementById('avatarIniciais').textContent = iniciais;
 
-    // Preencher campos do formulário de edição
     document.getElementById('editNome').value = nome;
     document.getElementById('editTelefone').value = telefone;
     document.getElementById('editSexo').value = sexo;
     document.getElementById('editEndereco').value = endereco;
 }
 
-// ========== LOGOUT ==========
-/**
- * Remove os dados do usuário e redireciona para o login
- */
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== FORMATAÇÃO DE TELEFONE ==========
-/**
- * Formata o telefone no padrão (XX) XXXXX-XXXX
- * @param {HTMLInputElement} input - Campo de telefone
- */
 function formatarTelefone(input) {
     let valor = input.value.replace(/\D/g, '');
     if (valor.length > 0) {
@@ -69,31 +48,23 @@ function formatarTelefone(input) {
     input.value = valor;
 }
 
-// ========== SALVAR ALTERAÇÕES NO SUPABASE ==========
-/**
- * Salva as alterações do perfil no Supabase e atualiza o localStorage
- */
 async function salvarAlteracoes() {
     const usuario = verificarLogin();
     if (!usuario) return;
 
-    // Capturar valores do formulário
     const nome = document.getElementById('editNome').value;
     const telefone = document.getElementById('editTelefone').value;
     const sexo = document.getElementById('editSexo').value;
     const endereco = document.getElementById('editEndereco').value;
     const novaSenha = document.getElementById('editSenha').value;
 
-    // Validar nome
     if (!nome) {
         alert('Por favor, preencha o nome!');
         return;
     }
 
-    // Inicializar cliente Supabase
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Preparar dados para atualização
     const dadosAtualizar = {
         nome: nome,
         telefone: telefone,
@@ -101,14 +72,12 @@ async function salvarAlteracoes() {
         endereco: endereco
     };
 
-    // Se uma nova senha foi informada, criptografar e adicionar
     if (novaSenha && novaSenha.trim() !== '') {
         const senhaHash = CryptoJS.SHA256(novaSenha).toString(CryptoJS.enc.Hex);
         dadosAtualizar.senha = senhaHash;
     }
 
     try {
-        // Atualizar no Supabase
         const { error } = await supabaseClient
             .from('usuarios')
             .update(dadosAtualizar)
@@ -119,17 +88,13 @@ async function salvarAlteracoes() {
             return;
         }
 
-        // Atualizar dados no localStorage
         const usuarioAtualizado = { ...usuario, ...dadosAtualizar };
         localStorage.setItem('usuarioLogado', JSON.stringify(usuarioAtualizado));
 
-        // Feedback de sucesso
         alert('Alterações salvas com sucesso!');
         
-        // Recarregar dados do perfil
         carregarDadosPerfil();
         
-        // Limpar campo de senha
         document.getElementById('editSenha').value = '';
         
     } catch (err) {
@@ -138,10 +103,6 @@ async function salvarAlteracoes() {
     }
 }
 
-// ========== TROCAR FOTO DE PERFIL ==========
-/**
- * Abre o seletor de arquivos e permite trocar a foto do perfil
- */
 function trocarFotoPerfil() {
     const input = document.getElementById('fotoInput');
     input.click();
@@ -153,7 +114,6 @@ function trocarFotoPerfil() {
             reader.onload = function(event) {
                 const avatarCircle = document.getElementById('avatarCircle');
                 avatarCircle.innerHTML = `<img src="${event.target.result}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                // Salvar foto no localStorage
                 localStorage.setItem('fotoPerfil', event.target.result);
             };
             reader.readAsDataURL(file);
@@ -163,10 +123,6 @@ function trocarFotoPerfil() {
     };
 }
 
-// ========== CARREGAR FOTO SALVA ==========
-/**
- * Carrega a foto de perfil salva no localStorage
- */
 function carregarFotoSalva() {
     const fotoSalva = localStorage.getItem('fotoPerfil');
     if (fotoSalva) {
@@ -175,10 +131,6 @@ function carregarFotoSalva() {
     }
 }
 
-// ========== MODO ESCURO ==========
-/**
- * Configura o modo escuro da página
- */
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -190,6 +142,26 @@ function configurarModoEscuro() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -203,7 +175,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -229,10 +200,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== INICIALIZAÇÃO ==========
-/**
- * Inicializa todas as funcionalidades da página
- */
 function inicializar() {
     verificarLogin();
     carregarDadosPerfil();
@@ -240,7 +207,6 @@ function inicializar() {
     configurarModoEscuro();
     configurarMenuConfiguracoes();
 
-    // Eventos dos botões
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) logoutBtn.addEventListener('click', fazerLogout);
 
@@ -250,7 +216,6 @@ function inicializar() {
     const trocarFotoBtn = document.getElementById('trocarFotoBtn');
     if (trocarFotoBtn) trocarFotoBtn.addEventListener('click', trocarFotoPerfil);
 
-    // Formatação do telefone em tempo real
     const telefoneInput = document.getElementById('editTelefone');
     if (telefoneInput) {
         telefoneInput.addEventListener('input', function() {
@@ -259,5 +224,4 @@ function inicializar() {
     }
 }
 
-// ========== INICIAR ==========
 document.addEventListener('DOMContentLoaded', inicializar);

@@ -40,7 +40,6 @@ body {
     min-height: 100vh;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
@@ -80,7 +79,6 @@ body {
     object-fit: contain;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     width: auto;
@@ -177,7 +175,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ========== CONTEÚDO ========== */
 .page {
     max-width: 1440px;
     margin: 0 auto;
@@ -218,7 +215,6 @@ body {
     color: var(--yellow);
 }
 
-/* ========== CARDS DE SALDO ========== */
 .saldo-row {
     display: grid;
     grid-template-columns: 1fr;
@@ -286,7 +282,6 @@ body {
     color: var(--text-muted);
 }
 
-/* ========== AÇÕES ========== */
 .acoes-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -341,7 +336,6 @@ html.light-mode .btn-pix {
     transform: translateY(-1px);
 }
 
-/* ========== GRID PRINCIPAL ========== */
 .conteudo-grid {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -355,7 +349,6 @@ html.light-mode .btn-pix {
     font-weight: 600;
 }
 
-/* ========== HISTÓRICO ========== */
 .historico-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -519,7 +512,6 @@ html.light-mode .btn-pix {
     border-radius: 20px;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar-col {
     display: flex;
     flex-direction: column;
@@ -607,7 +599,6 @@ html.light-mode .btn-pix {
     border-radius: 4px;
 }
 
-/* ========== SCROLLBAR ========== */
 .transacoes-list::-webkit-scrollbar {
     width: 6px;
 }
@@ -621,7 +612,6 @@ html.light-mode .btn-pix {
     border-radius: 4px;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 1100px) {
     .conteudo-grid {
         grid-template-columns: 1fr;
@@ -642,7 +632,6 @@ html.light-mode .btn-pix {
     }
 }
 
-/* ========== MODAL: EDITAR DADOS ========== */
 .modal-overlay {
     display: none;
     position: fixed;

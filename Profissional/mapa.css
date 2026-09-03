@@ -40,7 +40,6 @@ body {
     min-height: 100vh;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
@@ -80,7 +79,6 @@ body {
     object-fit: contain;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     width: auto;
@@ -177,7 +175,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ========== CONTEÚDO ========== */
 .page {
     max-width: 1440px;
     margin: 0 auto;
@@ -225,7 +222,6 @@ body {
     margin-bottom: 1.1rem;
 }
 
-/* ========== GRID PRINCIPAL ========== */
 .mapa-grid {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -233,7 +229,6 @@ body {
     align-items: start;
 }
 
-/* ========== CARD ATENDIMENTOS / MAPA ========== */
 .atendimentos-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -294,7 +289,6 @@ body {
     background: var(--yellow);
 }
 
-/* ========== LISTA DE CLIENTES ========== */
 .clientes-list {
     display: flex;
     flex-direction: column;
@@ -390,7 +384,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar-col {
     display: flex;
     flex-direction: column;
@@ -406,7 +399,6 @@ body {
     padding: 1.5rem;
 }
 
-/* ---- Rota do dia ---- */
 .rota-timeline {
     margin-bottom: 1.25rem;
 }
@@ -494,7 +486,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ---- Estatísticas ---- */
 .stat-bloco {
     display: flex;
     flex-direction: column;
@@ -521,7 +512,6 @@ body {
     color: var(--green);
 }
 
-/* ---- Área de atuação ---- */
 .area-list {
     list-style: none;
     display: flex;
@@ -540,7 +530,6 @@ body {
     padding-top: 0.9rem;
 }
 
-/* ========== BOTÃO AJUDA ========== */
 .help-button {
     position: fixed;
     bottom: 1.75rem;
@@ -572,7 +561,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== LEAFLET AJUSTES ========== */
 .leaflet-popup-content-wrapper {
     background: #262626;
     color: var(--text-main);
@@ -588,7 +576,6 @@ body {
     font-size: 0.85rem;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 1100px) {
     .mapa-grid {
         grid-template-columns: 1fr;

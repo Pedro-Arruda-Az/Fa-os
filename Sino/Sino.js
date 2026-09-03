@@ -9,7 +9,6 @@ if (window.supabase) {
 let currentUser = null;
 let notificacoes = [];
 
-
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -18,7 +17,6 @@ function verificarLogin() {
     }
     return JSON.parse(usuarioLogado);
 }
-
 
 function formatarTempoRelativo(isoString) {
     const data = new Date(isoString);
@@ -34,7 +32,6 @@ function formatarTempoRelativo(isoString) {
     if (diffDias === 1) return 'Ontem';
     return `${diffDias} dias atrás`;
 }
-
 
 async function buscarNotificacoes() {
     if (!supabaseClient || !currentUser) return [];
@@ -54,7 +51,6 @@ async function buscarNotificacoes() {
 
     return data || [];
 }
-
 
 function renderNotificacoes(lista) {
     const container = document.getElementById('notificacoesList');
@@ -97,13 +93,11 @@ function renderNotificacoes(lista) {
     });
 }
 
-
 const LINK_POR_TIPO_CLIENTE = {
     mensagem: '/Chat/Chat.html',
     pagamento: '/Pagamentos/Pagamentos.html',
     sistema: null
 };
-
 
 async function marcarComoLida(id) {
     const notif = notificacoes.find(n => n.id === id);
@@ -127,12 +121,10 @@ async function marcarComoLida(id) {
     }
 }
 
-
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
-
 
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
@@ -145,6 +137,26 @@ function configurarModoEscuro() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -157,7 +169,6 @@ function configurarModoEscuro() {
         localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
     });
 }
-
 
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
@@ -184,7 +195,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-
 function escutarNotificacoesEmTempoReal() {
     if (!supabaseClient || !currentUser) return;
 
@@ -201,7 +211,6 @@ function escutarNotificacoesEmTempoReal() {
         })
         .subscribe();
 }
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     currentUser = verificarLogin();

@@ -1,12 +1,6 @@
-/* ============================================================
-   FAÇOS - buzz.js
-   Widget de chat "Buzz" (Ajuda/Suporte) - injeta e controla o
-   chat em qualquer página que carregue este script.
-   ============================================================ */
 
 (function () {
     function criarWidgetBuzz() {
-        // Evita duplicar o widget caso o script rode mais de uma vez
         if (document.getElementById('buzzWidget')) return;
 
         const widget = document.createElement('div');
@@ -45,7 +39,6 @@
         const buzzSend = document.getElementById('buzzSend');
         const buzzMessages = document.getElementById('buzzMessages');
 
-        // Todos os botões de "Ajuda / Suporte" da página abrem o Buzz
         const helpButtons = document.querySelectorAll('.help-button');
 
         helpButtons.forEach((btn) => {

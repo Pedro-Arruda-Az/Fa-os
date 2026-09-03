@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - limpeza.js
-   Tela de busca de profissionais com mapa (Leaflet)
-   ============================================================ */
 
 const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
 
@@ -13,12 +9,8 @@ if (window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-// Profissionais reais cadastrados com área de atuação = "Limpeza".
-// Preenchido de verdade pela função buscarProfissionais() abaixo.
 let professionals = [];
 
-// Centro de referência (São Paulo) pra posicionar no mapa quem ainda não
-// tem latitude/longitude cadastrada.
 const CENTRO_SP = { lat: -23.5874, lng: -46.6576 };
 
 function gerarIniciais(nome) {
@@ -43,8 +35,6 @@ async function buscarProfissionais() {
     }
 
     return (data || []).map((row, index) => {
-        // Pequeno deslocamento determinístico pra quem ainda não tem
-        // localização cadastrada não ficar todo mundo empilhado no mesmo pino.
         const jitter = (index % 6) * 0.006 - 0.015;
 
         return {
@@ -170,7 +160,6 @@ function closeModal() {
     document.getElementById('detailEmpty').style.display = 'flex';
 }
 
-// ========== MODAL: FORMA DE PAGAMENTO ==========
 let metodoSelecionado = null;
 let saldoAtualCarteira = 0;
 
@@ -237,16 +226,12 @@ async function registrarPedido(pro, formaPagamento) {
 
     if (error) {
         console.error('Erro ao registrar o pedido:', error);
-        // O pagamento já foi concluído; só o histórico de pedidos que pode
-        // não aparecer. Não bloqueia o fluxo do usuário.
     }
 }
 
 async function creditarProfissional(pro) {
     if (!supabaseClient || !pro.email) return;
 
-    // Busca o saldo atual do profissional pra somar em cima (evita
-    // sobrescrever um saldo que mudou entre a leitura e a gravação).
     const { data: profissional, error: erroBusca } = await supabaseClient
         .from('profissionais')
         .select('saldo')
@@ -270,7 +255,6 @@ async function creditarProfissional(pro) {
         return;
     }
 
-    // Registra o ganho no histórico de transações do profissional
     const { error: erroPagamento } = await supabaseClient
         .from('pagamentos')
         .insert([{
@@ -287,7 +271,6 @@ async function creditarProfissional(pro) {
         console.error('Erro ao registrar o ganho do profissional:', erroPagamento);
     }
 
-    // Notifica o profissional do pagamento recebido
     await supabaseClient
         .from('notificacoes_app')
         .insert([{
@@ -302,7 +285,6 @@ async function creditarProfissional(pro) {
 async function criarConversa(pro) {
     if (!supabaseClient || !usuarioAtual || !pro.email) return;
 
-    // Já existe conversa entre esse cliente e esse profissional?
     const { data: existente } = await supabaseClient
         .from('conversas')
         .select('id')
@@ -310,7 +292,7 @@ async function criarConversa(pro) {
         .eq('profissional_email', pro.email)
         .maybeSingle();
 
-    if (existente) return; // já tem conversa, não precisa criar de novo
+    if (existente) return;
 
     const { error } = await supabaseClient
         .from('conversas')
@@ -325,8 +307,6 @@ async function criarConversa(pro) {
 
     if (error) {
         console.error('Erro ao criar a conversa:', error);
-        // Não bloqueia o fluxo do usuário — a pessoa ainda pode abrir o
-        // chat manualmente depois.
     }
 }
 
@@ -354,7 +334,6 @@ async function pagarComCarteira(pro) {
             return;
         }
 
-        // Registra o gasto para aparecer no histórico e no "Total gasto" da carteira
         const { error: registroError } = await supabaseClient
             .from('pagamentos')
             .insert([{
@@ -369,17 +348,12 @@ async function pagarComCarteira(pro) {
 
         if (registroError) {
             console.error('Erro ao registrar o gasto:', registroError);
-            // O saldo já foi debitado corretamente; só o histórico que pode não
-            // aparecer no "Total gasto" da carteira. Não bloqueia o fluxo do usuário.
         }
 
-        // Registra o pedido para aparecer no Histórico de Pedidos
         await registrarPedido(pro, 'carteira');
 
-        // Abre uma conversa com o profissional pra poder conversar sobre o serviço
         await criarConversa(pro);
 
-        // Credita o profissional na hora, já que o pagamento é confirmado na hora
         await creditarProfissional(pro);
 
         alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
@@ -428,9 +402,6 @@ async function iniciarPagamento(pro) {
         console.log('Resposta MP:', data);
 
         if (data.init_point) {
-            // Como o checkout abre em outra aba e não temos confirmação
-            // automática de volta, registramos o pedido já aqui (o Mercado
-            // Pago também manda um e-mail de confirmação pro cliente).
             await registrarPedido(pro, 'mercadopago');
             await criarConversa(pro);
             await creditarProfissional(pro);
@@ -494,7 +465,6 @@ function bindEvents() {
         }
     });
 
-    // ===== MENU DA ENGRENAGEM (barra lateral) =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -521,6 +491,26 @@ function bindEvents() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {

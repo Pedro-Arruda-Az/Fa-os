@@ -37,7 +37,6 @@ body {
     min-height: 100vh;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
@@ -98,7 +97,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ========== CONTEÚDO ========== */
 .page {
     max-width: 1200px;
     margin: 0 auto;
@@ -139,7 +137,6 @@ body {
     color: var(--yellow);
 }
 
-/* ========== RESUMO ========== */
 .resumo-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -169,7 +166,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* ========== LISTA DA AGENDA ========== */
 .agenda-list {
     display: flex;
     flex-direction: column;
@@ -304,7 +300,6 @@ body {
     transform: none;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 800px) {
     .page {
         padding: 1.75rem 1.25rem 3rem;

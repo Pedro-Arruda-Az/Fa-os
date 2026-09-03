@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - dashboard.js
-   Painel do profissional
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -13,7 +9,6 @@ if (window.supabase) {
 
 let profissionalAtual = null;
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -22,7 +17,6 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
-// ========== CARREGAR DADOS ==========
 function carregarDados() {
     const profissional = verificarLogin();
     if (!profissional) return;
@@ -33,7 +27,6 @@ function carregarDados() {
     }
 }
 
-// ========== ÍCONES POR TIPO ==========
 const ICONE_POR_TIPO = {
     mensagem: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
     pagamento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1.1-3 2.5 1.3 2.2 3 2.5c1.7.3 3 1.1 3 2.5s-1.3 2.5-3 2.5-3-1.1-3-2.5"/></svg>',
@@ -46,7 +39,6 @@ const LINK_POR_TIPO = {
     sistema: null
 };
 
-// ========== FORMATAR TEMPO RELATIVO ==========
 function formatarTempoRelativo(isoString) {
     const data = new Date(isoString);
     const diffMin = Math.floor((new Date() - data) / 60000);
@@ -60,7 +52,6 @@ function formatarTempoRelativo(isoString) {
     return `${diffDias} dias atrás`;
 }
 
-// ========== BUSCAR E RENDERIZAR AS 3 ÚLTIMAS NOTIFICAÇÕES ==========
 async function carregarUltimasNotificacoes() {
     const grid = document.getElementById('ultimasNotifGrid');
     if (!grid || !supabaseClient || !profissionalAtual) return;
@@ -127,7 +118,6 @@ function renderUltimasNotificacoes(lista) {
     });
 }
 
-// ========== TEMPO REAL: ATUALIZA A PRÉVIA QUANDO CHEGA NOTIFICAÇÃO NOVA ==========
 function escutarUltimasNotificacoesEmTempoReal() {
     if (!supabaseClient || !profissionalAtual) return;
 
@@ -142,13 +132,11 @@ function escutarUltimasNotificacoesEmTempoReal() {
         .subscribe();
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
     window.location.href = '/index.html';
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     carregarDados();
     profissionalAtual = verificarLogin();
@@ -158,10 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         escutarUltimasNotificacoesEmTempoReal();
     }
 
-    // Ícone de perfil no header (link real para /Profissional/perfil.html,
-    // nada a fazer aqui além de deixar o navegador seguir o link)
-
-    // ===== MENU DA ENGRENAGEM =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -179,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modo claro / escuro (funcional)
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
 
@@ -188,6 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 
@@ -203,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Idioma (PT/EN) — funcional, e fica salvo pras outras telas também
     const idiomaBtn = document.getElementById('idiomaBtn');
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', function () {
@@ -211,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Sair
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
@@ -221,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Botão de ajuda/suporte
     const helpBtn = document.getElementById('helpBtn');
     if (helpBtn) {
         helpBtn.addEventListener('click', function () {

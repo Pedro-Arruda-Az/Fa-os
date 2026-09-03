@@ -46,7 +46,6 @@ body {
     min-height: 100vh;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
@@ -101,7 +100,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* ========== MENU DE CONFIGURAÇÕES ========== */
 .config-wrap {
     width: auto;
     height: auto;
@@ -175,7 +173,6 @@ body {
     color: #FF8A80;
 }
 
-/* ========== CONTEÚDO ========== */
 .page {
     max-width: 1200px;
     margin: 0 auto;
@@ -196,7 +193,6 @@ body {
     align-items: start;
 }
 
-/* ========== ÚLTIMAS NOTIFICAÇÕES ========== */
 .ultimas-notif-header {
     display: flex;
     align-items: center;
@@ -302,7 +298,6 @@ body {
     padding: 1rem 0;
 }
 
-/* ========== RESUMO DO DIA ========== */
 .resumo-card {
     background: var(--card-bg);
     border-radius: 20px;
@@ -368,7 +363,6 @@ body {
     border-radius: 50px;
 }
 
-/* ========== LISTA DE ATALHOS ========== */
 .lista-card {
     background: var(--card-bg);
     border-radius: 20px;
@@ -392,11 +386,11 @@ body {
     transition: background 0.2s, transform 0.15s;
 }
 
-.lista-item svg {
+.lista-item img {
     width: 26px;
     height: 26px;
-    color: var(--yellow);
     flex-shrink: 0;
+    object-fit: contain;
 }
 
 .lista-item:hover {
@@ -419,7 +413,6 @@ body {
     justify-content: center;
 }
 
-/* ========== BOTÃO AJUDA ========== */
 .help-button {
     position: fixed;
     bottom: 1.75rem;
@@ -451,7 +444,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 900px) {
     .page {
         padding: 2rem 1.5rem 6rem;

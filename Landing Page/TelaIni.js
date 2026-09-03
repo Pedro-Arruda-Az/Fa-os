@@ -13,7 +13,6 @@ function fazerLogout() {
 verificarLogin();
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ===== MENU DA ENGRENAGEM =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== MODO CLARO / ESCURO =====
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
 
@@ -41,6 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -55,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== IDIOMA (PT/EN) =====
     const idiomaBtn = document.getElementById('idiomaBtn');
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', function () {
@@ -63,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== SAIR =====
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', fazerLogout);

@@ -1,9 +1,4 @@
-/* ============================================================
-   FAÇOS - agenda.js
-   Agenda do profissional
-   ============================================================ */
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -12,7 +7,6 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
-// ========== BOTÕES DOS COMPROMISSOS ==========
 function configurarBotoes() {
     document.querySelectorAll('.agenda-btn:not([disabled])').forEach((btn) => {
         btn.addEventListener('click', function () {
@@ -32,7 +26,6 @@ function configurarBotoes() {
     });
 }
 
-// ========== PERFIL (LOGOUT) ==========
 function configurarPerfil() {
     const perfilBtn = document.getElementById('perfilBtn');
     if (perfilBtn) {
@@ -46,7 +39,6 @@ function configurarPerfil() {
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     configurarBotoes();

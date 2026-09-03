@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - notificacoes.js
-   Painel do profissional - Notificações (dados reais do Supabase)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -15,7 +11,6 @@ let profissionalAtual = null;
 let notificacoes = [];
 let filtroAtivo = null;
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -25,7 +20,6 @@ function verificarLogin() {
     return JSON.parse(profissional);
 }
 
-// ========== MAPEIA tipo do banco -> tipo/ícone/link usados na tela ==========
 const CONFIG_TIPO = {
     pagamento: {
         dataTipo: 'pagamentos',
@@ -56,7 +50,6 @@ const CONFIG_TIPO = {
     }
 };
 
-// ========== FORMATAR TEMPO RELATIVO ==========
 function formatarTempoRelativo(isoString) {
     const data = new Date(isoString);
     const agora = new Date();
@@ -71,7 +64,6 @@ function formatarTempoRelativo(isoString) {
     return `${diffDias} dias`;
 }
 
-// ========== BUSCAR NOTIFICAÇÕES REAIS ==========
 async function buscarNotificacoes() {
     if (!supabaseClient || !profissionalAtual) return [];
 
@@ -91,7 +83,6 @@ async function buscarNotificacoes() {
     return data || [];
 }
 
-// ========== CRIAR CARD DE NOTIFICAÇÃO ==========
 function criarCard(notif) {
     const cfg = CONFIG_TIPO[notif.tipo] || CONFIG_TIPO.sistema;
 
@@ -121,7 +112,6 @@ function criarCard(notif) {
     return card;
 }
 
-// ========== RENDERIZAR TUDO ==========
 function renderNotificacoes(lista) {
     const containerNovas = document.getElementById('notifNovas');
     const containerAnteriores = document.getElementById('notifAnteriores');
@@ -148,7 +138,6 @@ function renderNotificacoes(lista) {
     atualizarResumo(lista);
 }
 
-// ========== ATUALIZAR RESUMO ==========
 function atualizarResumo(lista) {
     const naoLidas = lista.filter(n => !n.lida).length;
 
@@ -157,7 +146,6 @@ function atualizarResumo(lista) {
     document.getElementById('resumoTotal').textContent = lista.length;
 }
 
-// ========== MARCAR TODAS COMO LIDAS ==========
 async function marcarTodasComoLidas() {
     const idsNaoLidos = notificacoes.filter(n => !n.lida).map(n => n.id);
     if (idsNaoLidos.length === 0) return;
@@ -173,7 +161,6 @@ async function marcarTodasComoLidas() {
     }
 }
 
-// ========== MARCAR UMA COMO LIDA (ao clicar no link) ==========
 function configurarLinksNotif() {
     document.querySelectorAll('.notif-link').forEach(link => {
         link.addEventListener('click', async (e) => {
@@ -197,7 +184,6 @@ function configurarLinksNotif() {
     });
 }
 
-// ========== PREFERÊNCIAS (mostrar/ocultar tipos) ==========
 function configurarPreferencias() {
     document.querySelectorAll('.pref-check').forEach(check => {
         check.addEventListener('change', () => {
@@ -211,7 +197,6 @@ function configurarPreferencias() {
     });
 }
 
-// ========== FILTROS RÁPIDOS ==========
 function aplicarFiltro(filtro) {
     const botoes = document.querySelectorAll('.filtro-rapido-btn');
     const cards = document.querySelectorAll('.notif-card');
@@ -243,13 +228,11 @@ function configurarFiltrosRapidos() {
     });
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
     window.location.href = '/index.html';
 }
 
-// ========== TEMPO REAL: NOVAS NOTIFICAÇÕES ==========
 function escutarNotificacoesEmTempoReal() {
     if (!supabaseClient || !profissionalAtual) return;
 
@@ -267,7 +250,6 @@ function escutarNotificacoesEmTempoReal() {
         .subscribe();
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     profissionalAtual = verificarLogin();
     if (!profissionalAtual) return;
@@ -280,7 +262,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         marcarLidasBtn.addEventListener('click', marcarTodasComoLidas);
     }
 
-    // ===== MENU DA ENGRENAGEM =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -306,6 +287,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 

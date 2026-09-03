@@ -189,7 +189,6 @@ a {
     text-decoration: underline;
 }
 
-/* ========== TELA DE LOGIN COM ABAS (EMPRESAS / PROFISSIONAIS) ========== */
 .hex-page {
     background-color: #FDFAC2;
     background-image: url('/imagens/fundo-favos.png');
@@ -368,7 +367,6 @@ a {
     border-color: #FFC700;
 }
 
-/* ========== ESCOLHA DE PERFIL (CADASTRO) ========== */
 .escolha-grid {
     display: flex;
     flex-wrap: wrap;
@@ -444,7 +442,6 @@ a {
     transition: color 0.3s ease;
 }
 
-/* ===== Estado colorido (hover / toque no favo) ===== */
 .escolha-card.ativo {
     background: linear-gradient(160deg, #FFCA28 0%, #F0A500 100%);
     transform: translateY(-6px);
@@ -484,7 +481,6 @@ a {
     }
 }
 
-/* ========== MODAL REDEFINIR SENHA ========== */
 .modal {
     display: none;
     position: fixed;

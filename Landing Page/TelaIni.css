@@ -1,16 +1,11 @@
-/* ============================================================
-   FAÇOS - TelaIni.css
-   Página inicial com serviços e modo escuro
-   ============================================================ */
 
-/* ========== RESET E BASE ========== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Remove outlines de todos os elementos */
 *:focus,
 *:active,
 button:focus,
@@ -29,7 +24,6 @@ body {
     flex-direction: column;
 }
 
-/* ========== HEADER ========== */
 .header {
     background-color: #ffc70b;
     padding: 1rem 2rem;
@@ -81,7 +75,6 @@ body {
     cursor: pointer;
 }
 
-/* Links de navegação */
 .perfil-link,
 .home-link {
     display: flex;
@@ -110,7 +103,6 @@ body {
     background-color: #4A2E16;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -190,13 +182,11 @@ body {
     color: #FF8A80;
 }
 
-/* ========== MAIN CONTAINER ========== */
 .main-container {
     display: flex;
     flex: 1;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
     width: 80px;
     background-color: #ffc70b;
@@ -248,7 +238,6 @@ body {
     right: auto;
 }
 
-/* ========== CONTEÚDO PRINCIPAL ========== */
 .content {
     flex: 1;
     padding: 3rem 4rem;
@@ -265,7 +254,6 @@ body {
     line-height: 1.3;
 }
 
-/* ========== BARRA DE PESQUISA ========== */
 .search-container {
     width: 100%;
     max-width: 600px;
@@ -304,7 +292,6 @@ body {
     color: #A0826D;
 }
 
-/* ========== SEÇÕES ========== */
 .section-title {
     font-size: 1.4rem;
     color: #5C3A1E;
@@ -314,7 +301,6 @@ body {
     font-weight: 600;
 }
 
-/* ========== CARDS DE SERVIÇOS (BRANCOS) ========== */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -351,7 +337,6 @@ body {
     text-align: center;
 }
 
-/* ========== ESTATÍSTICAS DA PLATAFORMA ========== */
 .estatisticas-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -395,7 +380,6 @@ body {
     opacity: 0.8;
 }
 
-/* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
     bottom: 2rem;
@@ -446,29 +430,28 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     background-color: #121212;
 }
 
 body.dark-mode .header {
-    background-color: #ffc70b;
+    background-color: #4A2E16;
 }
 
 body.dark-mode .header-link {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .header-icon-item {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background-color: #ffc70b;
+    background-color: #4A2E16;
 }
 
 body.dark-mode .sidebar img {
-    filter: brightness(0.9);
+    filter: brightness(1);
 }
 
 body.dark-mode .content {
@@ -548,7 +531,6 @@ body.dark-mode .dark-mode-toggle-ini:hover {
     background-color: #4A2E16;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 900px) {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
