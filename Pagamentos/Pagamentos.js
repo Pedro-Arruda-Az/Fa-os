@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - Pagamentos.js
-   Página de pagamentos e transações (com Mercado Pago real)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -13,7 +9,6 @@ if (window.supabase) {
 
 let usuario = null;
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -23,7 +18,6 @@ function verificarLogin() {
     return JSON.parse(usuarioLogado);
 }
 
-// ========== BUSCAR SALDO E PAGAMENTOS REAIS ==========
 async function buscarSaldoAtual(email) {
     if (!supabaseClient) return 0;
     const { data, error } = await supabaseClient
@@ -83,7 +77,6 @@ function formatarFormaPagamento(forma) {
     return mapa[forma] || 'Mercado Pago';
 }
 
-// ========== RENDERIZAR TRANSAÇÕES ==========
 function renderTransacoes(lista) {
     const container = document.getElementById('transacoesList');
     container.innerHTML = '';
@@ -122,7 +115,6 @@ function renderTransacoes(lista) {
     });
 }
 
-// ========== ATUALIZAR RESUMO ==========
 function atualizarResumo(saldo, transacoesGasto) {
     const totalGasto = transacoesGasto
         .filter((t) => t.valor < 0)
@@ -135,7 +127,6 @@ function atualizarResumo(saldo, transacoesGasto) {
     document.getElementById('totalGasto').textContent = `R$ ${totalGasto.toFixed(2).replace('.', ',')}`;
 }
 
-// ========== CARREGAR TUDO ==========
 async function carregarDados() {
     const creditos = await buscarCreditosAprovados(usuario.email);
     const gastosReais = await buscarGastosAprovados(usuario.email);
@@ -151,13 +142,11 @@ async function carregarDados() {
     return saldo;
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -169,6 +158,26 @@ function configurarModoEscuro() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
         }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -182,7 +191,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -208,9 +216,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
-
-// ========== MODAL ADICIONAR CRÉDITO (MERCADO PAGO) ==========
 function configurarModalCredito() {
     const modal = document.getElementById('creditoModal');
     const abrirBtn = document.getElementById('adicionarCreditoBtn');
@@ -271,7 +276,6 @@ function configurarModalCredito() {
                 throw new Error(resultado.error || 'Não foi possível iniciar o pagamento.');
             }
 
-            // Redireciona para o checkout do Mercado Pago
             window.location.href = resultado.init_point;
         } catch (err) {
             console.error(err);
@@ -282,7 +286,6 @@ function configurarModalCredito() {
     });
 }
 
-// ========== CONFIRMAR RETORNO DO MERCADO PAGO ==========
 async function verificarRetornoPagamento() {
     const params = new URLSearchParams(window.location.search);
     const paymentId = params.get('payment_id');
@@ -311,12 +314,10 @@ async function verificarRetornoPagamento() {
         console.error(err);
         alert(err.message || 'Ocorreu um erro ao confirmar seu pagamento.');
     } finally {
-        // Limpa os parâmetros da URL pra não reprocessar num refresh
         window.history.replaceState(null, '', window.location.pathname);
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     usuario = verificarLogin();
     if (!usuario) return;

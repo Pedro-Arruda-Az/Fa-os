@@ -29,7 +29,6 @@ img {
     display: block;
 }
 
-
 .adm-btn {
     position: fixed;
     top: 0.8rem;
@@ -52,7 +51,6 @@ img {
     background: #4A2E16;
     transform: scale(1.05);
 }
-
 
 .site-header {
     position: sticky;
@@ -91,8 +89,8 @@ img {
 }
 
 .brand-logo-full {
-    height: 58px;
-    width: auto;
+    width: 100px;
+    height: auto;
     object-fit: contain;
 }
 
@@ -167,7 +165,6 @@ img {
     transform: translateY(-1px);
 }
 
-/* ========== HERO ========== */
 .hero {
     background: #FFC700;
     padding: 5rem 2rem 4.5rem;
@@ -270,7 +267,6 @@ img {
     height: 16px;
     flex-shrink: 0;
 }
-
 
 .secao {
     padding: 5rem 2rem;
@@ -395,7 +391,6 @@ img {
     background: #3E2711;
 }
 
-/* ========== CARDS DIFERENCIAL ========== */
 .cards-diferencial {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -426,7 +421,6 @@ img {
     font-weight: 700;
     color: #FFF8DC;
 }
-
 
 .passos-lista {
     list-style: none;
@@ -472,7 +466,6 @@ img {
     color: #954521;
 }
 
-
 .servicos-chips {
     display: flex;
     flex-wrap: wrap;
@@ -494,7 +487,6 @@ img {
     font-size: 0.88rem;
     color: #A89880;
 }
-
 
 .cta-final {
     background: linear-gradient(135deg, #FFC107 0%, #E6A800 100%);
@@ -524,7 +516,6 @@ img {
     color: #3E2711;
     text-decoration: underline;
 }
-
 
 .site-footer {
     background: #8F3D0E;
@@ -630,7 +621,6 @@ img {
     text-decoration: underline;
 }
 
-
 .modal {
     display: none;
     position: fixed;
@@ -704,7 +694,6 @@ img {
 .entrar-btn:hover {
     background: #4A2E16;
 }
-
 
 @media (max-width: 900px) {
     .main-nav {

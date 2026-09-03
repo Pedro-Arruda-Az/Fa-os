@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - carteira.js
-   Carteira do profissional (dados reais do Supabase)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -14,7 +10,6 @@ if (window.supabase) {
 let profissionalAtual = null;
 let todasTransacoes = [];
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -24,7 +19,6 @@ function verificarLogin() {
     return JSON.parse(profissional);
 }
 
-// ========== BUSCAR DADOS DO PROFISSIONAL (SALDO, PIX, BANCO) ==========
 async function buscarDadosProfissional() {
     if (!supabaseClient || !profissionalAtual) return null;
 
@@ -42,7 +36,6 @@ async function buscarDadosProfissional() {
     return data;
 }
 
-// ========== BUSCAR TRANSAÇÕES (GANHOS) ==========
 async function buscarTransacoes() {
     if (!supabaseClient || !profissionalAtual) return [];
 
@@ -60,12 +53,10 @@ async function buscarTransacoes() {
     return data || [];
 }
 
-// ========== FORMATAR MOEDA ==========
 function formatarMoeda(valor) {
     return `R$ ${Number(valor || 0).toFixed(2).replace('.', ',')}`;
 }
 
-// ========== RENDERIZAR TRANSAÇÕES ==========
 function renderizarTransacoes(lista) {
     const container = document.getElementById('transacoesList');
     container.innerHTML = '';
@@ -105,7 +96,6 @@ function renderizarTransacoes(lista) {
     });
 }
 
-// ========== FILTROS DE TRANSAÇÕES ==========
 function configurarFiltros() {
     const botoes = document.querySelectorAll('.filtro-btn');
 
@@ -124,7 +114,6 @@ function configurarFiltros() {
     });
 }
 
-// ========== EDITAR DADOS DE PAGAMENTO ==========
 function configurarEdicaoDados(dadosAtuais) {
     const modal = document.getElementById('editarDadosModal');
     const abrirBtn = document.getElementById('editarDadosBtn');
@@ -172,7 +161,6 @@ function configurarEdicaoDados(dadosAtuais) {
     }
 }
 
-// ========== SAQUE / PIX (AINDA NÃO CONECTADOS A UM PROVEDOR REAL) ==========
 function configurarAcoes() {
     const sacarBtn = document.getElementById('sacarBtn');
     if (sacarBtn) {
@@ -196,7 +184,6 @@ function configurarAcoes() {
     }
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -223,6 +210,12 @@ function configurarMenuConfiguracoes() {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 
@@ -256,7 +249,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     profissionalAtual = verificarLogin();
     if (!profissionalAtual) return;

@@ -1,18 +1,10 @@
-/* ============================================================
-   FAÇOS - i18n.js
-   Sistema de tradução PT/EN do painel profissional.
-   Qualquer elemento com data-i18n="chave" é traduzido
-   automaticamente com base no dicionário abaixo.
-   ============================================================ */
 
 const FACOS_I18N = {
-    // Cabeçalho / menu
     'menu.modoClaro': { pt: 'Modo claro', en: 'Light mode' },
     'menu.modoEscuro': { pt: 'Modo escuro', en: 'Dark mode' },
     'menu.idioma': { pt: 'Idioma: PT', en: 'Language: EN' },
     'menu.sair': { pt: 'Sair', en: 'Log out' },
 
-    // Painel (dashboard)
     'painel.titulo': { pt: 'Painel profissional', en: 'Professional dashboard' },
     'painel.resumoDoDia': { pt: 'Resumo do dia', en: "Today's summary" },
     'painel.confirmados': { pt: 'confirmados', en: 'confirmed' },
@@ -28,7 +20,6 @@ const FACOS_I18N = {
     'painel.carteira': { pt: 'Carteira', en: 'Wallet' },
     'painel.ajudaSuporte': { pt: 'Ajuda e suporte', en: 'Help and support' },
 
-    // Títulos das outras telas
     'titulo.mensagens': { pt: 'mensagens com clientes', en: 'messages with clients' },
     'titulo.pedidos': { pt: 'Meus pedidos', en: 'My orders' },
     'titulo.carteira': { pt: 'carteira', en: 'wallet' },

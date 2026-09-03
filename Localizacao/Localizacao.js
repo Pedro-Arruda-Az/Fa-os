@@ -1,54 +1,22 @@
-const professionals = [
-    {
-        id: 1,
-        name: 'LimpaMais Serviços',
-        service: 'Limpeza',
-        distance: 0.8,
-        lat: -23.5590,
-        lng: -46.6530,
-        initials: 'LM'
-    },
-    {
-        id: 2,
-        name: 'Eletro Fix',
-        service: 'Eletricista',
-        distance: 1.2,
-        lat: -23.5620,
-        lng: -46.6560,
-        initials: 'EF'
-    },
-    {
-        id: 3,
-        name: 'Hidro Pro',
-        service: 'Encanador',
-        distance: 2.0,
-        lat: -23.5555,
-        lng: -46.6600,
-        initials: 'HP'
-    },
-    {
-        id: 4,
-        name: 'Montagem Express',
-        service: 'Montagem de móveis',
-        distance: 2.8,
-        lat: -23.5650,
-        lng: -46.6490,
-        initials: 'ME'
-    },
-    {
-        id: 5,
-        name: 'Verde Jardins',
-        service: 'Jardinagem',
-        distance: 3.5,
-        lat: -23.5700,
-        lng: -46.6450,
-        initials: 'VJ'
-    }
+
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
+
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+const CATEGORIAS = [
+    { area: 'Limpeza', listaId: 'lista-Limpeza', pagina: '/Servicos/Limpeza.html' },
+    { area: 'Eletricista', listaId: 'lista-Eletricista', pagina: '/Servicos/Eletricista.html' },
+    { area: 'Casa e instalações', listaId: 'lista-CasaInstalacoes', pagina: '/Servicos/CasaInstalacoes.html' },
+    { area: 'Manutenção', listaId: 'lista-Manutencao', pagina: '/Servicos/Manutencao.html' },
+    { area: 'Jardinagem e áreas externas', listaId: 'lista-Jardinagem', pagina: '/Servicos/Jardinagem.html' },
+    { area: 'Tecnologia e assistência', listaId: 'lista-Tecnologia', pagina: '/Servicos/TecnologiaAssistencia.html' }
 ];
 
-let map = null;
-let markers = {};
-let activePro = null;
+let todosOsProfissionais = [];
 
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
@@ -57,101 +25,85 @@ function verificarLogin() {
     }
 }
 
-function initMap() {
-    const center = [-23.5874, -46.6576];
-
-    map = L.map('map', {
-        center,
-        zoom: 14,
-        zoomControl: true,
-        scrollWheelZoom: true
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19
-    }).addTo(map);
-
-    professionals.forEach(pro => {
-        const icon = L.divIcon({
-            className: '',
-            html: `<div style="
-                background:#ffc70b;
-                border:2px solid #8B4513;
-                border-radius:50%;
-                width:34px; height:34px;
-                display:flex; align-items:center; justify-content:center;
-                font-weight:700; font-size:0.65rem;
-                color:#5A3A1A;
-                box-shadow:0 3px 8px rgba(0,0,0,0.2);
-                font-family:'Sora',sans-serif;
-                cursor:pointer;
-            ">${pro.initials}</div>`,
-            iconSize: [34, 34],
-            iconAnchor: [17, 17]
-        });
-
-        const marker = L.marker([pro.lat, pro.lng], { icon })
-            .addTo(map)
-            .bindPopup(`
-                <div class="popup-name">${pro.name}</div>
-                <div class="popup-service">${pro.service}</div>
-                <div class="popup-dist">${pro.distance} km</div>
-            `, { offset: [0, -10] });
-
-        marker.on('click', () => selectPro(pro.id));
-        markers[pro.id] = marker;
-    });
+function gerarIniciais(nome) {
+    const partes = (nome || '').trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 0) return '?';
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
 }
 
-function renderCards(list) {
-    const container = document.getElementById('professionalsList');
-    const countEl = document.getElementById('resultsCount');
+async function buscarProfissionaisPorCategoria(area) {
+    if (!supabaseClient) return [];
 
-    countEl.textContent = `${list.length} ${list.length !== 1 ? 'profissionais' : 'profissional'} encontrado${list.length !== 1 ? 's' : ''}`;
+    const { data, error } = await supabaseClient
+        .from('profissionais')
+        .select('*')
+        .eq('area_atuacao', area)
+        .eq('status', 'ativo');
+
+    if (error) {
+        console.error(`Erro ao buscar profissionais de ${area}:`, error);
+        return [];
+    }
+
+    return (data || []).map((row, index) => ({
+        id: row.id,
+        name: row.nome_empresa,
+        service: area,
+        distance: Number((0.8 + (index % 6) * 0.6).toFixed(1)),
+        price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
+        initials: gerarIniciais(row.nome_empresa)
+    }));
+}
+
+function renderColuna(listaId, pagina, profissionais) {
+    const container = document.getElementById(listaId);
+    if (!container) return;
+
     container.innerHTML = '';
 
-    if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:#A0826D;padding:2rem;font-size:0.95rem;">Nenhum profissional encontrado.</p>`;
+    if (profissionais.length === 0) {
+        container.innerHTML = `<p class="categoria-vazio">Nenhum profissional cadastrado ainda.</p>`;
         return;
     }
 
-    list.forEach(pro => {
+    profissionais.forEach((pro) => {
         const card = document.createElement('div');
         card.className = 'pro-card';
         card.dataset.id = pro.id;
+        card.dataset.nome = pro.name.toLowerCase();
 
         card.innerHTML = `
             <div class="pro-avatar">${pro.initials}</div>
             <div class="pro-info">
                 <div class="pro-name">${pro.name}</div>
-                <div class="pro-service">${pro.service}</div>
+                <div class="pro-service">${pro.price}</div>
             </div>
             <div class="pro-dist">${pro.distance} km</div>
         `;
 
-        card.addEventListener('click', () => selectPro(pro.id));
+        card.addEventListener('click', () => {
+            window.location.href = pagina;
+        });
+
         container.appendChild(card);
     });
 }
 
-function selectPro(id) {
-    const pro = professionals.find(p => p.id === id);
-    if (!pro) return;
+async function carregarTodasCategorias() {
+    const resultados = await Promise.all(
+        CATEGORIAS.map(async (cat) => {
+            const profissionais = await buscarProfissionaisPorCategoria(cat.area);
+            return { ...cat, profissionais };
+        })
+    );
 
-    document.querySelectorAll('.pro-card').forEach(c => c.classList.remove('active'));
-    const card = document.querySelector(`.pro-card[data-id="${id}"]`);
-    if (card) {
-        card.classList.add('active');
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    todosOsProfissionais = [];
 
-    if (map) {
-        map.setView([pro.lat, pro.lng], 15, { animate: true });
-        markers[id].openPopup();
-    }
-
-    activePro = pro;
+    resultados.forEach(({ listaId, pagina, profissionais, area }) => {
+        renderColuna(listaId, pagina, profissionais);
+        profissionais.forEach((p) => todosOsProfissionais.push({ ...p, listaId, pagina, area }));
+    });
 }
 
 function fazerLogout() {
@@ -170,7 +122,26 @@ function configurarModoEscuro() {
             modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
             if (window.facosClienteAplicarIdioma) window.facosClienteAplicarIdioma();
         }
-        if (map) setTimeout(() => map.invalidateSize(), 100);
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = escuro
+                ? '/imagens/icones-escuro/modo-claro-sol.png'
+                : '/imagens/icones-escuro/modo-escuro-lua.png';
+        }
+
+        const logo = document.querySelector('img[src*="upscalemedia-transformed"], img[src*="facos-logo-completo"]');
+        if (logo) {
+            logo.src = escuro
+                ? '/imagens/facos-logo-completo.png'
+                : '/imagens/upscalemedia-transformed.png';
+        }
+
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone') return;
+            img.src = escuro
+                ? img.src.replace('/icones-claro/', '/icones-escuro/')
+                : img.src.replace('/icones-escuro/', '/icones-claro/');
+        });
     }
 
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -209,24 +180,13 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-function configurarBusca() {
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', () => {
-        const filtered = professionals.filter(p => {
-            const q = searchInput.value.toLowerCase().trim();
-            return !q || p.name.toLowerCase().includes(q) || p.service.toLowerCase().includes(q);
-        });
-        renderCards(filtered);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     verificarLogin();
-    initMap();
-    renderCards(professionals);
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarBusca();
 
-    document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
+    await carregarTodasCategorias();
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) logoutBtn.addEventListener('click', fazerLogout);
 });

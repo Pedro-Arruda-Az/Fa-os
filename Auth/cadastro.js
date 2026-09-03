@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEmpresa = document.getElementById('formEmpresa');
     const formProfissional = document.getElementById('formProfissional');
 
-    // ========== ESCOLHA DE PERFIL (FAVO) ==========
     const escolhaCards = document.querySelectorAll('.escolha-card');
     const botoesVoltar = document.querySelectorAll('.voltarEscolha');
 
@@ -113,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     escolhaCards.forEach((card) => {
         const perfil = card.dataset.perfil;
 
-        // Favo fica colorido ao passar o mouse (e o outro volta ao normal)
         card.addEventListener('mouseenter', () => {
             escolhaCards.forEach((c) => c.classList.remove('ativo'));
             card.classList.add('ativo');
@@ -123,13 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.remove('ativo');
         });
 
-        // Clicar em qualquer área do favo já leva para o cadastro daquele perfil
         card.addEventListener('click', () => {
             const form = formsPorPerfil[perfil];
             if (form) mostrarFormulario(form);
         });
 
-        // Acessibilidade: também funciona com teclado (Enter/Espaço)
         card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -137,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Em telas de toque (celular), o toque também colore o favo antes de navegar
         card.addEventListener('touchstart', () => {
             escolhaCards.forEach((c) => c.classList.remove('ativo'));
             card.classList.add('ativo');
@@ -148,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
         botao.addEventListener('click', voltarParaEscolha);
     });
 
-    // ========== MÁSCARAS ==========
     const empresaTelefoneInput = document.getElementById('cadastroEmpresaTelefone');
     const empresaCNPJInput = document.getElementById('cadastroEmpresaCNPJ');
     const profTelefoneInput = document.getElementById('cadastroTelefone');
@@ -169,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========== CRIAR CONTA (EMPRESA) ==========
     const criarContaEmpresaBtn = document.getElementById('criarContaEmpresaBtn');
 
     if (criarContaEmpresaBtn) {
@@ -244,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========== CRIAR CONTA (PROFISSIONAL) ==========
     const criarContaBtn = document.getElementById('criarContaBtn');
 
     if (criarContaBtn) {

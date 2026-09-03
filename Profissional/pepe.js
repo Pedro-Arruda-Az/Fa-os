@@ -1,9 +1,4 @@
-/* ============================================================
-   FAÇOS - pepe.js
-   Meus pedidos (painel do profissional)
-   ============================================================ */
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -12,7 +7,6 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
-// ========== BOTÕES DOS PEDIDOS ==========
 function configurarBotoes() {
     document.querySelectorAll('.btn-detalhes').forEach((btn) => {
         btn.addEventListener('click', function () {
@@ -29,7 +23,6 @@ function configurarBotoes() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -56,6 +49,12 @@ function configurarMenuConfiguracoes() {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 
@@ -89,7 +88,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     configurarBotoes();

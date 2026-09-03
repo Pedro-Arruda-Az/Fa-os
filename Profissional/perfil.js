@@ -1,12 +1,7 @@
-/* ============================================================
-   FAÇOS - Profissional/perfil.js
-   Perfil do profissional (visualizar e editar dados)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
-// ========== VERIFICAÇÃO DE LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -15,7 +10,6 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
-// ========== MÁSCARA DE TELEFONE ==========
 function formatarTelefone(input) {
     let v = input.value.replace(/\D/g, '').slice(0, 11);
     if (v.length > 6) v = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
@@ -23,7 +17,6 @@ function formatarTelefone(input) {
     input.value = v;
 }
 
-// ========== CARREGAR DADOS DO PERFIL ==========
 function carregarDadosPerfil() {
     const profissional = verificarLogin();
     if (!profissional) return;
@@ -34,11 +27,9 @@ function carregarDadosPerfil() {
     const areaAtuacao = profissional.area_atuacao || '';
     const sobre = profissional.sobre || '';
 
-    // Cartão de resumo
     const iniciais = nomeEmpresa.trim().substring(0, 2).toUpperCase();
     document.getElementById('avatarIniciais').textContent = iniciais;
 
-    // Formulário de edição
     document.getElementById('editNome').value = nomeEmpresa;
     document.getElementById('editTelefone').value = telefone !== '-' ? telefone : '';
     document.getElementById('editEndereco').value = endereco !== '-' ? endereco : '';
@@ -48,13 +39,11 @@ function carregarDadosPerfil() {
     if (areaAtuacao) areaSelect.value = areaAtuacao;
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
     window.location.href = '/Profissional/login_profissional.html';
 }
 
-// ========== SALVAR ALTERAÇÕES ==========
 async function salvarAlteracoes() {
     const profissional = verificarLogin();
     if (!profissional) return;
@@ -125,11 +114,9 @@ async function salvarAlteracoes() {
     }
 }
 
-// ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
     carregarDadosPerfil();
 
-    // ===== MENU DA ENGRENAGEM =====
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
 
@@ -155,6 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 

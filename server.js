@@ -1,8 +1,3 @@
-// ============================================================
-//  FAÇOS - server.js
-//  Servidor local para integração com Mercado Pago Checkout Pro
-//  Rode com: node server.js
-// ============================================================
 
 const http = require('http');
 const https = require('https');
@@ -10,7 +5,6 @@ const https = require('https');
 const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
 const PORT = 3001;
 
-// ── Criar preferência de pagamento ───────────────────────────
 function criarPreferencia(proNome, callback) {
     const body = JSON.stringify({
         items: [
@@ -60,9 +54,7 @@ function criarPreferencia(proNome, callback) {
     req.end();
 }
 
-// ── Servidor HTTP ─────────────────────────────────────────────
 const server = http.createServer((req, res) => {
-    // CORS — permite requisições do seu site local
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

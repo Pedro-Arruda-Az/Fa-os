@@ -34,7 +34,6 @@ body {
     flex-direction: column;
 }
 
-/* ── HEADER ─────────────────────────────────────────── */
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -100,7 +99,6 @@ body {
     transform: scale(1.04);
 }
 
-/* ── MAIN LAYOUT ─────────────────────────────────────── */
 .main-container {
     display: flex;
     height: calc(100vh - var(--header-height));
@@ -109,8 +107,6 @@ body {
     position: relative;
 }
 
-/* Gatilho invisível — fica sobre a borda esquerda */
-/* ── SIDEBAR ─────────────────────────────────────────── */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--yellow);
@@ -147,7 +143,6 @@ body {
     object-fit: contain;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     width: auto;
@@ -221,7 +216,6 @@ body {
 }
 .config-item-sair svg { color: #FF8A80; }
 
-/* ── LIST PANEL ─────────────────────────────────────── */
 .list-panel {
     width: 380px;
     flex-shrink: 0;
@@ -234,12 +228,10 @@ body {
     gap: 0.75rem;
 }
 
-/* Scrollbar */
 .list-panel::-webkit-scrollbar { width: 5px; }
 .list-panel::-webkit-scrollbar-track { background: transparent; }
 .list-panel::-webkit-scrollbar-thumb { background: #DDB880; border-radius: 4px; }
 
-/* ── SEARCH BOX ─────────────────────────────────────── */
 .search-box {
     display: flex;
     align-items: center;
@@ -278,7 +270,6 @@ body {
     padding-left: 0.25rem;
 }
 
-/* ── PROFESSIONAL CARDS ─────────────────────────────── */
 .professionals-list {
     display: flex;
     flex-direction: column;
@@ -395,7 +386,6 @@ body {
     color: var(--text-dark);
 }
 
-/* ── MAP PANEL ──────────────────────────────────────── */
 .detail-panel {
     flex: 1;
     position: relative;
@@ -437,8 +427,6 @@ body {
 }
 .detail-content.open { display: block; }
 
-
-/* Leaflet popup customization */
 .leaflet-popup-content-wrapper {
     border-radius: 12px !important;
     font-family: 'Sora', sans-serif !important;
@@ -449,7 +437,6 @@ body {
 .popup-service { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
 .popup-dist { font-size: 0.8rem; color: var(--brown); margin-top: 4px; font-weight: 600; }
 
-/* ── MODAL ──────────────────────────────────────────── */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -577,7 +564,6 @@ body {
     transform: scale(1.02);
 }
 
-/* ── MODAL: FORMA DE PAGAMENTO ─────────────────────────── */
 .pagamento-title {
     font-size: 1.4rem;
     font-weight: 700;
@@ -701,7 +687,6 @@ body {
     cursor: not-allowed;
 }
 
-/* ── HELP BUTTON ─────────────────────────────────────── */
 .help-button {
     position: fixed;
     bottom: 1.5rem;
@@ -727,7 +712,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ── RESPONSIVIDADE ─────────────────────────────────── */
 @media (max-width: 900px) {
     .list-panel { width: 320px; }
 }
@@ -739,7 +723,7 @@ body {
     .map-panel { height: 50vh; }
     .header-link { display: none; }
 }
-/* ── MODO ESCURO ─────────────────────────────────────────── */
+
 body.dark-mode {
     --yellow: #e6b400;
     --brown: #D2A679;
@@ -757,18 +741,18 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background: var(--yellow);
+    background: #4A2E16;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .header-link,
 body.dark-mode .icon-btn {
-    color: #1E1A16;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background: #ffc70b;
-    border-right-color: #E6A800;
+    background: #4A2E16;
+    border-right-color: #3A2210;
 }
 
 body.dark-mode .sidebar-icon:hover {
@@ -873,7 +857,6 @@ body.dark-mode .leaflet-popup-tip {
     background: #2A241E !important;
 }
 
-/* Botão toggle modo escuro */
 .dark-mode-toggle {
     position: fixed;
     bottom: 20px;

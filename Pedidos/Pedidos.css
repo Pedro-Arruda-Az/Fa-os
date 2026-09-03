@@ -37,7 +37,6 @@ body {
     flex-direction: column;
 }
 
-
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -482,18 +481,18 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background: var(--yellow);
+    background: #4A2E16;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .header-link,
 body.dark-mode .icon-btn {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background: #ffc70b;
-    border-right-color: #E6A800;
+    background: #4A2E16;
+    border-right-color: #3A2210;
 }
 
 body.dark-mode .sidebar-icon:hover {

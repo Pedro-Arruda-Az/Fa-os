@@ -8,7 +8,6 @@ if (window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-// ========== VALIDAR / FORMATAR CNPJ ==========
 function formatarCNPJ(input) {
     let value = input.value.replace(/\D/g, '').slice(0, 14);
     if (value.length > 12) {
@@ -53,7 +52,6 @@ function validarCNPJ(cnpj) {
     return resultado === parseInt(digitos.charAt(1));
 }
 
-// ========== VALIDAR / FORMATAR CPF ==========
 function formatarCPF(input) {
     let value = input.value.replace(/\D/g, '').slice(0, 11);
     if (value.length > 9) {
@@ -84,11 +82,8 @@ function validarCPF(cpf) {
     return resto === parseInt(cpfLimpo.charAt(10));
 }
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ========== ALTERNAR ABAS (EMPRESAS / PROFISSIONAIS) ==========
     const tabEmpresas = document.getElementById('tabEmpresas');
     const tabProfissionais = document.getElementById('tabProfissionais');
     const painelEmpresas = document.getElementById('painelEmpresas');
@@ -107,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tabProfissionais.addEventListener('click', () => ativarAba('profissionais'));
     }
 
-    // ========== MÁSCARAS ==========
     const empresaCNPJInput = document.getElementById('empresaCNPJ');
     if (empresaCNPJInput) {
         empresaCNPJInput.addEventListener('input', function () { formatarCNPJ(this); });
@@ -118,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
         profCPFInput.addEventListener('input', function () { formatarCPF(this); });
     }
 
-    // ========== LOGIN EMPRESAS (tabela "usuarios", email + CNPJ + senha) ==========
     const entrarEmpresaBtn = document.getElementById('entrarEmpresaBtn');
     if (entrarEmpresaBtn) {
         entrarEmpresaBtn.addEventListener('click', async function () {
@@ -178,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========== LOGIN PROFISSIONAIS (tabela "profissionais", email + CPF + senha) ==========
     const entrarProfBtn = document.getElementById('entrarProfBtn');
     if (entrarProfBtn) {
         entrarProfBtn.addEventListener('click', async function () {
@@ -238,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========== ESQUECI MINHA SENHA ==========
     const redefinirSenhaModal = document.getElementById('redefinirSenhaModal');
     const closeRedefinir = document.querySelector('.close-redefinir');
     const confirmarNovaSenhaBtn = document.getElementById('confirmarNovaSenhaBtn');
@@ -250,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', async function (e) {
             e.preventDefault();
 
-            const tipo = this.dataset.tipo; // 'empresas' ou 'profissionais'
+            const tipo = this.dataset.tipo;
             const tabela = tipo === 'empresas' ? 'usuarios' : 'profissionais';
             const emailInput = tipo === 'empresas'
                 ? document.getElementById('empresaEmail')

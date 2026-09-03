@@ -39,7 +39,6 @@ body {
     flex-direction: column;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -80,7 +79,6 @@ body {
     gap: 1rem;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -185,7 +183,6 @@ body {
     transform: scale(1.04);
 }
 
-/* ========== MAIN LAYOUT ========== */
 .main-container {
     display: flex;
     flex: 1;
@@ -204,7 +201,6 @@ body {
     flex-shrink: 0;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
     width: 0;
     background: var(--bg-white);
@@ -267,7 +263,6 @@ body {
 }
 .sidebar-toggle:hover { background: #FFF3D0; }
 
-/* ========== CONTEÚDO ========== */
 .notif-content {
     flex: 1;
     padding: 2rem 3rem;
@@ -286,7 +281,6 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* ========== BANNER DE NÃO LIDAS ========== */
 .unread-banner {
     background: var(--bg-unread);
     border: 1.5px solid var(--border-unread);
@@ -302,7 +296,6 @@ body {
     display: none;
 }
 
-/* ========== LISTA DE NOTIFICAÇÕES ========== */
 .notif-list {
     display: flex;
     flex-direction: column;
@@ -392,7 +385,6 @@ body {
     color: var(--text-light);
 }
 
-/* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
     bottom: 2rem;
@@ -444,7 +436,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 700px) {
     .main-container {
         flex-direction: column;
@@ -455,7 +446,6 @@ body {
     .page-title { font-size: 1.5rem; }
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     --yellow: #ffc70b;
     --brown: #D2A679;

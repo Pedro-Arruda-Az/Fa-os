@@ -13,7 +13,6 @@ body {
     color: #5C3A1E;
 }
 
-/* ========== HEADER ========== */
 .header {
     background-color: #ffc70b;
     padding: 1rem 2rem;
@@ -54,7 +53,6 @@ body {
     align-items: center;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -162,13 +160,11 @@ body {
     background-color: #4A2E16;
 }
 
-/* ========== MAIN CONTAINER ========== */
 .main-container {
     display: flex;
     flex: 1;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
     width: 80px;
     border-right: none;
@@ -208,7 +204,6 @@ body {
     transform: scale(1.1);
 }
 
-/* ========== PERFIL CONTAINER ========== */
 .perfil-container {
     flex: 1;
     padding: 2rem 3rem;
@@ -225,7 +220,6 @@ body {
     text-align: center;
 }
 
-/* ========== GRID DO PERFIL ========== */
 .perfil-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -233,7 +227,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* ========== CARD DA ESQUERDA (INFORMAÇÕES) ========== */
 .perfil-info-card {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 24px;
@@ -242,7 +235,6 @@ body {
     backdrop-filter: blur(4px);
 }
 
-/* FOTO DE PERFIL - TAMANHO AUMENTADO */
 .foto-perfil {
     display: flex;
     flex-direction: column;
@@ -293,7 +285,6 @@ body {
     color: #FFE066;
 }
 
-/* INFORMAÇÕES DO USUÁRIO */
 .info-row {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
@@ -317,7 +308,6 @@ body {
     color: #5C3A1E;
 }
 
-/* ========== CARD DA DIREITA (EDIÇÃO) ========== */
 .perfil-edit-card {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 24px;
@@ -334,7 +324,6 @@ body {
     border-bottom: 2px solid #FFC107;
 }
 
-/* FORMULÁRIO DE EDIÇÃO */
 .edit-form {
     display: flex;
     flex-direction: column;
@@ -377,7 +366,6 @@ body {
     margin-top: 0.25rem;
 }
 
-/* BOTÃO SALVAR */
 .salvar-btn {
     background: #5C3A1E;
     color: #FFE066;
@@ -396,7 +384,6 @@ body {
     transform: scale(1.02);
 }
 
-/* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
     bottom: 2rem;
@@ -447,22 +434,21 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     background: #121212;
 }
 
 body.dark-mode .header {
-    background-color: #ffc70b;
+    background-color: #4A2E16;
 }
 
 body.dark-mode .header-link {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background: #ffc70b;
-    border-right-color: #E6A800;
+    background: #4A2E16;
+    border-right-color: #3A2210;
 }
 
 body.dark-mode .perfil-info-card,
@@ -530,7 +516,6 @@ body.dark-mode .salvar-btn:hover {
     background: #E6A800;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 900px) {
     .perfil-grid {
         grid-template-columns: 1fr;
@@ -549,8 +534,7 @@ body.dark-mode .salvar-btn:hover {
     .page-title {
         font-size: 1.5rem;
     }
-    
-    /* Foto menor no mobile */
+
     .avatar-circle {
         width: 120px;
         height: 120px;

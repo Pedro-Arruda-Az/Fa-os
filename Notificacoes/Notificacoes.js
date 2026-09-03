@@ -1,9 +1,4 @@
-/* ============================================================
-   FAÇOS - Notificacoes.js
-   Página de notificações
-   ============================================================ */
 
-// ========== DADOS DE EXEMPLO ==========
 const notificacoes = [
     {
         id: 1,
@@ -61,7 +56,6 @@ const notificacoes = [
     }
 ];
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -69,7 +63,6 @@ function verificarLogin() {
     }
 }
 
-// ========== RENDERIZAR NOTIFICAÇÕES ==========
 function renderNotificacoes() {
     const container = document.getElementById('notifList');
     container.innerHTML = '';
@@ -96,7 +89,6 @@ function renderNotificacoes() {
                 ${notif.lida ? '' : '<div class="notif-dot"></div>'}
             `;
 
-            // Marcar como lida ao clicar
             card.addEventListener('click', () => {
                 if (!notif.lida) {
                     notif.lida = true;
@@ -112,7 +104,6 @@ function renderNotificacoes() {
     atualizarBannerNaoLidas();
 }
 
-// ========== BANNER DE NÃO LIDAS ==========
 function atualizarBannerNaoLidas() {
     const banner = document.getElementById('unreadBanner');
     const countEl = document.getElementById('unreadCount');
@@ -122,13 +113,11 @@ function atualizarBannerNaoLidas() {
     banner.classList.toggle('hidden', naoLidas === 0);
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -153,7 +142,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -179,7 +167,6 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
 function configurarSidebar() {
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
@@ -192,7 +179,6 @@ function configurarSidebar() {
     }
 }
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', () => {
     verificarLogin();
     renderNotificacoes();

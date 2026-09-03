@@ -35,7 +35,6 @@ body {
     flex-direction: column;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -76,7 +75,6 @@ body {
     gap: 1rem;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -181,7 +179,6 @@ body {
     transform: scale(1.04);
 }
 
-/* ========== MAIN LAYOUT ========== */
 .main-container {
     display: flex;
     height: calc(100vh - var(--header-height));
@@ -190,7 +187,6 @@ body {
     position: relative;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--yellow);
@@ -224,8 +220,6 @@ body {
     transform: scale(1.08);
 }
 
-
-/* ========== LISTA DE CONVERSAS ========== */
 .chat-list {
     width: 380px;
     flex-shrink: 0;
@@ -293,7 +287,6 @@ body {
 }
 .search-input::placeholder { color: var(--text-light); }
 
-/* ========== CARD DE CONVERSA ========== */
 .conversations-list {
     display: flex;
     flex-direction: column;
@@ -385,7 +378,6 @@ body {
     flex-shrink: 0;
 }
 
-/* ========== JANELA DE CHAT ========== */
 .chat-window {
     flex: 1;
     display: flex;
@@ -394,7 +386,6 @@ body {
     position: relative;
 }
 
-/* Placeholder quando nenhuma conversa está selecionada */
 .chat-placeholder {
     flex: 1;
     display: flex;
@@ -418,7 +409,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Chat ativo */
 .chat-active {
     flex: 1;
     display: flex;
@@ -483,7 +473,6 @@ body {
     background: rgba(0,0,0,0.05);
 }
 
-/* ========== MENSAGENS ========== */
 .chat-messages {
     flex: 1;
     padding: 1.5rem;
@@ -498,7 +487,6 @@ body {
 .chat-messages::-webkit-scrollbar-track { background: transparent; }
 .chat-messages::-webkit-scrollbar-thumb { background: #DDB880; border-radius: 4px; }
 
-/* Mensagens do profissional (esquerda) */
 .msg-received {
     align-self: flex-start;
     background: white;
@@ -510,7 +498,6 @@ body {
     line-height: 1.4;
 }
 
-/* Mensagens do usuário (direita) */
 .msg-sent {
     align-self: flex-end;
     background: var(--yellow);
@@ -535,7 +522,6 @@ body {
     text-align: left;
 }
 
-/* ========== INPUT DO CHAT ========== */
 .chat-input-area {
     display: flex;
     gap: 0.6rem;
@@ -579,7 +565,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
     bottom: 1.5rem;
@@ -630,7 +615,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 900px) {
     .chat-list { width: 320px; }
 }
@@ -643,7 +627,6 @@ body {
     .chat-back-btn { display: block; }
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     --yellow: #ffc70b;
     --brown: #D2A679;
@@ -661,22 +644,22 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background: var(--yellow);
+    background: #4A2E16;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .header-link,
 body.dark-mode .icon-btn {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background: #ffc70b;
-    border-right-color: #E6A800;
+    background: #4A2E16;
+    border-right-color: #3A2210;
 }
 
 body.dark-mode .sidebar-icon:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 body.dark-mode .chat-list {
@@ -781,8 +764,6 @@ body.dark-mode .help-button:hover {
     background: #4A2E16;
 }
 
-/* Menu de configurações quando está no rodapé da barra lateral:
-   abre para a direita/cima em vez de para baixo (senão sairia da tela) */
 .sidebar .config-wrap {
     margin-top: auto;
 }

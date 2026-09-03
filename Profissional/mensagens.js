@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - mensagens.js
-   Mensagens com clientes (painel do profissional, dados reais)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -18,7 +14,6 @@ let mensagensChannel = null;
 let conversasChannel = null;
 let mensagensRenderizadas = new Set();
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
@@ -28,7 +23,6 @@ function verificarLogin() {
     return JSON.parse(profissional);
 }
 
-// ========== BUSCAR CONVERSAS REAIS ==========
 async function buscarConversas() {
     if (!supabaseClient || !profissionalAtual) return [];
 
@@ -46,7 +40,6 @@ async function buscarConversas() {
     return data || [];
 }
 
-// ========== BUSCAR MENSAGENS DE UMA CONVERSA ==========
 async function buscarMensagens(conversaId) {
     if (!supabaseClient) return [];
 
@@ -64,7 +57,6 @@ async function buscarMensagens(conversaId) {
     return data || [];
 }
 
-// ========== FORMATAR HORA/DATA ==========
 function formatarQuando(isoString) {
     const data = new Date(isoString);
     const hoje = new Date();
@@ -82,14 +74,12 @@ function formatarQuando(isoString) {
     return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 }
 
-// ========== ELEMENTOS ==========
 const conversasList = document.getElementById('conversasList');
 const chatMensagens = document.getElementById('chatMensagens');
 const chatContatoNome = document.getElementById('chatContatoNome');
 const chatInput = document.getElementById('chatInput');
 const enviarBtn = document.getElementById('enviarBtn');
 
-// ========== RENDERIZAR LISTA DE CONVERSAS ==========
 function renderizarLista() {
     conversasList.innerHTML = '';
 
@@ -115,7 +105,6 @@ function renderizarLista() {
     });
 }
 
-// ========== RENDERIZAR MENSAGENS ==========
 function renderizarMensagens(mensagens) {
     chatMensagens.innerHTML = '';
 
@@ -145,7 +134,6 @@ function renderizarMensagens(mensagens) {
     chatMensagens.scrollTop = chatMensagens.scrollHeight;
 }
 
-// ========== ABRIR CONVERSA ==========
 async function abrirConversa(id) {
     const conversa = conversas.find((c) => c.id === id);
     if (!conversa) return;
@@ -165,7 +153,6 @@ async function abrirConversa(id) {
     escutarMensagensEmTempoReal(id);
 }
 
-// ========== TEMPO REAL: NOVAS MENSAGENS NESSA CONVERSA ==========
 function escutarMensagensEmTempoReal(conversaId) {
     if (!supabaseClient) return;
 
@@ -212,7 +199,6 @@ function adicionarMensagemNaTela(msg) {
     chatMensagens.scrollTop = chatMensagens.scrollHeight;
 }
 
-// ========== TEMPO REAL: LISTA DE CONVERSAS ==========
 function escutarConversasEmTempoReal() {
     if (!supabaseClient || !profissionalAtual) return;
 
@@ -234,7 +220,6 @@ function escutarConversasEmTempoReal() {
         .subscribe();
 }
 
-// ========== TROCAR CONVERSA AO CLICAR ==========
 if (conversasList) {
     conversasList.addEventListener('click', function (e) {
         const item = e.target.closest('.conversa-item');
@@ -243,7 +228,6 @@ if (conversasList) {
     });
 }
 
-// ========== ENVIAR MENSAGEM ==========
 async function enviarMensagem() {
     const texto = chatInput.value.trim();
     if (!texto || !conversaAtivaId || !supabaseClient) return;
@@ -264,13 +248,11 @@ async function enviarMensagem() {
         return;
     }
 
-    // A própria mensagem aparece na tela via tempo real (evento INSERT).
     await supabaseClient
         .from('conversas')
         .update({ ultima_mensagem: texto, ultima_mensagem_em: new Date().toISOString() })
         .eq('id', conversaAtivaId);
 
-    // Notifica o cliente que recebeu a mensagem
     const conversaAtual = conversas.find((c) => c.id === conversaAtivaId);
     if (conversaAtual) {
         await supabaseClient
@@ -295,7 +277,6 @@ if (chatInput) {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -322,6 +303,12 @@ function configurarMenuConfiguracoes() {
         if (modoClaroLabel) {
             modoClaroLabel.setAttribute('data-i18n', claro ? 'menu.modoEscuro' : 'menu.modoClaro');
             if (window.facosAplicarIdioma) facosAplicarIdioma();
+        }
+        const modoClaroIcone = document.getElementById('modoClaroIcone');
+        if (modoClaroIcone) {
+            modoClaroIcone.src = claro
+                ? '/imagens/icones-escuro/modo-escuro-lua.png'
+                : '/imagens/icones-escuro/modo-claro-sol.png';
         }
     }
 
@@ -357,7 +344,6 @@ function configurarMenuConfiguracoes() {
 
 configurarMenuConfiguracoes();
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     profissionalAtual = verificarLogin();
     if (!profissionalAtual) return;

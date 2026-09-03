@@ -1,9 +1,4 @@
-/* ============================================================
-   FAÇOS - login_profissional.js
-   Página de login para profissionais com Supabase
-   ============================================================ */
 
-// ========== CONFIGURAÇÃO SUPABASE ==========
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
@@ -14,7 +9,6 @@ if (window.supabase) {
     console.log('Supabase inicializado para profissionais');
 }
 
-// ========== FORMATAR CNPJ ==========
 function formatarCNPJ(input) {
     let value = input.value.replace(/\D/g, '');
     
@@ -28,7 +22,6 @@ function formatarCNPJ(input) {
     input.value = value;
 }
 
-// ========== FORMATAR TELEFONE ==========
 function formatarTelefone(input) {
     let valor = input.value.replace(/\D/g, '');
     if (valor.length > 0) {
@@ -43,7 +36,6 @@ function formatarTelefone(input) {
     input.value = valor;
 }
 
-// ========== VALIDAR CNPJ ==========
 function validarCNPJ(cnpj) {
     const cnpjLimpo = cnpj.replace(/\D/g, '');
     if (cnpjLimpo.length !== 14) return false;
@@ -79,12 +71,10 @@ function validarCNPJ(cnpj) {
     return true;
 }
 
-// ========== DOM ELEMENTOS ==========
 const cnpjInput = document.getElementById('cnpj');
 const empresaCnpjInput = document.getElementById('empresaCnpj');
 const empresaTelefoneInput = document.getElementById('empresaTelefone');
 
-// ========== EVENTOS DE FORMATAÇÃO ==========
 if (cnpjInput) {
     cnpjInput.addEventListener('input', function() {
         formatarCNPJ(this);
@@ -103,7 +93,6 @@ if (empresaTelefoneInput) {
     });
 }
 
-// ========== MODAL DE CADASTRO ==========
 const modal = document.getElementById('cadastroModal');
 const cadastrarBtn = document.getElementById('cadastrarEmpresaBtn');
 const closeModal = document.getElementById('closeModal');
@@ -135,14 +124,12 @@ if (voltarLogin) {
     });
 }
 
-// Fechar modal ao clicar fora
 modal.addEventListener('click', function(e) {
     if (e.target === modal) {
         fecharModal();
     }
 });
 
-// ========== LOGIN PROFISSIONAL ==========
 const entrarBtn = document.getElementById('entrarBtn');
 
 if (entrarBtn) {
@@ -180,13 +167,10 @@ if (entrarBtn) {
                 if (profissionais && profissionais.length > 0) {
                     alert('Login realizado com sucesso!');
                     
-                    // Salvar dados do profissional
                     localStorage.setItem('profissionalLogado', JSON.stringify(profissionais[0]));
                     
-                    // REDIRECIONAR PARA O DASHBOARD
                     window.location.href = '/Profissional/dashboard.html';
                     
-                    // Limpar campos
                     document.getElementById('email').value = '';
                     document.getElementById('senha').value = '';
                     document.getElementById('cnpj').value = '';
@@ -203,7 +187,6 @@ if (entrarBtn) {
     };
 }
 
-// ========== CRIAR CONTA EMPRESA ==========
 const criarEmpresaBtn = document.getElementById('criarEmpresaBtn');
 
 if (criarEmpresaBtn) {
@@ -270,7 +253,6 @@ if (criarEmpresaBtn) {
                 alert('Empresa cadastrada com sucesso!');
                 fecharModal();
                 
-                // Limpar campos
                 document.getElementById('empresaNome').value = '';
                 document.getElementById('empresaEmail').value = '';
                 document.getElementById('empresaCnpj').value = '';
@@ -278,7 +260,6 @@ if (criarEmpresaBtn) {
                 document.getElementById('empresaSenha').value = '';
                 document.getElementById('empresaConfirmarSenha').value = '';
                 
-                // Preencher campos de login com os dados cadastrados
                 document.getElementById('email').value = email;
                 document.getElementById('cnpj').value = cnpj;
                 document.getElementById('senha').value = '';
@@ -293,7 +274,6 @@ if (criarEmpresaBtn) {
     };
 }
 
-// ========== ESQUECI MINHA SENHA ==========
 const esqueciSenha = document.querySelector('.esqueci-senha');
 
 if (esqueciSenha) {
@@ -335,10 +315,8 @@ if (esqueciSenha) {
 
             const profissional = profissionais[0];
 
-            // Gera uma senha temporária (só é salva no banco DEPOIS que o email for enviado com sucesso)
             const senhaTemp = Math.random().toString(36).slice(-8);
 
-            // Envia a senha temporária por email usando a função enviar-email
             const resposta = await fetch('/api/enviar-email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -361,7 +339,6 @@ if (esqueciSenha) {
                 throw new Error(resultado.error || 'Não foi possível enviar o email.');
             }
 
-            // Email confirmado: agora sim salva o hash da nova senha no Supabase
             const senhaHash = CryptoJS.SHA256(senhaTemp).toString(CryptoJS.enc.Hex);
 
             const { error: updateError } = await supabaseClient
@@ -376,7 +353,6 @@ if (esqueciSenha) {
 
             alert('Enviamos uma nova senha temporária para o seu email! Enquanto isso, você já pode definir a senha que quiser usar a partir de agora:');
 
-            // Abre a telinha para a empresa já escolher a senha definitiva dela
             abrirModalRedefinirSenha(email);
         } catch (err) {
             console.error(err);
@@ -387,7 +363,6 @@ if (esqueciSenha) {
     };
 }
 
-// ========== MODAL: DEFINIR NOVA SENHA ==========
 const redefinirSenhaModal = document.getElementById('redefinirSenhaModal');
 const closeRedefinirModal = document.getElementById('closeRedefinirModal');
 const confirmarNovaSenhaBtn = document.getElementById('confirmarNovaSenhaBtn');
@@ -473,7 +448,6 @@ if (confirmarNovaSenhaBtn) {
     });
 }
 
-// ========== ENTER PARA ENVIAR ==========
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         const modalAberto = modal.classList.contains('open');
@@ -486,11 +460,9 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ========== MODO ESCURO ==========
 const darkModeToggle = document.getElementById('darkModeToggle');
 
 if (darkModeToggle) {
-    // Verificar preferência salva (mesma chave usada em todo o site)
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
         darkModeToggle.textContent = 'Modo claro';

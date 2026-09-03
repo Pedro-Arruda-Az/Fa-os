@@ -36,7 +36,6 @@ body {
     flex-direction: column;
 }
 
-/* ========== HEADER ========== */
 .header {
     height: var(--header-height);
     background: var(--yellow);
@@ -77,7 +76,6 @@ body {
     gap: 1rem;
 }
 
-/* ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ========== */
 .config-wrap {
     position: relative;
     display: flex;
@@ -182,7 +180,6 @@ body {
     transform: scale(1.04);
 }
 
-/* ========== MAIN LAYOUT ========== */
 .main-container {
     display: flex;
     height: calc(100vh - var(--header-height));
@@ -191,7 +188,6 @@ body {
     position: relative;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--yellow);
@@ -225,8 +221,6 @@ body {
     transform: scale(1.08);
 }
 
-
-/* ========== CONTEÚDO ========== */
 .pagamentos-content {
     flex: 1;
     padding: 2rem 3rem;
@@ -245,7 +239,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* ========== SALDO + TOTAL GASTO ========== */
 .saldo-container {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -268,7 +261,6 @@ body {
     min-height: 120px;
 }
 
-/* Saldo (esquerda) - maior e com destaque */
 .saldo-principal {
     border: 2px solid var(--yellow);
     padding: 1.5rem 2rem;
@@ -295,7 +287,6 @@ body {
     font-size: 2.5rem;
 }
 
-/* SALDO EM VERDE (POSITIVO) */
 .saldo-valor.positivo {
     color: var(--green) !important;
 }
@@ -327,7 +318,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== SEÇÃO TÍTULO ========== */
 .section-title {
     font-size: 1.1rem;
     font-weight: 700;
@@ -339,7 +329,6 @@ body {
     letter-spacing: 0.03em;
 }
 
-/* ========== TRANSAÇÕES ========== */
 .transacoes-list {
     display: flex;
     flex-direction: column;
@@ -406,7 +395,6 @@ body {
     color: var(--green);
 }
 
-/* ========== BOTÕES FLUTUANTES ========== */
 .help-button {
     position: fixed;
     bottom: 1.5rem;
@@ -457,7 +445,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== MODAL ========== */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -600,7 +587,6 @@ body {
     transform: scale(1.02);
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 700px) {
     .main-container {
         flex-direction: column;
@@ -639,7 +625,6 @@ body {
     }
 }
 
-/* ========== MODO ESCURO ========== */
 body.dark-mode {
     --yellow: #ffc70b;
     --brown: #D2A679;
@@ -657,18 +642,18 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-    background: var(--yellow);
+    background: #4A2E16;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .header-link,
 body.dark-mode .icon-btn {
-    color: #5C3A1E;
+    color: #FFC700;
 }
 
 body.dark-mode .sidebar {
-    background: #ffc70b;
-    border-right-color: #E6A800;
+    background: #4A2E16;
+    border-right-color: #3A2210;
 }
 
 body.dark-mode .sidebar-icon:hover {
@@ -752,8 +737,6 @@ body.dark-mode .help-button:hover {
     background: #4A2E16;
 }
 
-/* Menu de configurações quando está no rodapé da barra lateral:
-   abre para a direita/cima em vez de para baixo (senão sairia da tela) */
 .sidebar .config-wrap {
     margin-top: auto;
 }
