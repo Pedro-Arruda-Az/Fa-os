@@ -1,7 +1,3 @@
-/* ============================================================
-   FAÇOS - Pedidos.js
-   Página de histórico de pedidos (dados reais do Supabase)
-   ============================================================ */
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -15,7 +11,6 @@ let usuario = null;
 let pedidos = [];
 let filtroAtual = 'todos';
 
-// ========== VERIFICAR LOGIN ==========
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -25,7 +20,6 @@ function verificarLogin() {
     return JSON.parse(usuarioLogado);
 }
 
-// ========== BUSCAR PEDIDOS REAIS ==========
 async function buscarPedidos(email) {
     if (!supabaseClient) return [];
 
@@ -47,7 +41,6 @@ async function buscarPedidos(email) {
     }));
 }
 
-// ========== RENDERIZAR PEDIDOS ==========
 function renderPedidos(lista) {
     const container = document.getElementById('pedidosList');
     container.innerHTML = '';
@@ -66,7 +59,6 @@ function renderPedidos(lista) {
         const card = document.createElement('div');
         card.className = 'pedido-card';
 
-        // Montar avaliação
         let avaliacaoHtml = '';
         if (pedido.avaliacao !== null) {
             const estrelas = Math.round(pedido.avaliacao);
@@ -88,7 +80,6 @@ function renderPedidos(lista) {
             `;
         }
 
-        // Mapear status para classe CSS
         const statusClass = `status-${pedido.status === 'em_andamento' ? 'andamento' : pedido.status}`;
         const statusLabel = {
             'concluido': 'Concluído',
@@ -113,7 +104,6 @@ function renderPedidos(lista) {
     });
 }
 
-// ========== FILTRAR PEDIDOS ==========
 function filtrarPedidos(filtro) {
     filtroAtual = filtro;
     let listaFiltrada = [];
@@ -137,19 +127,16 @@ function filtrarPedidos(filtro) {
 
     renderPedidos(listaFiltrada);
 
-    // Atualizar botões ativos
     document.querySelectorAll('.filtro-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.filtro === filtro);
     });
 }
 
-// ========== LOGOUT ==========
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -174,7 +161,6 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -200,35 +186,18 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
-function configurarSidebar() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            const pinned = sidebar.classList.toggle('pinned');
-            sidebarToggle.textContent = pinned ? '‹' : '›';
-        });
-    }
-}
-
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', async () => {
     usuario = verificarLogin();
     if (!usuario) return;
 
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarSidebar();
 
     pedidos = await buscarPedidos(usuario.email);
     filtrarPedidos('todos');
 
-    // Logout
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
 
-    // Filtros
     document.querySelectorAll('.filtro-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             filtrarPedidos(btn.dataset.filtro);

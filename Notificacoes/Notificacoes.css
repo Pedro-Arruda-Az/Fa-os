@@ -18,7 +18,7 @@
     --shadow-hover: 0 6px 24px rgba(139,69,19,0.18);
     --radius: 16px;
     --sidebar-width: 82px;
-    --header-height: 64px;
+    --header-height: 92px;
     --blue: #2563eb;
     --green: #16a34a;
     --orange: #f59e0b;
@@ -340,9 +340,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
     flex-shrink: 0;
     background: #EEF4FF;
+}
+
+.notif-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
 .notif-icon.icon-message { background: #E8F0FE; color: var(--blue); }

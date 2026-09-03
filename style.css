@@ -10,10 +10,10 @@ body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
     color: #3E2711;
     background-color: #FFF8DC;
-    background-image: url('/imagens/hex-bg-cluster.png');
-    background-position: center;
-    background-size: cover;
+    background-image: url('imagens/fundo-favos.png');
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -29,7 +29,7 @@ img {
     display: block;
 }
 
-/* ========== BOTÃO ADM ========== */
+
 .adm-btn {
     position: fixed;
     top: 0.8rem;
@@ -53,7 +53,7 @@ img {
     transform: scale(1.05);
 }
 
-/* ========== CABEÇALHO ========== */
+
 .site-header {
     position: sticky;
     top: 0;
@@ -63,13 +63,18 @@ img {
 }
 
 .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem 2rem 1rem 0.75rem;
+    width: 100%;
+    padding: 1rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
 }
 
 .brand-mark {
@@ -86,7 +91,7 @@ img {
 }
 
 .brand-logo-full {
-    height: 48px;
+    height: 58px;
     width: auto;
     object-fit: contain;
 }
@@ -108,6 +113,7 @@ img {
 }
 
 .main-nav a {
+    position: relative;
     font-size: 0.92rem;
     font-weight: 600;
     color: #922800;
@@ -265,17 +271,17 @@ img {
     flex-shrink: 0;
 }
 
-/* ========== SEÇÕES ========== */
+
 .secao {
     padding: 5rem 2rem;
 }
 
 .secao-clara {
-    background: rgba(253, 250, 194, 0.85);
+    background-color: #FDFAC2;
 }
 
 .secao-cinza {
-    background: rgba(253, 250, 194, 0.85);
+    background-color: #FDFAC2;
 }
 
 .secao-escura {
@@ -421,7 +427,7 @@ img {
     color: #FFF8DC;
 }
 
-/* ========== COMO FUNCIONA ========== */
+
 .passos-lista {
     list-style: none;
     display: flex;
@@ -466,7 +472,7 @@ img {
     color: #954521;
 }
 
-/* ========== SERVIÇOS ========== */
+
 .servicos-chips {
     display: flex;
     flex-wrap: wrap;
@@ -489,7 +495,7 @@ img {
     color: #A89880;
 }
 
-/* ========== CHAMADA FINAL ========== */
+
 .cta-final {
     background: linear-gradient(135deg, #FFC107 0%, #E6A800 100%);
     padding: 4.5rem 2rem;
@@ -519,7 +525,7 @@ img {
     text-decoration: underline;
 }
 
-/* ========== RODAPÉ ========== */
+
 .site-footer {
     background: #8F3D0E;
     padding: 3.5rem 2rem 1.5rem;
@@ -624,7 +630,7 @@ img {
     text-decoration: underline;
 }
 
-/* ========== MODAL ADM ========== */
+
 .modal {
     display: none;
     position: fixed;
@@ -699,7 +705,7 @@ img {
     background: #4A2E16;
 }
 
-/* ========== RESPONSIVO ========== */
+
 @media (max-width: 900px) {
     .main-nav {
         display: none;

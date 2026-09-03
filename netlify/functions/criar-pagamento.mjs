@@ -1,9 +1,3 @@
-// ============================================================
-// FAÇOS - criar-pagamento.mjs
-// Cria uma preferência de pagamento no Mercado Pago para
-// adicionar crédito na carteira do usuário.
-// ============================================================
-
 const SUPABASE_URL = "https://fbgnvpcqwpvbwqtmqpzj.supabase.co";
 const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc";
@@ -141,7 +135,6 @@ export default async function criarPagamento(request) {
             });
         }
 
-        // Guarda o id da preferência no registro do pagamento
         await fetch(
             `${SUPABASE_URL}/rest/v1/pagamentos?external_reference=eq.${externalReference}`,
             {

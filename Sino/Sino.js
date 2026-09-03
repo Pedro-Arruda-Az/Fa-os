@@ -1,66 +1,65 @@
-/* ============================================================
-   FAÇOS - Sino.js
-   Página de notificações
-   ============================================================ */
+const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
 
-// ========== DADOS DE EXEMPLO ==========
-const notificacoes = [
-    {
-        id: 1,
-        titulo: 'Nova mensagem',
-        descricao: 'LimpaMais Serviços enviou uma mensagem',
-        tempo: '5 min atrás',
-        lida: false,
-        icone: '💬'
-    },
-    {
-        id: 2,
-        titulo: 'Pagamento confirmado',
-        descricao: 'Pagamento de R$ 150,00 foi processado',
-        tempo: '2 horas atrás',
-        lida: false,
-        icone: '✅'
-    },
-    {
-        id: 3,
-        titulo: 'Avalie o serviço',
-        descricao: 'Avalie o serviço da Clean House Pro',
-        tempo: '1 dia atrás',
-        lida: true,
-        icone: '⭐'
-    },
-    {
-        id: 4,
-        titulo: 'Serviço concluído',
-        descricao: 'Seu pedido de limpeza foi concluído',
-        tempo: '2 dias atrás',
-        lida: true,
-        icone: '🔧'
-    },
-    {
-        id: 5,
-        titulo: 'Nova mensagem',
-        descricao: 'João Silva enviou uma mensagem',
-        tempo: '3 dias atrás',
-        lida: true,
-        icone: '💬'
-    }
-];
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
 
-// ========== VERIFICAR LOGIN ==========
+let currentUser = null;
+let notificacoes = [];
+
+
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
         window.location.href = '/index.html';
+        return null;
     }
+    return JSON.parse(usuarioLogado);
 }
 
-// ========== RENDERIZAR NOTIFICAÇÕES ==========
+
+function formatarTempoRelativo(isoString) {
+    const data = new Date(isoString);
+    const agora = new Date();
+    const diffMs = agora - data;
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) return 'Agora';
+    if (diffMin < 60) return `${diffMin} min atrás`;
+    if (diffHoras < 24) return `${diffHoras} hora${diffHoras !== 1 ? 's' : ''} atrás`;
+    if (diffDias === 1) return 'Ontem';
+    return `${diffDias} dias atrás`;
+}
+
+
+async function buscarNotificacoes() {
+    if (!supabaseClient || !currentUser) return [];
+
+    const { data, error } = await supabaseClient
+        .from('notificacoes_app')
+        .select('*')
+        .eq('destinatario_email', currentUser.email)
+        .eq('destinatario_tipo', 'cliente')
+        .order('criado_em', { ascending: false })
+        .limit(50);
+
+    if (error) {
+        console.error('Erro ao buscar notificações:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+
 function renderNotificacoes(lista) {
     const container = document.getElementById('notificacoesList');
     container.innerHTML = '';
 
-    // Atualizar contador
     const naoLidas = lista.filter(n => !n.lida).length;
     document.getElementById('unreadCount').textContent = naoLidas;
 
@@ -82,16 +81,14 @@ function renderNotificacoes(lista) {
         card.innerHTML = `
             <div class="notificacao-info">
                 <div class="notificacao-titulo">${notif.titulo}</div>
-                <div class="notificacao-descricao">${notif.descricao}</div>
-                <div class="notificacao-tempo">${notif.tempo}</div>
+                <div class="notificacao-descricao">${notif.descricao || ''}</div>
+                <div class="notificacao-tempo">${formatarTempoRelativo(notif.criado_em)}</div>
             </div>
             <div class="notificacao-right">
                 ${!notif.lida ? '<div class="unread-dot"></div>' : ''}
-                <div class="notificacao-icone">${notif.icone}</div>
             </div>
         `;
 
-        // Marcar como lida ao clicar
         card.addEventListener('click', () => {
             marcarComoLida(notif.id);
         });
@@ -100,32 +97,43 @@ function renderNotificacoes(lista) {
     });
 }
 
-// ========== MARCAR COMO LIDA ==========
-function marcarComoLida(id) {
+
+const LINK_POR_TIPO_CLIENTE = {
+    mensagem: '/Chat/Chat.html',
+    pagamento: '/Pagamentos/Pagamentos.html',
+    sistema: null
+};
+
+
+async function marcarComoLida(id) {
     const notif = notificacoes.find(n => n.id === id);
-    if (notif && !notif.lida) {
+    if (!notif) return;
+
+    if (!notif.lida) {
         notif.lida = true;
         renderNotificacoes(notificacoes);
-        
-        // Feedback visual
-        const card = document.querySelector(`.notificacao-card[data-id="${id}"]`);
-        if (card) {
-            card.style.transition = 'all 0.3s ease';
-            card.style.opacity = '0.7';
-            setTimeout(() => {
-                card.style.opacity = '1';
-            }, 300);
+
+        if (supabaseClient) {
+            await supabaseClient
+                .from('notificacoes_app')
+                .update({ lida: true })
+                .eq('id', id);
         }
+    }
+
+    const destino = LINK_POR_TIPO_CLIENTE[notif.tipo];
+    if (destino) {
+        window.location.href = destino;
     }
 }
 
-// ========== LOGOUT ==========
+
 function fazerLogout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = '/index.html';
 }
 
-// ========== MODO ESCURO ==========
+
 function configurarModoEscuro() {
     const modoClaroBtn = document.getElementById('modoClaroBtn');
     const modoClaroLabel = document.getElementById('modoClaroLabel');
@@ -150,7 +158,7 @@ function configurarModoEscuro() {
     });
 }
 
-// ========== MENU DE CONFIGURAÇÕES (ENGRENAGEM) ==========
+
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -176,26 +184,34 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-// ========== SIDEBAR TOGGLE ==========
-function configurarSidebar() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
 
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            const pinned = sidebar.classList.toggle('pinned');
-            sidebarToggle.textContent = pinned ? '‹' : '›';
-        });
-    }
+function escutarNotificacoesEmTempoReal() {
+    if (!supabaseClient || !currentUser) return;
+
+    supabaseClient
+        .channel(`notificacoes-cliente-${currentUser.email}`)
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'notificacoes_app',
+            filter: `destinatario_email=eq.${currentUser.email}`
+        }, async () => {
+            notificacoes = await buscarNotificacoes();
+            renderNotificacoes(notificacoes);
+        })
+        .subscribe();
 }
 
-// ========== INICIALIZAR ==========
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
-    renderNotificacoes(notificacoes);
+
+document.addEventListener('DOMContentLoaded', async () => {
+    currentUser = verificarLogin();
+    if (!currentUser) return;
+
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarSidebar();
-
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
+
+    notificacoes = await buscarNotificacoes();
+    renderNotificacoes(notificacoes);
+    escutarNotificacoesEmTempoReal();
 });

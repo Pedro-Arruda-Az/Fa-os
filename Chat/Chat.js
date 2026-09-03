@@ -273,6 +273,17 @@ async function sendMessage() {
         .from('conversas')
         .update({ ultima_mensagem: text, ultima_mensagem_em: new Date().toISOString() })
         .eq('id', activeChatId);
+
+    // Notifica o profissional que recebeu a mensagem
+    await supabaseClient
+        .from('notificacoes_app')
+        .insert([{
+            destinatario_tipo: 'profissional',
+            destinatario_email: conv.profissionalEmail,
+            tipo: 'mensagem',
+            titulo: 'Nova mensagem',
+            descricao: `${currentUser.nome || currentUser.email} enviou uma mensagem`
+        }]);
 }
 
 // ========== SCROLL PARA O FINAL ==========
@@ -339,17 +350,6 @@ function configurarMenuConfiguracoes() {
 }
 
 // ========== SIDEBAR TOGGLE ==========
-function configurarSidebar() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            const pinned = sidebar.classList.toggle('pinned');
-            sidebarToggle.textContent = pinned ? '‹' : '›';
-        });
-    }
-}
 
 // ========== BACK BUTTON (MOBILE) ==========
 function configurarBackButton() {
@@ -371,7 +371,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     configurarModoEscuro();
     configurarMenuConfiguracoes();
-    configurarSidebar();
     configurarBackButton();
 
     conversations = await buscarConversas();

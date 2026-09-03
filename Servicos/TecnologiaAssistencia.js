@@ -1,6 +1,6 @@
 /* ============================================================
    FAÇOS - limpeza.js
-   Tela de busca de profissionais, com painel de detalhes/pagamento
+   Tela de busca de profissionais com mapa (Leaflet)
    ============================================================ */
 
 const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
@@ -56,7 +56,7 @@ async function buscarProfissionais() {
             distance: Number((1 + (index % 5) * 0.7).toFixed(1)),
             lat: row.latitude != null ? Number(row.latitude) : CENTRO_SP.lat + jitter,
             lng: row.longitude != null ? Number(row.longitude) : CENTRO_SP.lng + jitter,
-            services: row.descricao || 'Serviços elétricos residenciais e comerciais',
+            services: row.descricao || 'Suporte técnico e assistência em equipamentos',
             price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
             priceValue: Number(row.preco_servico || 0),
             initials: gerarIniciais(row.nome_empresa)
@@ -83,11 +83,12 @@ function verificarLogin() {
     return JSON.parse(usuarioLogado);
 }
 
+
 function renderCards(list) {
     const container = document.getElementById('professionalsList');
     const countEl = document.getElementById('resultsCount');
 
-    countEl.textContent = `${list.length} profissional${list.length !== 1 ? 'is' : ''} encontrado${list.length !== 1 ? 's' : ''}`;
+    countEl.textContent = `${list.length} ${list.length !== 1 ? 'profissionais' : 'profissional'} encontrado${list.length !== 1 ? 's' : ''}`;
     container.innerHTML = '';
 
     if (list.length === 0) {
@@ -148,15 +149,7 @@ function selectPro(id) {
     }
 
     activePro = pro;
-}
-
-// Alterna qual "tela" aparece no painel direito, no lugar de onde antes
-// ficava o mapa: vazio (nada selecionado), perfil do profissional ou
-// forma de pagamento.
-function showDetailView(view) {
-    document.getElementById('detailEmpty').style.display = view === 'empty' ? 'flex' : 'none';
-    document.getElementById('detailProfile').classList.toggle('open', view === 'profile');
-    document.getElementById('detailPayment').classList.toggle('open', view === 'payment');
+    openModal(pro);
 }
 
 function openModal(pro) {
@@ -168,11 +161,14 @@ function openModal(pro) {
     document.getElementById('modalRating').textContent = `${pro.rating} / 5.0`;
     document.getElementById('modalServices').textContent = pro.services;
     document.getElementById('modalPrice').textContent = pro.price;
-    showDetailView('profile');
+
+    document.getElementById('detailEmpty').style.display = 'none';
+    document.getElementById('detailContent').classList.add('open');
 }
 
 function closeModal() {
-    showDetailView('empty');
+    document.getElementById('detailContent').classList.remove('open');
+    document.getElementById('detailEmpty').style.display = 'flex';
 }
 
 // ========== MODAL: FORMA DE PAGAMENTO ==========
@@ -187,7 +183,8 @@ async function abrirModalPagamento(pro) {
     document.querySelectorAll('.pagamento-opcao').forEach((el) => el.classList.remove('active'));
     document.getElementById('confirmarPagamentoBtn').disabled = true;
 
-    showDetailView('payment');
+    closeModal();
+    document.getElementById('paymentModal').classList.add('open');
 
     const saldoTexto = document.getElementById('saldoDisponivelTexto');
     saldoTexto.textContent = 'Carregando saldo...';
@@ -204,10 +201,8 @@ async function abrirModalPagamento(pro) {
     }
 }
 
-// Botão de voltar (seta) na tela de pagamento: volta pro perfil do
-// profissional em vez de fechar tudo.
 function closePaymentModal() {
-    showDetailView('profile');
+    document.getElementById('paymentModal').classList.remove('open');
 }
 
 function formatarMoeda(valor) {
@@ -292,6 +287,17 @@ async function creditarProfissional(pro) {
     if (erroPagamento) {
         console.error('Erro ao registrar o ganho do profissional:', erroPagamento);
     }
+
+    // Notifica o profissional do pagamento recebido
+    await supabaseClient
+        .from('notificacoes_app')
+        .insert([{
+            destinatario_tipo: 'profissional',
+            destinatario_email: pro.email,
+            tipo: 'pagamento',
+            titulo: 'Pagamento recebido',
+            descricao: `${pro.price} de ${usuarioAtual.nome || usuarioAtual.email} - ${pro.service}`
+        }]);
 }
 
 async function criarConversa(pro) {
@@ -378,7 +384,7 @@ async function pagarComCarteira(pro) {
         await creditarProfissional(pro);
 
         alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
-        closeModal();
+        closePaymentModal();
     } catch (err) {
         console.error(err);
         alert('Ocorreu um erro ao processar o pagamento com a carteira.');
@@ -430,15 +436,15 @@ async function iniciarPagamento(pro) {
             await criarConversa(pro);
             await creditarProfissional(pro);
             window.open(data.init_point, '_blank');
-            closeModal();
+            closePaymentModal();
         } else if (data.sandbox_init_point) {
             await registrarPedido(pro, 'mercadopago');
             await criarConversa(pro);
             await creditarProfissional(pro);
             window.open(data.sandbox_init_point, '_blank');
-            closeModal();
+            closePaymentModal();
         } else {
-            throw new Error(data.message || 'Link de pagamento nao retornado');
+            throw new Error(data.message || 'Link de pagamento não retornado');
         }
 
     } catch (err) {
@@ -451,11 +457,6 @@ async function iniciarPagamento(pro) {
 }
 
 function bindEvents() {
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('usuarioLogado');
-        window.location.href = '/index.html';
-    });
-
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
         const filtered = professionals.filter(p => {
@@ -465,22 +466,14 @@ function bindEvents() {
         renderCards(filtered);
     });
 
-    document.getElementById('professionalsList').addEventListener('dblclick', (e) => {
-        const card = e.target.closest('.pro-card');
-        if (card) {
-            const id = parseInt(card.dataset.id);
-            const pro = professionals.find(p => p.id === id);
-            if (pro) openModal(pro);
-        }
-    });
-
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-
     document.getElementById('solicitarBtn').addEventListener('click', () => {
         if (activePro) abrirModalPagamento(activePro);
     });
 
     document.getElementById('paymentModalClose').addEventListener('click', closePaymentModal);
+    document.getElementById('paymentModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('paymentModal')) closePaymentModal();
+    });
 
     document.querySelectorAll('.pagamento-opcao').forEach((opcao) => {
         opcao.addEventListener('click', () => {
@@ -502,62 +495,57 @@ function bindEvents() {
         }
     });
 
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
-    sidebarToggle.addEventListener('click', () => {
-        const pinned = sidebar.classList.toggle('pinned');
-        sidebarToggle.textContent = pinned ? '‹' : '›';
-    });
+    // ===== MENU DA ENGRENAGEM (barra lateral) =====
+    const configBtn = document.getElementById('configBtn');
+    const configMenu = document.getElementById('configMenu');
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
-}
-// MENU DA ENGRENAGEM (config)
-const configBtn = document.getElementById('configBtn');
-const configMenu = document.getElementById('configMenu');
+    if (configBtn && configMenu) {
+        configBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            configMenu.classList.toggle('open');
+        });
 
-if (configBtn && configMenu) {
-    configBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        configMenu.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!configMenu.contains(e.target) && e.target !== configBtn) {
-            configMenu.classList.remove('open');
-        }
-    });
-}
-
-// MODO CLARO / ESCURO
-const modoClaroBtn = document.getElementById('modoClaroBtn');
-const modoClaroLabel = document.getElementById('modoClaroLabel');
-
-function aplicarModo(escuro) {
-    document.body.classList.toggle('dark-mode', escuro);
-    if (modoClaroLabel) {
-        modoClaroLabel.textContent = escuro ? 'Modo claro' : 'Modo escuro';
+        document.addEventListener('click', function (e) {
+            if (!configMenu.contains(e.target) && e.target !== configBtn) {
+                configMenu.classList.remove('open');
+            }
+        });
     }
-}
 
-if (localStorage.getItem('darkMode') === 'enabled') {
-    aplicarModo(true);
-}
+    const modoClaroBtn = document.getElementById('modoClaroBtn');
+    const modoClaroLabel = document.getElementById('modoClaroLabel');
 
-if (modoClaroBtn) {
-    modoClaroBtn.addEventListener('click', () => {
-        const escuro = !document.body.classList.contains('dark-mode');
-        aplicarModo(escuro);
-        localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
+    function aplicarModo(escuro) {
+        document.body.classList.toggle('dark-mode', escuro);
+        if (modoClaroLabel) {
+            modoClaroLabel.setAttribute('data-i18n', escuro ? 'menu.modoClaro' : 'menu.modoEscuro');
+            if (window.facosClienteAplicarIdioma) facosClienteAplicarIdioma();
+        }
+    }
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        aplicarModo(true);
+    }
+
+    if (modoClaroBtn) {
+        modoClaroBtn.addEventListener('click', () => {
+            const escuro = !document.body.classList.contains('dark-mode');
+            aplicarModo(escuro);
+            localStorage.setItem('darkMode', escuro ? 'enabled' : 'disabled');
+        });
+    }
+
+    const idiomaBtn = document.getElementById('idiomaBtn');
+    if (idiomaBtn) {
+        idiomaBtn.addEventListener('click', () => {
+            if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+        });
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('usuarioLogado');
+        window.location.href = '/index.html';
     });
 }
 
-// IDIOMA (PT/EN)
-const idiomaBtn = document.getElementById('idiomaBtn');
-if (idiomaBtn) {
-    idiomaBtn.addEventListener('click', () => {
-        if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
-    });
-}

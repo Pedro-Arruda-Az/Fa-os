@@ -42,7 +42,6 @@
         </div>
     </header>
 
-    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
     <main class="page">
         <div class="page-title-row">
             <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
@@ -51,7 +50,6 @@
             <h1 class="page-title" data-i18n="titulo.carteira">carteira</h1>
         </div>
 
-        <!-- ===== CARD DE SALDO ===== -->
         <div class="saldo-row">
             <div class="saldo-card saldo-principal">
                 <div class="saldo-topo">
@@ -63,7 +61,6 @@
             </div>
         </div>
 
-        <!-- ===== AÇÕES ===== -->
         <div class="acoes-row">
             <button class="btn-sacar" id="sacarBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
@@ -72,10 +69,9 @@
             <button class="btn-pix" id="pixBtn">Transferir via Pix</button>
         </div>
 
-        <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+
         <div class="conteudo-grid">
 
-            <!-- HISTÓRICO -->
             <section class="historico-card">
                 <div class="historico-header">
                     <h2 class="card-titulo">Histórico de transações</h2>
@@ -93,11 +89,9 @@
                 </div>
 
                 <div class="transacoes-list" id="transacoesList">
-                    <!-- transações inseridas via JS -->
                 </div>
             </section>
 
-            <!-- SIDEBAR -->
             <aside class="sidebar-col">
 
                 <div class="dados-card">
@@ -161,7 +155,6 @@
         </div>
     </main>
 
-    <!-- ===== MODAL: EDITAR DADOS DE PAGAMENTO ===== -->
     <div class="modal-overlay" id="editarDadosModal">
         <div class="modal-card">
             <button class="modal-close" id="fecharEditarDadosModal">&times;</button>
@@ -179,6 +172,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
+    <script src="/Shared/notificacoes-badge.js"></script>
     <script src="carteira.js"></script>
 </body>
 </html>

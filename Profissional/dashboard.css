@@ -196,6 +196,112 @@ body {
     align-items: start;
 }
 
+/* ========== ÚLTIMAS NOTIFICAÇÕES ========== */
+.ultimas-notif-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.secao-titulo-painel {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-cream);
+}
+
+.ver-todas-link {
+    color: var(--yellow);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.ver-todas-link:hover {
+    text-decoration: underline;
+}
+
+.ultimas-notif-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.ultima-notif-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    border-left: 3px solid transparent;
+}
+.ultima-notif-card:hover {
+    background: rgba(255, 199, 0, 0.08);
+    transform: translateX(3px);
+}
+.ultima-notif-card.nao-lida {
+    border-left-color: var(--yellow);
+}
+
+.ultima-notif-icone {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 199, 0, 0.12);
+    color: var(--yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.ultima-notif-icone svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ultima-notif-corpo {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.ultima-notif-textos {
+    min-width: 0;
+}
+.ultima-notif-titulo {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-cream);
+    display: block;
+    margin-bottom: 0.2rem;
+}
+.ultima-notif-texto {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ultima-notif-tempo {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ultima-notif-vazio {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 1rem 0;
+}
+
 /* ========== RESUMO DO DIA ========== */
 .resumo-card {
     background: var(--card-bg);

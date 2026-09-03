@@ -1,0 +1,15 @@
+{
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "*.html": "${capture}.css, ${capture}.js"
+    },
+
+    "files.exclude": {
+        "**/.git": true,
+        "**/desktop.ini": true,
+        "**/.DS_Store": true
+    },
+
+    "explorer.sortOrder": "type"
+}
