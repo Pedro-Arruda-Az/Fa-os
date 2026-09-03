@@ -114,7 +114,7 @@ create table if not exists conversas (
 create table if not exists mensagens_chat (
     id uuid primary key default gen_random_uuid(),
     conversa_id uuid not null references conversas(id) on delete cascade,
-    remetente text not null,          -- 'cliente' | 'profissional'
+    remetente text not null,
     texto text not null,
     criado_em timestamptz not null default now()
 );
