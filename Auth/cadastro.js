@@ -39,7 +39,6 @@ function testaCNPJ(strCNPJ) {
 
 async function buscarDadosCNPJ(cnpj) {
     const statusEl = document.getElementById('cnpjStatus');
-    const nomeCompletoInput = document.getElementById('cadastroEmpresaNome');
     const nomeEmpresaInput = document.getElementById('cadastroEmpresaUsuario');
     const emailInput = document.getElementById('cadastroEmpresaEmail');
     const telefoneInput = document.getElementById('cadastroEmpresaTelefone');
@@ -66,11 +65,8 @@ async function buscarDadosCNPJ(cnpj) {
         if (nomeEmpresa && nomeEmpresaInput) {
             nomeEmpresaInput.value = nomeEmpresa;
         }
-        if (nomeEmpresa && nomeCompletoInput) {
-            nomeCompletoInput.value = nomeEmpresa;
-        }
 
-        if (dados.email && emailInput) {
+        if (dados.email && emailInput && !emailInput.value.trim()) {
             emailInput.value = dados.email;
         }
 
