@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cpf = document.getElementById('cadastroCPF').value.replace(/\D/g, '');
             const area_atuacao = document.getElementById('cadastroAreaAtuacao').value;
             const precoTexto = document.getElementById('cadastroPreco').value.trim();
+            const sobre = document.getElementById('cadastroSobre').value.trim();
             const senha = document.getElementById('cadastroSenha').value;
             const senha2 = document.getElementById('cadastroSenha2').value;
 
@@ -305,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         cpf: cpfHash,
                         area_atuacao,
                         preco_servico,
+                        sobre,
                         senha: senhaHash,
                         data_cadastro: new Date().toISOString(),
                         status: 'ativo'

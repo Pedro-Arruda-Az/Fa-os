@@ -94,32 +94,51 @@
 
             <div class="detail-content" id="detailContent">
                 <div class="modal-header">
+                    <button class="modal-voltar" id="modalVoltar" aria-label="Voltar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                    </button>
                     <div class="modal-avatar" id="modalAvatar">?</div>
                     <div>
                         <h2 class="modal-name" id="modalName">—</h2>
-                        <p class="modal-service" id="modalService">—</p>
-                        <div class="modal-stars" id="modalStars"></div>
+                        <p class="modal-service">perfil do profissional</p>
                     </div>
                 </div>
-                <div class="modal-info">
-                    <div class="modal-info-item">
-                        <span class="info-label">Distância</span>
-                        <span class="info-value" id="modalDist">—</span>
+
+                <div class="info-servico-card">
+                    <h3 class="info-servico-titulo">informações do serviço</h3>
+
+                    <div class="info-grid">
+                        <div class="info-bloco">
+                            <span class="info-label">Categoria:</span>
+                            <span class="info-valor" id="modalCategoria">—</span>
+                        </div>
+
+                        <div class="info-bloco">
+                            <span class="info-label">Distância:</span>
+                            <span class="info-valor" id="modalDist">—</span>
+                        </div>
+
+                        <div class="info-bloco">
+                            <span class="info-label">Avaliação geral:</span>
+                            <div class="modal-stars-linha">
+                                <div class="modal-stars" id="modalStars"></div>
+                                <span class="info-valor" id="modalRating">—</span>
+                            </div>
+                        </div>
+
+                        <div class="info-bloco">
+                            <span class="info-label">Horário de atendimento:</span>
+                            <span class="info-valor">Segunda a Sábado: 8h - 18h</span>
+                        </div>
                     </div>
-                    <div class="modal-info-item">
-                        <span class="info-label">Avaliação</span>
-                        <span class="info-value" id="modalRating">—</span>
+
+                    <div class="info-bloco info-bloco-largo">
+                        <span class="info-label">Sobre:</span>
+                        <p class="info-texto" id="modalSobre">—</p>
                     </div>
-                    <div class="modal-info-item">
-                        <span class="info-label">Serviços</span>
-                        <span class="info-value" id="modalServices">—</span>
-                    </div>
-                    <div class="modal-info-item">
-                        <span class="info-label">Preço</span>
-                        <span class="info-value" id="modalPrice">—</span>
-                    </div>
+
+                    <button class="solicitar-btn" id="solicitarBtn">Solicitar agora</button>
                 </div>
-                <button class="solicitar-btn" id="solicitarBtn">Solicitar atendimento</button>
             </div>
         </section>
 

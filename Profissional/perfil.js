@@ -5,7 +5,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
-        window.location.href = '/Profissional/login_profissional.html';
+        window.location.href = '/Auth/login.html';
     }
     return profissional ? JSON.parse(profissional) : null;
 }
@@ -31,7 +31,10 @@ function carregarDadosPerfil() {
     document.getElementById('avatarIniciais').textContent = iniciais;
 
     document.getElementById('editNome').value = nomeEmpresa;
-    document.getElementById('editTelefone').value = telefone !== '-' ? telefone : '';
+    document.getElementById('editTelefone').value = '';
+    document.getElementById('editTelefone').placeholder = telefone !== '-'
+        ? 'Telefone cadastrado — deixe em branco para manter'
+        : '(11) 99999-9999';
     document.getElementById('editEndereco').value = endereco !== '-' ? endereco : '';
     document.getElementById('editSobre').value = sobre;
 
@@ -41,7 +44,7 @@ function carregarDadosPerfil() {
 
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
-    window.location.href = '/Profissional/login_profissional.html';
+    window.location.href = '/Auth/login.html';
 }
 
 async function salvarAlteracoes() {
@@ -69,11 +72,14 @@ async function salvarAlteracoes() {
 
     const dadosAtualizar = {
         nome_empresa,
-        telefone,
         endereco,
         area_atuacao,
         sobre
     };
+
+    if (telefone) {
+        dadosAtualizar.telefone = CryptoJS.SHA256(telefone.replace(/\D/g, '')).toString(CryptoJS.enc.Hex);
+    }
 
     if (novaSenha && novaSenha.trim() !== '') {
         if (novaSenha.length < 6) {
@@ -181,6 +187,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const salvarBtn = document.getElementById('salvarBtn');
     if (salvarBtn) salvarBtn.addEventListener('click', salvarAlteracoes);
+
+    const trocarFotoBtn = document.getElementById('trocarFotoBtn');
+    if (trocarFotoBtn) {
+        trocarFotoBtn.addEventListener('click', () => {
+            const input = document.getElementById('fotoInput');
+            input.click();
+
+            input.onchange = function (e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const avatarCircle = document.getElementById('avatarCircle');
+                        avatarCircle.innerHTML = `<img src="${event.target.result}" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        });
+    }
 
     const telefoneInput = document.getElementById('editTelefone');
     if (telefoneInput) {

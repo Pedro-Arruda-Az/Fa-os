@@ -20,11 +20,11 @@ const FACOS_I18N = {
     'painel.carteira': { pt: 'Carteira', en: 'Wallet' },
     'painel.ajudaSuporte': { pt: 'Ajuda e suporte', en: 'Help and support' },
 
-    'titulo.mensagens': { pt: 'mensagens com clientes', en: 'messages with clients' },
+    'titulo.mensagens': { pt: 'Mensagens com clientes', en: 'Messages with clients' },
     'titulo.pedidos': { pt: 'Meus pedidos', en: 'My orders' },
-    'titulo.carteira': { pt: 'carteira', en: 'wallet' },
+    'titulo.carteira': { pt: 'Carteira', en: 'Wallet' },
     'titulo.mapa': { pt: 'Seus atendimentos', en: 'Your appointments' },
-    'titulo.notificacoes': { pt: 'notificações', en: 'notifications' }
+    'titulo.notificacoes': { pt: 'Notificações', en: 'Notifications' }
 };
 
 function facosAplicarIdioma() {

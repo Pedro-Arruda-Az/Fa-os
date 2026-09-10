@@ -255,6 +255,24 @@ body {
     font-size: 3.4rem;
 }
 
+.trocar-foto-btn {
+    background: transparent;
+    border: 1.5px solid var(--yellow);
+    color: var(--yellow);
+    border-radius: 50px;
+    padding: 0.6rem 1.3rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.trocar-foto-btn:hover {
+    background: var(--yellow);
+    color: var(--text-dark);
+}
+
 .perfil-nome {
     font-size: 1.35rem;
     font-weight: 700;

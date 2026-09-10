@@ -241,9 +241,9 @@ if (criarEmpresaBtn) {
                         if (error.message && error.message.toLowerCase().includes('cnpj')) {
                             alert('Este CNPJ já está cadastrado!');
                         } else if (error.message && error.message.toLowerCase().includes('email')) {
-                            alert('Este Email já está cadastrado!');
+                            alert('Este email já está cadastrado!');
                         } else {
-                            alert('Dado já cadastrado (Email ou CNPJ)!');
+                            alert('Dado já cadastrado (email ou CNPJ)!');
                         }
                     } else {
                         alert('Erro: ' + error.message);

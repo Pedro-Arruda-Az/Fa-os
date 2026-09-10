@@ -2,7 +2,7 @@
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
-        window.location.href = '/Profissional/login_profissional.html';
+        window.location.href = '/Auth/login.html';
     }
     return profissional ? JSON.parse(profissional) : null;
 }
@@ -33,7 +33,7 @@ function configurarPerfil() {
             e.preventDefault();
             if (confirm('Deseja sair do painel profissional?')) {
                 localStorage.removeItem('profissionalLogado');
-                window.location.href = '/Profissional/login_profissional.html';
+                window.location.href = '/Auth/login.html';
             }
         });
     }
