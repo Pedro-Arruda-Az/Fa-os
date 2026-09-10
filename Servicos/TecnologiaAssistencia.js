@@ -49,6 +49,7 @@ async function buscarProfissionais() {
             services: row.descricao || 'Suporte técnico e assistência em equipamentos',
             price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
             priceValue: Number(row.preco_servico || 0),
+            sobre: row.sobre || 'Esse profissional ainda não escreveu uma descrição sobre o seu trabalho.',
             initials: gerarIniciais(row.nome_empresa)
         };
     });
@@ -144,12 +145,11 @@ function selectPro(id) {
 function openModal(pro) {
     document.getElementById('modalAvatar').textContent = pro.initials;
     document.getElementById('modalName').textContent = pro.name;
-    document.getElementById('modalService').textContent = pro.service;
+    document.getElementById('modalCategoria').textContent = pro.service;
     document.getElementById('modalStars').innerHTML = buildModalStars(pro.rating);
     document.getElementById('modalDist').textContent = `${pro.distance} km`;
-    document.getElementById('modalRating').textContent = `${pro.rating} / 5.0`;
-    document.getElementById('modalServices').textContent = pro.services;
-    document.getElementById('modalPrice').textContent = pro.price;
+    document.getElementById('modalRating').textContent = pro.rating.toFixed(1);
+    document.getElementById('modalSobre').textContent = pro.sobre;
 
     document.getElementById('detailEmpty').style.display = 'none';
     document.getElementById('detailContent').classList.add('open');
@@ -171,7 +171,6 @@ async function abrirModalPagamento(pro) {
     document.querySelectorAll('.pagamento-opcao').forEach((el) => el.classList.remove('active'));
     document.getElementById('confirmarPagamentoBtn').disabled = true;
 
-    closeModal();
     document.getElementById('paymentModal').classList.add('open');
 
     const saldoTexto = document.getElementById('saldoDisponivelTexto');
@@ -427,6 +426,15 @@ async function iniciarPagamento(pro) {
 }
 
 function bindEvents() {
+    const modalVoltarBtn = document.getElementById('modalVoltar');
+    if (modalVoltarBtn) {
+        modalVoltarBtn.addEventListener('click', () => {
+            document.querySelectorAll('.pro-card').forEach(c => c.classList.remove('active'));
+            activePro = null;
+            closeModal();
+        });
+    }
+
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
         const filtered = professionals.filter(p => {

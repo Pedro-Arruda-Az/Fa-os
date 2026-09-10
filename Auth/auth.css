@@ -8,8 +8,8 @@
 
 body {
     font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
-    background-color: #FDFAC2;
-    background-image: url('/imagens/fundo-favos.png');
+    background-color: #1A1A1A;
+    background-image: url('/imagens/fundo-novo-login.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -62,12 +62,15 @@ a {
 }
 
 .auth-card {
-    background: #FFF8E7;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     width: 100%;
     max-width: 420px;
     border-radius: 28px;
     padding: 2.2rem 2rem;
-    box-shadow: 0 20px 50px rgba(92, 58, 30, 0.18);
+    box-shadow: 0 0 55px rgba(255, 220, 150, 0.08), 0 25px 60px rgba(0, 0, 0, 0.5);
 }
 
 .auth-card-larga {
@@ -77,13 +80,13 @@ a {
 .auth-card h1 {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #2C1A0E;
+    color: #FFE066;
     text-align: center;
 }
 
 .auth-sub {
     font-size: 0.88rem;
-    color: #7A6A5A;
+    color: #C9BBA8;
     text-align: center;
     margin-top: 0.3rem;
     margin-bottom: 1.6rem;
@@ -93,7 +96,7 @@ a {
     display: block;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #5C4023;
+    color: #F2E9DC;
     margin-bottom: 0.35rem;
     margin-top: 1rem;
 }
@@ -172,12 +175,12 @@ a {
 .auth-troca {
     text-align: center;
     font-size: 0.85rem;
-    color: #7A6A5A;
+    color: #C9BBA8;
     margin-top: 1.3rem;
 }
 
 .auth-troca a {
-    color: #5C3A1E;
+    color: #FFC700;
     font-weight: 700;
     text-decoration: underline;
 }
@@ -190,8 +193,8 @@ a {
 }
 
 .hex-page {
-    background-color: #FDFAC2;
-    background-image: url('/imagens/fundo-favos.png');
+    background-color: #1A1A1A;
+    background-image: url('/imagens/fundo-novo-login.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -202,6 +205,46 @@ a {
     flex-direction: column;
     align-items: center;
     gap: 0.9rem;
+}
+
+.auth-page-login {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    flex-wrap: wrap;
+}
+
+.auth-page-login .auth-hero {
+    align-items: flex-start;
+    max-width: 420px;
+}
+
+.auth-page-login .auth-logo-link {
+    justify-content: flex-start;
+}
+
+.auth-page-login .auth-heading,
+.auth-page-login .auth-heading-sub {
+    text-align: left;
+}
+
+@media (max-width: 860px) {
+    .auth-page-login {
+        flex-direction: column;
+        gap: 1.8rem;
+    }
+    .auth-page-login .auth-hero {
+        align-items: center;
+        max-width: 100%;
+    }
+    .auth-page-login .auth-logo-link {
+        justify-content: center;
+    }
+    .auth-page-login .auth-heading,
+    .auth-page-login .auth-heading-sub {
+        text-align: center;
+    }
 }
 
 .auth-logo-link {
@@ -218,13 +261,13 @@ a {
 .auth-heading {
     font-size: 1.7rem;
     font-weight: 800;
-    color: #5C2E0C;
+    color: #FFE066;
     text-align: center;
 }
 
 .auth-heading-sub {
     font-size: 0.95rem;
-    color: #97655A;
+    color: #D9C9BE;
     text-align: center;
     margin-top: -0.6rem;
 }
@@ -276,6 +319,47 @@ a {
 
 .auth-card-tabs .auth-btn:hover {
     background: #F0B400;
+}
+
+.auth-page-login .tab-switch {
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 360px;
+}
+
+.auth-page-login .tab-btn {
+    color: #1A1208;
+}
+
+.auth-page-login .tab-btn.active {
+    color: #1A1208;
+}
+
+.auth-selos {
+    margin-top: 0.6rem;
+}
+
+.auth-selo-linha {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #E4D9C8;
+    margin-bottom: 0.3rem;
+}
+
+.auth-selo-linha svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    color: #FFC700;
+}
+
+.auth-selo-sub {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #A79A88;
 }
 
 .auth-voltar {

@@ -69,7 +69,7 @@
             setTimeout(() => {
                 const msgBot = document.createElement('div');
                 msgBot.className = 'buzz-message buzz-message-bot';
-                msgBot.textContent = 'Obrigado pela mensagem! Nossa equipe vai te responder em breve. 🐝';
+                msgBot.textContent = 'Obrigado pela mensagem! Nossa equipe vai te responder em breve.';
                 buzzMessages.appendChild(msgBot);
                 buzzMessages.scrollTop = buzzMessages.scrollHeight;
             }, 600);

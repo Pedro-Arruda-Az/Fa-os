@@ -15,7 +15,6 @@ function carregarDadosPerfil() {
 
     const nome = usuario.nome || '';
     const nomeUsuario = usuario.nome_user || usuario.email?.split('@')[0] || 'usuario';
-    const telefone = usuario.telefone || '(00) 00000-0000';
     const endereco = usuario.endereco || 'Rua XXXXX, 000 - Cidade, Estado';
     const sexo = usuario.sexo || 'Prefiro não dizer';
 
@@ -24,7 +23,10 @@ function carregarDadosPerfil() {
     document.getElementById('avatarIniciais').textContent = iniciais;
 
     document.getElementById('editNome').value = nome;
-    document.getElementById('editTelefone').value = telefone;
+    document.getElementById('editTelefone').value = '';
+    document.getElementById('editTelefone').placeholder = usuario.telefone
+        ? 'Telefone cadastrado — deixe em branco para manter'
+        : '(11) 99999-9999';
     document.getElementById('editSexo').value = sexo;
     document.getElementById('editEndereco').value = endereco;
 }
@@ -67,10 +69,13 @@ async function salvarAlteracoes() {
 
     const dadosAtualizar = {
         nome: nome,
-        telefone: telefone,
         sexo: sexo,
         endereco: endereco
     };
+
+    if (telefone && telefone.trim() !== '') {
+        dadosAtualizar.telefone = CryptoJS.SHA256(telefone.replace(/\D/g, '')).toString(CryptoJS.enc.Hex);
+    }
 
     if (novaSenha && novaSenha.trim() !== '') {
         const senhaHash = CryptoJS.SHA256(novaSenha).toString(CryptoJS.enc.Hex);

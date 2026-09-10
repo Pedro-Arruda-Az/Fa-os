@@ -423,7 +423,23 @@ body {
 .detail-content {
     display: none;
     width: 100%;
-    max-width: 480px;
+    max-width: 740px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2rem;
+}
+.info-grid .info-bloco,
+.info-grid .info-bloco:last-of-type {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.1rem;
+    padding-bottom: 1.1rem;
+}
+
+.info-bloco-largo {
+    grid-column: 1 / -1;
 }
 .detail-content.open { display: block; }
 
@@ -488,6 +504,85 @@ body {
     align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
+}
+
+.modal-voltar {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.modal-voltar:hover { background: var(--bg-cream); }
+.modal-voltar svg { width: 22px; height: 22px; }
+
+.info-servico-card {
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.info-servico-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.1rem;
+}
+
+.info-bloco {
+    padding-bottom: 1.1rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+.info-bloco:last-of-type {
+    border-bottom: none;
+    margin-bottom: 1.3rem;
+    padding-bottom: 0;
+}
+
+.info-bloco .info-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--brown);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 0.3rem;
+}
+
+.info-bloco .info-valor {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.info-bloco .info-texto {
+    font-size: 0.92rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+.info-lista {
+    list-style: disc;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.info-lista li {
+    font-size: 0.92rem;
+    color: var(--text-dark);
+}
+
+.modal-stars-linha {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .modal-avatar {

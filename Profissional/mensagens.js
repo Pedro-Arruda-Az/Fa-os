@@ -17,7 +17,7 @@ let mensagensRenderizadas = new Set();
 function verificarLogin() {
     const profissional = localStorage.getItem('profissionalLogado');
     if (!profissional) {
-        window.location.href = '/Profissional/login_profissional.html';
+        window.location.href = '/Auth/login.html';
         return null;
     }
     return JSON.parse(profissional);
