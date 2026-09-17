@@ -3,8 +3,8 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #211E29;
-    --card-bg: #403C3B;
+    --bg-dark: #1E1B17;
+    --card-bg: #262320;
     --tag-bg: #34313A;
     --text-dark: #171717;
     --text-cream: #FDF8E3;
@@ -12,6 +12,7 @@
     --border: rgba(255,255,255,0.09);
     --red: #FB2C36;
     --header-height: 92px;
+    --menu-bg: #2E2A38;
 }
 
 html.light-mode {
@@ -21,6 +22,7 @@ html.light-mode {
     --text-cream: #2C1A0E;
     --text-muted: #7A6A5A;
     --border: rgba(44,26,14,0.12);
+    --menu-bg: #FFFFFF;
     color: #2C1A0E;
 }
 
@@ -96,13 +98,18 @@ body {
     position: absolute;
     top: calc(100% + 14px);
     right: 0;
-    background: #2E2A38;
+    background: var(--menu-bg);
     border-radius: 14px;
     padding: 0.5rem;
     min-width: 200px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.4);
     flex-direction: column;
     z-index: 300;
+}
+
+html.light-mode .config-menu {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    border: 1px solid rgba(44,26,14,0.08);
 }
 
 .config-menu.open {
@@ -115,7 +122,7 @@ body {
     gap: 0.7rem;
     background: none;
     border: none;
-    color: var(--text-main);
+    color: var(--text-cream);
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: 500;

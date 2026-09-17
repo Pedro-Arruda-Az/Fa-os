@@ -11,4 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const heroSearchForm = document.getElementById('heroSearchForm');
+    if (heroSearchForm) {
+        heroSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            window.location.href = '/Auth/login.html';
+        });
+    }
 });

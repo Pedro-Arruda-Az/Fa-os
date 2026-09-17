@@ -77,7 +77,7 @@ function renderUltimasNotificacoes(lista) {
     grid.innerHTML = '';
 
     if (lista.length === 0) {
-        grid.innerHTML = `<p class="ultima-notif-vazio">Nenhuma notificação ainda.</p>`;
+        grid.innerHTML = `<p class="notif-linha-vazio">Nenhuma notificação ainda.</p>`;
         return;
     }
 
@@ -85,22 +85,21 @@ function renderUltimasNotificacoes(lista) {
         const icone = ICONE_POR_TIPO[notif.tipo] || ICONE_POR_TIPO.sistema;
         const link = LINK_POR_TIPO[notif.tipo];
 
-        const card = document.createElement('div');
-        card.className = `ultima-notif-card${!notif.lida ? ' nao-lida' : ''}`;
-        card.dataset.id = notif.id;
+        const linha = document.createElement('div');
+        linha.className = `atendimento-linha notif-linha${!notif.lida ? ' nao-lida' : ''}`;
+        linha.dataset.id = notif.id;
+        linha.style.cursor = 'pointer';
 
-        card.innerHTML = `
-            <span class="ultima-notif-icone">${icone}</span>
-            <div class="ultima-notif-corpo">
-                <div class="ultima-notif-textos">
-                    <span class="ultima-notif-titulo">${notif.titulo}</span>
-                    <span class="ultima-notif-texto">${notif.descricao || ''}</span>
-                </div>
-                <span class="ultima-notif-tempo">${formatarTempoRelativo(notif.criado_em)}</span>
+        linha.innerHTML = `
+            <span class="card-icone-circulo notif-icone-linha">${icone}</span>
+            <div class="atendimento-info">
+                <strong>${notif.titulo}</strong>
+                <span>${notif.descricao || ''}</span>
             </div>
+            <span class="notif-tempo-linha">${formatarTempoRelativo(notif.criado_em)}</span>
         `;
 
-        card.addEventListener('click', async () => {
+        linha.addEventListener('click', async () => {
             if (!notif.lida && supabaseClient) {
                 await supabaseClient
                     .from('notificacoes_app')
@@ -109,12 +108,10 @@ function renderUltimasNotificacoes(lista) {
             }
             if (link) {
                 window.location.href = link;
-            } else {
-                card.classList.remove('nao-lida');
             }
         });
 
-        grid.appendChild(card);
+        grid.appendChild(linha);
     });
 }
 
@@ -178,6 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? '/imagens/icones-escuro/modo-escuro-lua.png'
                 : '/imagens/icones-escuro/modo-claro-sol.png';
         }
+        document.querySelectorAll('img[src*="/imagens/icones-claro/"], img[src*="/imagens/icones-escuro/"]').forEach((img) => {
+            if (img.id === 'modoClaroIcone' || img.id === 'avatarIconeHeader') return;
+            img.src = claro
+                ? img.src.replace('/icones-escuro/', '/icones-claro/')
+                : img.src.replace('/icones-claro/', '/icones-escuro/');
+        });
     }
 
     if (localStorage.getItem('painelModoClaro') === 'true') {
