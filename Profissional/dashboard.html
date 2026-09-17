@@ -10,91 +10,120 @@
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-left">
-            <a href="/index.html" class="brand-link">
+    <header class="header-novo">
+        <div class="header-inner">
+            <a href="/index.html" class="logo-link">
                 <img src="/imagens/facos-logo-marrom.png" alt="Faços" class="logo-full">
             </a>
-        </div>
-        <div class="header-right">
-            <a href="/Profissional/perfil.html" class="icon-btn" id="perfilBtn" title="Perfil" aria-label="Perfil">
-                <img src="/imagens/icones-claro/perfil.png" alt="Perfil">
-            </a>
-            <div class="icon-btn config-wrap">
-                <button class="config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
-                    <img src="/imagens/engrenagem.png" alt="Configurações">
-                </button>
-                <div class="config-menu" id="configMenu">
-                    <button class="config-item" id="modoClaroBtn">
-                        <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-claro-sol.png" alt="" width="18" height="18">
-                        <span id="modoClaroLabel" data-i18n="menu.modoClaro">Modo claro</span>
+
+            <nav class="nav-pills">
+                <a href="/Profissional/dashboard.html" class="nav-pill active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+                    <span>Início</span>
+                </a>
+                <a href="/Profissional/pepe.html" class="nav-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+                    <span>Pedidos</span>
+                </a>
+                <a href="/Profissional/carteira.html" class="nav-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                    <span>Carteira</span>
+                </a>
+                <a href="/Profissional/mensagens.html" class="nav-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    <span>Mensagens</span>
+                </a>
+                <a href="/Profissional/mapa.html" class="nav-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>Localização</span>
+                </a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="/Profissional/perfil.html" class="avatar-link" id="perfilBtn" title="Meu perfil">
+                    <img src="/imagens/icones-claro/perfil.png" alt="Perfil" class="avatar-icone" id="avatarIconeHeader">
+                </a>
+
+                <div class="config-wrap">
+                    <button class="config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
+                        <img src="/imagens/engrenagem.png" alt="Configurações" width="19">
                     </button>
-                    <button class="config-item" id="idiomaBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
-                        <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
-                    </button>
-                    <button class="config-item config-item-sair" id="sairBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-                        <span data-i18n="menu.sair">Sair</span>
-                    </button>
+                    <div class="config-menu" id="configMenu">
+                        <button class="config-item" id="modoClaroBtn">
+                            <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-claro-sol.png" alt="" width="18" height="18">
+                            <span id="modoClaroLabel" data-i18n="menu.modoClaro">Modo claro</span>
+                        </button>
+                        <button class="config-item" id="idiomaBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+                            <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
+                        </button>
+                        <button class="config-item config-item-sair" id="sairBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                            <span data-i18n="menu.sair">Sair</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="page">
-        <h1 class="titulo-painel" data-i18n="painel.titulo">Painel profissional</h1>
+    <main class="page-novo">
 
-        <div class="painel-grid">
-
-            <div class="resumo-card">
-                <span class="resumo-label" data-i18n="painel.resumoDoDia">Resumo do dia</span>
-
-                <div class="resumo-corpo">
-                    <div class="resumo-numeros">
-                        <span class="resumo-atendimentos" id="resumoAtendimentos">3 <span data-i18n="painel.atendimentos">atendimentos</span></span>
-                        <span class="resumo-valor" id="resumoValor">R$ 480,00 <span data-i18n="painel.previstos">previstos</span></span>
-                    </div>
-                    <img src="/imagens/buzz-resumo.png" alt="Buzz" class="resumo-buzz">
-                </div>
-
-                <div class="resumo-tags">
-                    <span class="tag" id="tagConfirmados">2 <span data-i18n="painel.confirmados">confirmados</span></span>
-                    <span class="tag" id="tagPendentes">1 <span data-i18n="painel.pendente">pendente</span></span>
+        <section class="hero-prof">
+            <div class="hero-prof-texto">
+                <p class="hero-prof-label">BOM TE VER POR AQUI,</p>
+                <h1 class="hero-prof-titulo">Continue fazendo<br>a <span class="hero-prof-destaque">diferença.</span></h1>
+                <p class="hero-prof-sub">Seu trabalho conecta pessoas e facilita vidas todos os dias.</p>
+            </div>
+            <div class="hero-prof-foto">
+                <div class="hero-prof-quote">
+                    <p>&ldquo;Serviços que aproximam pessoas.&rdquo;</p>
+                    <span class="hero-prof-tracinho"></span>
                 </div>
             </div>
+        </section>
 
-            <nav class="lista-card">
-                <a href="/Profissional/mensagens.html" class="lista-item" id="mensagensCard">
-                    <img src="/imagens/icones-escuro/mensagens.png" alt="">
-                    <span data-i18n="painel.mensagens">Mensagens</span>
-                </a>
-                <a href="/Profissional/pepe.html" class="lista-item" id="pedidosCard">
-                    <img src="/imagens/icones-escuro/pedidos.png" alt="">
-                    <span data-i18n="painel.pedidos">Pedidos</span>
-                </a>
-                <a href="/Profissional/notificacoes.html" class="lista-item" id="notificacoesCard">
-                    <img src="/imagens/icones-escuro/notificacoes.png" alt="">
-                    <span data-i18n="painel.notificacoes">Notificações</span>
-                    <span class="badge" id="notifBadge" data-notif-badge style="display:none;">0</span>
-                </a>
-                <a href="/Profissional/mapa.html" class="lista-item" id="mapaCard">
-                    <img src="/imagens/icones-escuro/localizacao.png" alt="">
-                    <span data-i18n="painel.localizacao">Localização</span>
-                </a>
-                <a href="/Profissional/carteira.html" class="lista-item" id="carteiraCard">
-                    <img src="/imagens/icones-escuro/carteira.png" alt="">
-                    <span data-i18n="painel.carteira">Carteira</span>
-                </a>
-            </nav>
+        <div class="cards-row">
+            <div class="resumo-card-novo">
+                <div class="card-cabecalho">
+                    <span class="card-icone-circulo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </span>
+                    <strong data-i18n="painel.resumoDoDia">Resumo do dia</strong>
+                    <button class="card-menu-btn" aria-label="Mais opções">&#8226;&#8226;&#8226;</button>
+                </div>
 
+                <div class="resumo-numeros-novo">
+                    <div class="resumo-num-bloco">
+                        <strong id="resumoAtendimentos">3</strong>
+                        <span>atendimentos<br>hoje</span>
+                    </div>
+                    <div class="resumo-num-divisor"></div>
+                    <div class="resumo-num-bloco">
+                        <strong id="resumoValor">R$ 480,00</strong>
+                        <span>previsão de ganhos<br>hoje</span>
+                    </div>
+                </div>
+
+                <a href="/Profissional/pepe.html" class="ver-link">Ver detalhes <span>&rarr;</span></a>
+            </div>
+
+            <div class="atendimentos-card-novo">
+                <div class="card-cabecalho">
+                    <span class="card-icone-circulo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    </span>
+                    <strong data-i18n="painel.ultimasNotificacoes">Últimas notificações</strong>
+                    <a href="/Profissional/notificacoes.html" class="ver-link-inline"><span data-i18n="painel.verTodas">Ver todas</span> <span>&rarr;</span></a>
+                </div>
+
+                <div id="ultimasNotifGrid"></div>
+            </div>
         </div>
 
-        <div class="ultimas-notif-header">
-            <h2 class="secao-titulo-painel" data-i18n="painel.ultimasNotificacoes">Últimas notificações</h2>
-            <a href="/Profissional/notificacoes.html" class="ver-todas-link" data-i18n="painel.verTodas">Ver todas</a>
-        </div>
-        <div class="ultimas-notif-grid" id="ultimasNotifGrid">
+        <div class="footer-tagline">
+            <span><span class="tracinho"></span> FAÇOS — Serviços que aproximam.</span>
+            <span>Mais pessoas. Mais histórias. <span class="tracinho"></span></span>
         </div>
     </main>
 

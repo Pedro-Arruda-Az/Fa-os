@@ -3,8 +3,8 @@
 :root {
     --yellow: #FFC700;
     --yellow-light: #FFDD3D;
-    --bg-dark: #211E29;
-    --card-bg: #262626;
+    --bg-dark: #1E1B17;
+    --card-bg: #262320;
     --item-bg: #404040;
     --item-bg-hover: #4a4a4a;
     --border: rgba(255,255,255,0.09);
@@ -14,6 +14,7 @@
     --green: #34D399;
     --red: #F87171;
     --header-height: 92px;
+    --menu-bg: #2E2A38;
 }
 
 html.light-mode {
@@ -24,6 +25,8 @@ html.light-mode {
     --border: rgba(44,26,14,0.12);
     --text-main: #2C1A0E;
     --text-muted: #7A6A5A;
+    --menu-bg: #FFFFFF;
+    --header-border: rgba(44,26,14,0.18);
     color: #2C1A0E;
 }
 
@@ -43,8 +46,8 @@ body {
 .header {
     height: var(--header-height);
     background: linear-gradient(90deg, #E8B300 0%, #FFC700 45%, #FFDD3D 100%);
-    border-top: 5px solid #141414;
-    border-bottom: 5px solid #141414;
+    border-top: 5px solid var(--header-border, #141414);
+    border-bottom: 5px solid var(--header-border, #141414);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -101,13 +104,18 @@ body {
     position: absolute;
     top: calc(100% + 14px);
     right: 0;
-    background: #2E2A38;
+    background: var(--menu-bg);
     border-radius: 14px;
     padding: 0.5rem;
     min-width: 200px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.4);
     flex-direction: column;
     z-index: 300;
+}
+
+html.light-mode .config-menu {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    border: 1px solid rgba(44,26,14,0.08);
 }
 
 .config-menu.open {
