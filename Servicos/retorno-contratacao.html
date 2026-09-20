@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faços - Confirmando pagamento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+            background: #FFF8DC;
+            color: #3E2711;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 2.6rem 2.2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(92, 58, 30, 0.15);
+        }
+
+        .icone {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 1.8rem;
+            background: #FFF3D2;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+        }
+
+        p {
+            font-size: 0.92rem;
+            color: #7A6A5A;
+            line-height: 1.5;
+            margin-bottom: 1.6rem;
+        }
+
+        .spinner {
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(92, 58, 30, 0.15);
+            border-top-color: #F5B400;
+            border-radius: 50%;
+            margin: 0 auto 1.2rem;
+            animation: girar 0.8s linear infinite;
+        }
+
+        @keyframes girar {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFCF3D 0%, #F5B400 100%);
+            color: #2C1A0E;
+            border: none;
+            border-radius: 50px;
+            padding: 0.85rem 1.8rem;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-secundario {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: #7A6A5A;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div id="estadoCarregando">
+            <div class="spinner"></div>
+            <h1>Confirmando seu pagamento...</h1>
+            <p>Isso leva só alguns segundos. Não feche esta página.</p>
+        </div>
+
+        <div id="estadoResultado" style="display:none;">
+            <div class="icone" id="iconeResultado">✔️</div>
+            <h1 id="tituloResultado">Tudo certo!</h1>
+            <p id="descricaoResultado"></p>
+            <a class="btn" href="/Pedidos/Pedidos.html">Ver meus pedidos</a>
+            <br>
+            <a class="btn-secundario" href="/index.html">Voltar para o início</a>
+        </div>
+    </div>
+
+    <script>
+        async function confirmarContratacao() {
+            const params = new URLSearchParams(window.location.search);
+            const paymentId = params.get('payment_id');
+            const externalReference = params.get('external_reference') || params.get('ref');
+
+            const estadoCarregando = document.getElementById('estadoCarregando');
+            const estadoResultado = document.getElementById('estadoResultado');
+            const icone = document.getElementById('iconeResultado');
+            const titulo = document.getElementById('tituloResultado');
+            const descricao = document.getElementById('descricaoResultado');
+
+            function mostrarResultado({ ok, tituloTexto, descricaoTexto }) {
+                estadoCarregando.style.display = 'none';
+                estadoResultado.style.display = 'block';
+                icone.textContent = ok ? '✔️' : '⏳';
+                titulo.textContent = tituloTexto;
+                descricao.textContent = descricaoTexto;
+            }
+
+            if (!paymentId || !externalReference) {
+                mostrarResultado({
+                    ok: false,
+                    tituloTexto: 'Não encontramos os dados do pagamento',
+                    descricaoTexto: 'Se você concluiu o pagamento no Mercado Pago, confira em "Meus pedidos" em alguns instantes.'
+                });
+                return;
+            }
+
+            try {
+                const resposta = await fetch(
+                    `/api/confirmar-contratacao?payment_id=${encodeURIComponent(paymentId)}&external_reference=${encodeURIComponent(externalReference)}`
+                );
+                const resultado = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(resultado.error || 'Não foi possível confirmar o pagamento.');
+                }
+
+                if (resultado.status === 'aprovado' || resultado.status === 'ja_processado') {
+                    mostrarResultado({
+                        ok: true,
+                        tituloTexto: 'Pagamento aprovado!',
+                        descricaoTexto: `Seu pedido foi registrado e o profissional já foi avisado. Valor: R$ ${Number(resultado.valor).toFixed(2).replace('.', ',')}.`
+                    });
+                } else if (resultado.status === 'pending' || resultado.status === 'in_process') {
+                    mostrarResultado({
+                        ok: false,
+                        tituloTexto: 'Pagamento em processamento',
+                        descricaoTexto: 'Assim que o Mercado Pago aprovar, seu pedido é criado automaticamente.'
+                    });
+                } else {
+                    mostrarResultado({
+                        ok: false,
+                        tituloTexto: 'Pagamento não aprovado',
+                        descricaoTexto: 'O pagamento não foi concluído. Você pode tentar novamente a partir da página do serviço.'
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarResultado({
+                    ok: false,
+                    tituloTexto: 'Não foi possível confirmar agora',
+                    descricaoTexto: 'Confira em "Meus pedidos" daqui a pouco — se o pagamento foi aprovado, ele aparece lá.'
+                });
+            }
+        }
+
+        confirmarContratacao();
+    </script>
+</body>
+</html>

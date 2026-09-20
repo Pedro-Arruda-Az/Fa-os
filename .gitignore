@@ -1,0 +1,16 @@
+# Segredos - nunca commitar. Use .env.example como referência.
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Netlify / build
+.netlify/
+node_modules/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db

@@ -1,18 +1,11 @@
-const SUPABASE_URL = "https://fbgnvpcqwpvbwqtmqpzj.supabase.co";
-const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc";
-
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
-
-function responder(status, conteudo) {
-    return new Response(JSON.stringify(conteudo), {
-        status,
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Cache-Control": "no-store"
-        }
-    });
-}
+import {
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    respostaJson as responder,
+    origemPermitida,
+    ipDoRequest,
+    limitarTaxa
+} from "./_shared.mjs";
 
 async function buscarPagamentoPorReferencia(externalReference) {
     const resposta = await fetch(
@@ -81,6 +74,14 @@ async function atualizarPagamento(externalReference, campos) {
 }
 
 export default async function verificarPagamento(request) {
+    if (!origemPermitida(request)) {
+        return responder(403, { error: "Origem não permitida." });
+    }
+
+    if (!limitarTaxa(`verificar-pagamento:${ipDoRequest(request)}`, 15, 60_000)) {
+        return responder(429, { error: "Muitas tentativas em pouco tempo." });
+    }
+
     try {
         const accessToken = process.env.MP_ACCESS_TOKEN;
 

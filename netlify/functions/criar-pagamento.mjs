@@ -1,25 +1,12 @@
-const SUPABASE_URL = "https://fbgnvpcqwpvbwqtmqpzj.supabase.co";
-const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc";
-
-// Usa a service role key (só existe no ambiente do servidor) sempre
-// que estiver configurada — ela ignora RLS com segurança. Se não
-// estiver configurada, cai para a anon key já usada no resto do app.
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
-
-function responder(status, conteudo) {
-    return new Response(JSON.stringify(conteudo), {
-        status,
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Cache-Control": "no-store"
-        }
-    });
-}
-
-function emailValido(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+import {
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    respostaJson as responder,
+    emailValido,
+    origemPermitida,
+    ipDoRequest,
+    limitarTaxa
+} from "./_shared.mjs";
 
 async function inserirPagamentoPendente(dados) {
     const resposta = await fetch(`${SUPABASE_URL}/rest/v1/pagamentos`, {
@@ -48,6 +35,16 @@ async function inserirPagamentoPendente(dados) {
 export default async function criarPagamento(request) {
     if (request.method !== "POST") {
         return responder(405, { error: "Método não permitido." });
+    }
+
+    if (!origemPermitida(request)) {
+        return responder(403, { error: "Origem não permitida." });
+    }
+
+    if (!limitarTaxa(`criar-pagamento:${ipDoRequest(request)}`, 8, 60_000)) {
+        return responder(429, {
+            error: "Muitas tentativas em pouco tempo. Aguarde um instante e tente de novo."
+        });
     }
 
     try {

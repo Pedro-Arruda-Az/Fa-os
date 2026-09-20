@@ -14,7 +14,7 @@
             </a>
 
             <h1 class="auth-heading">Bem-vindo de volta!</h1>
-            <p class="auth-heading-sub">Entre na sua conta para acessar a plataforma</p>
+            <p class="auth-heading-sub">Entre na sua conta para acessar a plataforma e continuar conectando oportunidades.</p>
 
             <div class="tab-switch">
                 <button type="button" class="tab-btn active" id="tabEmpresas" data-tab="empresas">Empresas</button>
@@ -22,48 +22,73 @@
             </div>
 
             <div class="auth-selos">
-                <p class="auth-selo-linha">
+                <div class="selo-icone-lock">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Cadeado de Segurança
-                </p>
-                <p class="auth-selo-linha auth-selo-sub">
-                    Pagamento Seguro | Profissional Verificado
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                </p>
+                </div>
+                <div class="selo-textos">
+                    <p class="selo-titulo">Segurança verificada</p>
+                    <p class="selo-sub">Pagamento Seguro | Profissional Verificado
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    </p>
+                </div>
             </div>
         </div>
 
         <div class="auth-card auth-card-tabs">
             <div class="tab-panel active" id="painelEmpresas">
                 <label>Email</label>
-                <input type="email" id="empresaEmail" placeholder="voce@email.com">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                    <input type="email" id="empresaEmail" placeholder="voce@email.com">
+                </div>
 
                 <label>CNPJ</label>
-                <input type="tel" id="empresaCNPJ" placeholder="00.000.000/0000-00" maxlength="18">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M8 10h.01M8 14h.01M12 6h.01M12 10h.01M12 14h.01M16 6h.01M16 10h.01M16 14h.01"/></svg>
+                    <input type="tel" id="empresaCNPJ" placeholder="00.000.000/0000-00" maxlength="18">
+                </div>
 
                 <label>Senha</label>
-                <input type="password" id="empresaSenha" placeholder="Digite sua senha">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <input type="password" id="empresaSenha" placeholder="Digite sua senha">
+                    <button type="button" class="toggle-senha" data-alvo="empresaSenha" aria-label="Mostrar senha">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
 
                 <a href="#" class="esqueci-senha" data-tipo="empresas">Esqueci minha senha</a>
 
-                <button class="auth-btn" id="entrarEmpresaBtn">Entrar</button>
+                <button class="auth-btn" id="entrarEmpresaBtn">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 
                 <p class="auth-troca">Não tem uma conta? <a href="cadastro.html"><strong>Cadastre-se!</strong></a></p>
             </div>
 
             <div class="tab-panel" id="painelProfissionais">
                 <label>Email</label>
-                <input type="email" id="profEmail" placeholder="voce@email.com">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                    <input type="email" id="profEmail" placeholder="voce@email.com">
+                </div>
 
                 <label>CPF</label>
-                <input type="tel" id="profCPF" placeholder="000.000.000-00" maxlength="14">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+                    <input type="tel" id="profCPF" placeholder="000.000.000-00" maxlength="14">
+                </div>
 
                 <label>Senha</label>
-                <input type="password" id="profSenha" placeholder="Digite sua senha">
+                <div class="input-icon-wrap">
+                    <svg class="input-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <input type="password" id="profSenha" placeholder="Digite sua senha">
+                    <button type="button" class="toggle-senha" data-alvo="profSenha" aria-label="Mostrar senha">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
 
                 <a href="#" class="esqueci-senha" data-tipo="profissionais">Esqueci minha senha</a>
 
-                <button class="auth-btn" id="entrarProfBtn">Entrar</button>
+                <button class="auth-btn" id="entrarProfBtn">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 
                 <p class="auth-troca">Não tem uma conta? <a href="cadastro.html"><strong>Cadastre-se!</strong></a></p>
             </div>

@@ -65,9 +65,42 @@ body {
 }
 
 .logo-full {
-    height: 46px;
+    height: 62px;
     width: auto;
     object-fit: contain;
+}
+
+.nav-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex: 1;
+    margin-left: 2rem;
+}
+
+.nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.75rem 1.3rem;
+    border-radius: 50px;
+    color: #5C4023;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.nav-pill svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+.nav-pill:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #2C1A0E;
+}
+
+.nav-pill.active {
+    background: rgba(255, 255, 255, 0.55);
+    color: #2C1A0E;
 }
 
 .header-right {
@@ -601,4 +634,8 @@ html.light-mode .config-menu {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+@media (max-width: 980px) {
+    .nav-pills span { display: none; }
 }

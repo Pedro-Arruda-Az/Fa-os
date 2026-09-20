@@ -1,5 +1,4 @@
 
-const ACCESS_TOKEN = 'APP_USR-2991875109649887-061020-07b3ac464f9a25e0272cd8ba40bf2321-3466462896';
 
 const SUPABASE_URL = 'https://fbgnvpcqwpvbwqtmqpzj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZ252cGNxd3B2YndxdG1xcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODIwNjcsImV4cCI6MjA5MzY1ODA2N30.SYpNeZzHsR4zXYW_IuPe_mx9aH7B3YqmLiebw_UHcXc';
@@ -192,6 +191,20 @@ function closePaymentModal() {
     document.getElementById('paymentModal').classList.remove('open');
 }
 
+let detalhesAtuais = { endereco: '', comodos: '', observacoes: '' };
+
+function abrirModalDetalhes(pro) {
+    document.getElementById('detalhesServicoLinha').textContent = `Serviço: ${pro.service}`;
+    document.getElementById('detalhesEndereco').value = '';
+    document.getElementById('detalhesComodos').value = '';
+    document.getElementById('detalhesObs').value = '';
+    document.getElementById('detalhesModal').classList.add('open');
+}
+
+function closeModalDetalhes() {
+    document.getElementById('detalhesModal').classList.remove('open');
+}
+
 function formatarMoeda(valor) {
     return `R$ ${Number(valor).toFixed(2).replace('.', ',')}`;
 }
@@ -209,105 +222,10 @@ async function buscarSaldoCarteira() {
     return Number(data.saldo || 0);
 }
 
-async function registrarPedido(pro, formaPagamento) {
-    if (!supabaseClient || !usuarioAtual) return;
-
-    const { error } = await supabaseClient
-        .from('pedidos')
-        .insert([{
-            usuario_email: usuarioAtual.email,
-            titulo: pro.service,
-            profissional: pro.name,
-            valor: pro.priceValue,
-            status: 'em_andamento',
-            forma_pagamento: formaPagamento
-        }]);
-
-    if (error) {
-        console.error('Erro ao registrar o pedido:', error);
-    }
-}
-
-async function creditarProfissional(pro) {
-    if (!supabaseClient || !pro.email) return;
-
-    const { data: profissional, error: erroBusca } = await supabaseClient
-        .from('profissionais')
-        .select('saldo')
-        .eq('email', pro.email)
-        .single();
-
-    if (erroBusca) {
-        console.error('Erro ao buscar saldo do profissional:', erroBusca);
-        return;
-    }
-
-    const novoSaldo = Math.round((Number(profissional.saldo || 0) + pro.priceValue) * 100) / 100;
-
-    const { error: erroUpdate } = await supabaseClient
-        .from('profissionais')
-        .update({ saldo: novoSaldo })
-        .eq('email', pro.email);
-
-    if (erroUpdate) {
-        console.error('Erro ao creditar o profissional:', erroUpdate);
-        return;
-    }
-
-    const { error: erroPagamento } = await supabaseClient
-        .from('pagamentos')
-        .insert([{
-            usuario_email: usuarioAtual.email,
-            profissional_email: pro.email,
-            valor: pro.priceValue,
-            forma_pagamento: 'carteira',
-            status: 'aprovado',
-            tipo: 'ganho',
-            descricao: `${pro.service} - ${usuarioAtual.nome || usuarioAtual.email}`
-        }]);
-
-    if (erroPagamento) {
-        console.error('Erro ao registrar o ganho do profissional:', erroPagamento);
-    }
-
-    await supabaseClient
-        .from('notificacoes_app')
-        .insert([{
-            destinatario_tipo: 'profissional',
-            destinatario_email: pro.email,
-            tipo: 'pagamento',
-            titulo: 'Pagamento recebido',
-            descricao: `${pro.price} de ${usuarioAtual.nome || usuarioAtual.email} - ${pro.service}`
-        }]);
-}
-
-async function criarConversa(pro) {
-    if (!supabaseClient || !usuarioAtual || !pro.email) return;
-
-    const { data: existente } = await supabaseClient
-        .from('conversas')
-        .select('id')
-        .eq('usuario_email', usuarioAtual.email)
-        .eq('profissional_email', pro.email)
-        .maybeSingle();
-
-    if (existente) return;
-
-    const { error } = await supabaseClient
-        .from('conversas')
-        .insert([{
-            usuario_email: usuarioAtual.email,
-            usuario_nome: usuarioAtual.nome || usuarioAtual.email,
-            profissional_email: pro.email,
-            profissional_nome: pro.name,
-            servico: pro.service,
-            ultima_mensagem: 'Conversa iniciada após contratação do serviço.',
-        }]);
-
-    if (error) {
-        console.error('Erro ao criar a conversa:', error);
-    }
-}
+// A partir daqui, registrar o pedido, debitar/creditar saldo e criar o
+// pagamento passaram a acontecer no backend (/api/contratar-servico),
+// que confere o preço real do profissional no banco antes de gravar
+// qualquer coisa. O navegador só manda quem, com quem e como paga.
 
 async function pagarComCarteira(pro) {
     const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
@@ -316,44 +234,26 @@ async function pagarComCarteira(pro) {
     confirmarBtn.textContent = 'Processando...';
 
     try {
-        if (saldoAtualCarteira < pro.priceValue) {
-            alert('Saldo insuficiente. Adicione crédito na carteira ou escolha o Mercado Pago.');
+        const resposta = await fetch('/api/contratar-servico', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                usuarioEmail: usuarioAtual.email,
+                profissionalEmail: pro.email,
+                servico: pro.service,
+                formaPagamento: 'carteira',
+                endereco: detalhesAtuais.endereco,
+                comodos: detalhesAtuais.comodos,
+                observacoes: detalhesAtuais.observacoes
+            })
+        });
+
+        const resultado = await resposta.json().catch(() => ({}));
+
+        if (!resposta.ok) {
+            alert(resultado.error || 'Não foi possível concluir o pagamento com a carteira.');
             return;
         }
-
-        const novoSaldo = Math.round((saldoAtualCarteira - pro.priceValue) * 100) / 100;
-
-        const { error } = await supabaseClient
-            .from('usuarios')
-            .update({ saldo: novoSaldo })
-            .eq('email', usuarioAtual.email);
-
-        if (error) {
-            alert('Erro ao debitar o saldo: ' + error.message);
-            return;
-        }
-
-        const { error: registroError } = await supabaseClient
-            .from('pagamentos')
-            .insert([{
-                usuario_email: usuarioAtual.email,
-                valor: pro.priceValue,
-                forma_pagamento: 'carteira',
-                status: 'aprovado',
-                tipo: 'gasto',
-                descricao: `${pro.service} - ${pro.name}`,
-                external_reference: `GASTO-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-            }]);
-
-        if (registroError) {
-            console.error('Erro ao registrar o gasto:', registroError);
-        }
-
-        await registrarPedido(pro, 'carteira');
-
-        await criarConversa(pro);
-
-        await creditarProfissional(pro);
 
         alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
         closePaymentModal();
@@ -374,57 +274,38 @@ async function iniciarPagamento(pro) {
     confirmarBtn.disabled = true;
 
     try {
-        const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+        const resposta = await fetch('/api/contratar-servico', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ACCESS_TOKEN}`
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                items: [
-                    {
-                        title: `Serviço - ${pro.service} - ${pro.name}`,
-                        quantity: 1,
-                        currency_id: 'BRL',
-                        unit_price: pro.priceValue
-                    }
-                ],
-                payment_methods: {
-                    excluded_payment_types: [],
-                    installments: 1
-                },
-                external_reference: `FACO-${Date.now()}`
+                usuarioEmail: usuarioAtual.email,
+                profissionalEmail: pro.email,
+                servico: pro.service,
+                formaPagamento: 'mercadopago',
+                origin: window.location.origin,
+                endereco: detalhesAtuais.endereco,
+                comodos: detalhesAtuais.comodos,
+                observacoes: detalhesAtuais.observacoes
             })
         });
 
-        const data = await response.json();
-        console.log('Resposta MP:', data);
+        const resultado = await resposta.json().catch(() => ({}));
 
-        if (data.init_point) {
-            await registrarPedido(pro, 'mercadopago');
-            await criarConversa(pro);
-            await creditarProfissional(pro);
-            window.open(data.init_point, '_blank');
-            closePaymentModal();
-        } else if (data.sandbox_init_point) {
-            await registrarPedido(pro, 'mercadopago');
-            await criarConversa(pro);
-            await creditarProfissional(pro);
-            window.open(data.sandbox_init_point, '_blank');
-            closePaymentModal();
-        } else {
-            throw new Error(data.message || 'Link de pagamento não retornado');
+        if (!resposta.ok || !resultado.init_point) {
+            throw new Error(resultado.error || 'Link de pagamento não retornado');
         }
 
+        // Vai pra tela do Mercado Pago de verdade; o pedido só é criado
+        // e o profissional só é creditado depois que o pagamento volta
+        // confirmado (ver Servicos/retorno-contratacao.html).
+        window.location.href = resultado.init_point;
     } catch (err) {
         console.error('Erro ao iniciar pagamento:', err);
         alert('Erro ao conectar com o Mercado Pago.\nVerifique o console para mais detalhes.');
+        confirmarBtn.textContent = textoOriginal;
+        confirmarBtn.disabled = false;
     }
-
-    confirmarBtn.textContent = textoOriginal;
-    confirmarBtn.disabled = false;
 }
-
 function bindEvents() {
     const modalVoltarBtn = document.getElementById('modalVoltar');
     if (modalVoltarBtn) {
@@ -445,6 +326,34 @@ function bindEvents() {
     });
 
     document.getElementById('solicitarBtn').addEventListener('click', () => {
+        if (activePro) abrirModalDetalhes(activePro);
+    });
+
+    document.getElementById('detalhesCancelarBtn').addEventListener('click', closeModalDetalhes);
+    document.getElementById('detalhesModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('detalhesModal')) closeModalDetalhes();
+    });
+
+    document.getElementById('detalhesConfirmarBtn').addEventListener('click', () => {
+        const endereco = document.getElementById('detalhesEndereco').value.trim();
+        const comodos = document.getElementById('detalhesComodos').value;
+
+        if (!endereco) {
+            alert('Por favor, informe o endereço.');
+            return;
+        }
+        if (!comodos) {
+            alert('Por favor, selecione o número de cômodos.');
+            return;
+        }
+
+        detalhesAtuais = {
+            endereco,
+            comodos,
+            observacoes: document.getElementById('detalhesObs').value.trim()
+        };
+
+        closeModalDetalhes();
         if (activePro) abrirModalPagamento(activePro);
     });
 

@@ -1,13 +1,10 @@
-function responder(status, conteudo) {
-    return new Response(JSON.stringify(conteudo), {
-        status,
-
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Cache-Control": "no-store"
-        }
-    });
-}
+import {
+    respostaJson as responder,
+    emailValido,
+    origemPermitida,
+    ipDoRequest,
+    limitarTaxa
+} from "./_shared.mjs";
 
 function escaparHtml(texto = "") {
     return String(texto)
@@ -18,15 +15,19 @@ function escaparHtml(texto = "") {
         .replaceAll("'", "&#039;");
 }
 
-function emailValido(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 export default async function enviarEmail(request) {
     if (request.method !== "POST") {
         return responder(405, {
             error: "Método não permitido."
         });
+    }
+
+    if (!origemPermitida(request)) {
+        return responder(403, { error: "Origem não permitida." });
+    }
+
+    if (!limitarTaxa(`enviar-email:${ipDoRequest(request)}`, 5, 60_000)) {
+        return responder(429, { error: "Muitas tentativas em pouco tempo." });
     }
 
     try {

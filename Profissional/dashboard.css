@@ -74,7 +74,7 @@ body {
 }
 
 .logo-full {
-    height: 48px;
+    height: 62px;
     width: auto;
     object-fit: contain;
 }
@@ -310,7 +310,26 @@ html.light-mode .hero-prof-foto {
     background: linear-gradient(120deg, #F3E3C6 0%, #EAC98A 55%, #D9A85A 100%);
 }
 
+.hero-prof-foto-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-prof-foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 14, 6, 0) 35%, rgba(20, 14, 6, 0.7) 100%);
+    z-index: 1;
+}
+
 .hero-prof-quote {
+    position: relative;
+    z-index: 2;
     color: #fff;
     text-align: right;
     padding: 1.5rem 1.8rem;

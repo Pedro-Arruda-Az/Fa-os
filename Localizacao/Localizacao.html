@@ -5,49 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Serviços Próximos</title>
     <link rel="stylesheet" href="Localizacao.css">
+    <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
 </head>
 <body>
 
-    <header class="header">
+    <script>document.body.classList.toggle('dark-mode', localStorage.getItem('darkMode') === 'enabled');</script>
+
+        <header class="header">
         <div class="header-left">
-            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+            <a href="/Landing Page/TelaIni.html" class="brand-mark">
+                <img src="/imagens/facos-logo-marrom.png" alt="FAÇOS" class="brand-logo icon-claro">
+                <img src="/imagens/facos-logo-completo.png" alt="FAÇOS" class="brand-logo icon-escuro">
+            </a>
         </div>
         <div class="header-right">
-            <div class="header-icons">
-                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
-                    <img src="/imagens/icones-claro/perfil.png" alt="Perfil" width="32">
-                </a>
-                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
-                    <img src="/imagens/icones-claro/casinha-header.png" alt="Home" width="28">
-                </a>
-            </div>
+            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil">
+                <img src="/imagens/icones-claro/perfil.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/perfil.png" alt="" class="icon-escuro">
+            </a>
+            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn" title="Início">
+                <img src="/imagens/icones-claro/casinha-header.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/casinha-header.png" alt="" class="icon-escuro">
+            </a>
         </div>
     </header>
 
     <div class="main-container">
-
         <aside class="sidebar">
-            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
-                <img src="/imagens/icones-claro/mensagens.png" alt="Chat" width="32">
-            </a>
+            <nav class="sidebar-nav">
+                <a href="/Chat/Chat.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/mensagens.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/mensagens.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.mensagens">Mensagens</span>
+                </a>
+                <a href="/Pedidos/Pedidos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/pedidos.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/pedidos.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.pedidos">Pedidos</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item active">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/agenda.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/agenda.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.servicos">Serviços</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/localizacao.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/localizacao.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.localizacao">Localização</span>
+                </a>
+                <a href="/Pagamentos/Pagamentos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/carteira.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/carteira.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.carteira">Carteira</span>
+                </a>
+                <a href="/Sino/Sino.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/notificacoes.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/notificacoes.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.notificacoes">Notificações</span>
+                    <span class="notif-badge" data-notif-badge style="display:none;"></span>
+                </a>
+            </nav>
 
-            <a href="/Localizacao/Localizacao.html" class="sidebar-icon active" title="Localização">
-                <img src="/imagens/icones-claro/localizacao.png" alt="Localização" width="36">
-            </a>
-            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
-                <img src="/imagens/icones-claro/pedidos.png" alt="Pedidos" width="28">
-            </a>
-            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
-                <img src="/imagens/icones-claro/carteira.png" alt="Pagamento" width="28">
-            </a>
-            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
-                <img src="/imagens/icones-claro/notificacoes.png" alt="Notificações" width="28">
-                <span class="notif-badge" data-notif-badge style="display:none;"></span>
-            </a>
-            <div class="config-wrap">
-                    <button class="config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
-                        <img src="/imagens/engrenagem.png" alt="Configurações" width="22px">
+            <div class="sidebar-bottom">
+                <div class="config-wrap">
+                    <button class="sidebar-nav-item config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
+                        <span class="sidebar-nav-icon"><span class="config-gear-icon"></span></span>
+                        <span class="sidebar-nav-label" data-i18n="menu.configuracoes">Configurações</span>
                     </button>
                     <div class="config-menu config-menu-sidebar" id="configMenu">
                         <button class="config-item" id="modoClaroBtn">
@@ -64,6 +82,7 @@
                         </button>
                     </div>
                 </div>
+            </div>
         </aside>
 
         <section class="categorias-container">

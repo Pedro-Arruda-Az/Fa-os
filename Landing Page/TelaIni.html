@@ -5,126 +5,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Encontre profissionais</title>
+    <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Landing Page/TelaIni.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
-    <style>
-        .home-link,
-        .perfil-link {
-            display: flex;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .home-link:hover,
-        .perfil-link:hover {
-            transform: scale(1.1);
-        }
-    </style>
 </head>
 
 <body>
+    <script>document.body.classList.toggle('dark-mode', localStorage.getItem('darkMode') === 'enabled');</script>
+
     <header class="header">
         <div class="header-left">
-            <span class="header-icon">
-                <img src="/imagens/upscalemedia-transformed.png" alt="Facos" width="100px">
-            </span>
+            <a href="/Landing Page/TelaIni.html" class="brand-mark">
+                <img src="/imagens/facos-logo-marrom.png" alt="FAÇOS" class="brand-logo icon-claro">
+                <img src="/imagens/facos-logo-completo.png" alt="FAÇOS" class="brand-logo icon-escuro">
+            </a>
         </div>
         <div class="header-right">
-            <div class="header-icons">
-                <a href="/Landing Page/Perfil.html" class="perfil-link" title="Meu Perfil">
-                    <img src="/imagens/icones-claro/perfil.png" alt="Perfil" width="32px">
-                </a>
-                <a href="/Landing Page/TelaIni.html" class="home-link" title="Início">
-                    <img src="/imagens/icones-claro/casinha-header.png" alt="Home" width="28px">
-                </a>
-            </div>
+            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil">
+                <img src="/imagens/icones-claro/perfil.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/perfil.png" alt="" class="icon-escuro">
+            </a>
+            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn active" title="Início">
+                <img src="/imagens/icones-claro/casinha-header.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/casinha-header.png" alt="" class="icon-escuro">
+            </a>
         </div>
     </header>
 
     <div class="main-container">
         <aside class="sidebar">
-            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
-                <img src="/imagens/icones-claro/mensagens.png" alt="Chat" width="32px">
-            </a>
-            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
-                <img src="/imagens/icones-claro/localizacao.png" alt="Localização" width="32px">
-            </a>
-            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
-                <img src="/imagens/icones-claro/pedidos.png" alt="Pedidos" width="32px">
-            </a>
-            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
-                <img src="/imagens/icones-claro/carteira.png" alt="Pagamento" width="32px">
-            </a>
-            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
-                <img src="/imagens/icones-claro/notificacoes.png" alt="Notificações" width="32px">
-                <span class="notif-badge" data-notif-badge style="display:none;"></span>
-            </a>
-            <div class="config-wrap">
-                <button class="config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
-                    <img src="/imagens/engrenagem.png" alt="Configurações" width="22px">
-                </button>
-                <div class="config-menu config-menu-sidebar" id="configMenu">
-                    <button class="config-item" id="modoClaroBtn">
-                        <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-escuro-lua.png" alt="" width="18" height="18">
-                        <span id="modoClaroLabel" data-i18n="menu.modoEscuro">Modo escuro</span>
+            <nav class="sidebar-nav">
+                <a href="/Chat/Chat.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/mensagens.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/mensagens.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.mensagens">Mensagens</span>
+                </a>
+                <a href="/Pedidos/Pedidos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/pedidos.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/pedidos.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.pedidos">Pedidos</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/agenda.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/agenda.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.servicos">Serviços</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/localizacao.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/localizacao.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.localizacao">Localização</span>
+                </a>
+                <a href="/Pagamentos/Pagamentos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/carteira.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/carteira.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.carteira">Carteira</span>
+                </a>
+                <a href="/Sino/Sino.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/notificacoes.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/notificacoes.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.notificacoes">Notificações</span>
+                    <span class="notif-badge" data-notif-badge style="display:none;"></span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="config-wrap">
+                    <button class="sidebar-nav-item config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
+                        <span class="sidebar-nav-icon"><span class="config-gear-icon"></span></span>
+                        <span class="sidebar-nav-label" id="modoClaroLabelWrap" data-i18n="menu.configuracoes">Configurações</span>
                     </button>
-                    <button class="config-item" id="idiomaBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
-                        <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
-                    </button>
-                    <button class="config-item config-item-sair" id="logoutBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-                        <span data-i18n="menu.sair">Sair</span>
-                    </button>
+                    <div class="config-menu config-menu-sidebar" id="configMenu">
+                        <button class="config-item" id="modoClaroBtn">
+                            <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-escuro-lua.png" alt="" width="18" height="18">
+                            <span id="modoClaroLabel" data-i18n="menu.modoEscuro">Modo escuro</span>
+                        </button>
+                        <button class="config-item" id="idiomaBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+                            <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
+                        </button>
+                        <button class="config-item config-item-sair" id="logoutBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                            <span data-i18n="menu.sair">Sair</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </aside>
 
         <main class="content">
-            <h1 class="title" data-i18n-html="tela.titulo">Encontre profissionais disponíveis<br>perto de você!</h1>
-
-            <div class="search-container">
-                <div class="search-box">
-                    <span class="search-icon"></span>
-                    <input type="text" class="search-input" placeholder="procurar por serviço / profissional" data-i18n-placeholder="tela.buscaPlaceholder">
+            <section class="hero-inicio">
+                <div class="hero-inicio-photo">
+                    <img src="/imagens/hero-inicio-claro.jpg" alt="Sala de estar aconchegante" class="hero-inicio-img">
                 </div>
-            </div>
+                <div class="hero-inicio-text">
+                    <div class="hero-search-row">
+                        <div class="hero-search-input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" class="hero-search-input" id="buscaInicioInput" placeholder="Buscar por serviço ou profissional..." data-i18n-placeholder="tela.buscaPlaceholder">
+                        </div>
+                        <button type="button" class="hero-search-btn" id="buscaInicioBtn" data-i18n="tela.buscar">Buscar</button>
+                    </div>
+
+                    <h1 class="hero-inicio-heading" data-i18n-html="tela.tituloHero">Encontre profissionais <span class="accent">disponíveis</span> perto de você</h1>
+                    <p class="hero-inicio-sub" data-i18n="tela.subHero">Serviços de manutenção, limpeza, instalações e muito mais, de forma rápida, segura e prática.</p>
+                </div>
+            </section>
 
             <h2 class="section-title" data-i18n="tela.servicosMaisProcurados">Serviços mais procurados</h2>
             <div class="services-grid">
-                <div class="service-card">
-                    <a href="/Servicos/Limpeza.html" data-i18n="servico.limpeza">Limpeza</a>
-                </div>
-                <div class="service-card">
-                    <a href="/Servicos/Eletricista.html" data-i18n="servico.eletricista">Eletricista</a>
-                </div>
-                <div class="service-card">
-                    <a href="/Servicos/CasaInstalacoes.html" data-i18n="servico.casaInstalacoes">Casa e instalações</a>
-                </div>
-                <div class="service-card">
-                    <a href="/Servicos/Manutencao.html" data-i18n="servico.manutencao">Manutenção</a>
-                </div>
-                <div class="service-card">
-                    <a href="/Servicos/Jardinagem.html" data-i18n="servico.jardinagem">Jardinagem e áreas externas</a>
-                </div>
-                <div class="service-card">
-                    <a href="/Servicos/TecnologiaAssistencia.html" data-i18n="servico.tecnologia">Tecnologia e assistência</a>
-                </div>
+                <a class="service-card" href="/Servicos/Limpeza.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></span>
+                    <span data-i18n="servico.limpeza">Limpeza</span>
+                </a>
+                <a class="service-card" href="/Servicos/Eletricista.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+                    <span data-i18n="servico.eletricista">Eletricista</span>
+                </a>
+                <a class="service-card" href="/Servicos/CasaInstalacoes.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+                    <span data-i18n="servico.casaInstalacoes">Casa e instalações</span>
+                </a>
+                <a class="service-card" href="/Servicos/Manutencao.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span>
+                    <span data-i18n="servico.manutencao">Manutenção</span>
+                </a>
+                <a class="service-card" href="/Servicos/Jardinagem.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
+                    <span data-i18n="servico.jardinagem">Jardinagem e áreas externas</span>
+                </a>
+                <a class="service-card" href="/Servicos/TecnologiaAssistencia.html">
+                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                    <span data-i18n="servico.tecnologia">Tecnologia e assistência</span>
+                </a>
             </div>
 
-            <h2 class="section-title" data-i18n="tela.estatisticas">estatísticas da plataforma</h2>
-            <div class="estatisticas-container">
-                <div class="estatistica-item">
-                    <span class="estatistica-numero">500+</span>
-                    <span class="estatistica-label" data-i18n="tela.profissionaisAtivos">Profissionais ativos</span>
+            <h2 class="section-title" data-i18n="tela.estatisticas">Estatísticas da plataforma</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                    <div class="stat-texts">
+                        <span class="stat-numero">500+</span>
+                        <span class="stat-label" data-i18n="tela.profissionaisAtivos">Profissionais cadastrados</span>
+                    </div>
                 </div>
-                <div class="estatistica-item">
-                    <span class="estatistica-numero">2.5k</span>
-                    <span class="estatistica-label" data-i18n="tela.servicosRealizados">Serviços realizados</span>
+                <div class="stat-card">
+                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span>
+                    <div class="stat-texts">
+                        <span class="stat-numero">2.5k</span>
+                        <span class="stat-label" data-i18n="tela.servicosRealizados">Serviços concluídos</span>
+                    </div>
                 </div>
-                <div class="estatistica-item">
-                    <span class="estatistica-numero">4.80</span>
-                    <span class="estatistica-label" data-i18n="tela.avaliacaoMedia">Avaliação média</span>
+                <div class="stat-card">
+                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                    <div class="stat-texts">
+                        <span class="stat-numero">4.80</span>
+                        <span class="stat-label" data-i18n="tela.avaliacaoMedia">Avaliação média</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                    <div class="stat-texts">
+                        <span class="stat-numero">98%</span>
+                        <span class="stat-label" data-i18n="tela.satisfacao">Satisfação dos clientes</span>
+                    </div>
                 </div>
             </div>
         </main>

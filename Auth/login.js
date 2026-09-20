@@ -359,4 +359,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.onclick = (event) => {
         if (event.target === redefinirSenhaModal) redefinirSenhaModal.style.display = 'none';
     };
+
+    document.querySelectorAll('.toggle-senha').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const alvo = document.getElementById(btn.getAttribute('data-alvo'));
+            if (!alvo) return;
+            const visivel = alvo.type === 'text';
+            alvo.type = visivel ? 'password' : 'text';
+            btn.classList.toggle('ativo', !visivel);
+        });
+    });
 });

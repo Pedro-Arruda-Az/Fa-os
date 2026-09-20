@@ -1,0 +1,412 @@
+/* ============================================================
+   FAÇOS — App shell (topbar + sidebar) compartilhado
+   Usado por todas as telas da área logada do cliente/empresa:
+   Landing Page (Início, Perfil), Chat, Pedidos, Localização,
+   Pagamentos, Sino e Servicos/*.
+
+   Tema claro e escuro são controlados por variáveis CSS. A troca
+   de tema é feita adicionando/removendo a classe "dark-mode" no
+   <body> (ver Shared/tema.js) — o valor fica salvo em
+   localStorage('darkMode') e por isso persiste ao trocar de tela.
+   ============================================================ */
+
+:root {
+    --shell-bg: #FFFCF4;
+    --shell-card-bg: #FFFFFF;
+    --shell-border: #F1E4C6;
+    --shell-navy: #0B1440;
+    --shell-navy-soft: #3D4568;
+    --shell-text-muted: #6B7592;
+    --shell-orange: #F5A300;
+    --shell-orange-strong: #FDA900;
+    --shell-orange-soft: #FDECC5;
+    --shell-gold-btn: #FFC700;
+    --shell-gold-btn-hover: #F0B400;
+    --shell-shadow: 0 10px 28px rgba(91, 67, 12, 0.08);
+
+    /* Painel unificado (topbar + sidebar) */
+    --shell-panel-bg: #FFC700;
+    --shell-panel-text: #0B1440;
+    --shell-panel-icon-bg: rgba(255, 255, 255, 0.4);
+    --shell-panel-icon-bg-hover: rgba(255, 255, 255, 0.65);
+    --shell-panel-hover: rgba(11, 20, 64, 0.08);
+    --shell-panel-divider: rgba(11, 20, 64, 0.14);
+    --shell-panel-active-bg: #FFFCF4;
+    --shell-panel-active-text: #0B1440;
+}
+
+body.dark-mode {
+    --shell-bg: #141414;
+    --shell-card-bg: #1E1E1E;
+    --shell-border: #2A2A2A;
+    --shell-navy: #F5F1E6;
+    --shell-navy-soft: #C9C9C9;
+    --shell-text-muted: #9A9A9A;
+    --shell-orange: #FFC700;
+    --shell-orange-strong: #FFC700;
+    --shell-orange-soft: #2E2712;
+    --shell-gold-btn: #FFC700;
+    --shell-gold-btn-hover: #E6B400;
+    --shell-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+
+    /* Painel unificado no escuro: um marrom-dourado profundo em vez do
+       amarelo puro (que "estoura" ao lado do conteúdo quase preto) —
+       mesma família de cor da marca, só que escurecida. */
+    --shell-panel-bg: #2A2010;
+    --shell-panel-text: #F5E9C8;
+    --shell-panel-icon-bg: rgba(255, 199, 0, 0.14);
+    --shell-panel-icon-bg-hover: rgba(255, 199, 0, 0.24);
+    --shell-panel-hover: rgba(255, 199, 0, 0.1);
+    --shell-panel-divider: rgba(255, 199, 0, 0.18);
+    --shell-panel-active-bg: #40331A;
+    --shell-panel-active-text: #FFC700;
+}
+
+body {
+    background: var(--shell-bg);
+    transition: background-color 0.2s ease;
+}
+
+/* ===== Topbar + Sidebar: painel único ===== */
+/* O topbar e a barra lateral usam o mesmo fundo (--shell-panel-bg) e não
+   têm mais borda entre eles, para lerem como uma peça só em formato de "L". */
+.header {
+    background: var(--shell-panel-bg);
+    padding: 0 2.5rem;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color 0.2s ease;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+}
+
+/* Logo pronta (marrom no claro, dourada no escuro) — a própria imagem já
+   traz o símbolo + "FAÇOS", então não precisa mais de um <span> de texto
+   ao lado. */
+.brand-mark .brand-logo {
+    height: 64px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.35rem;
+}
+
+.topbar-icon-btn,
+.topbar-profile-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: var(--shell-panel-text);
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.topbar-icon-btn svg,
+.topbar-profile-btn svg {
+    width: 30px;
+    height: 30px;
+}
+
+.topbar-icon-btn img,
+.topbar-profile-btn img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* Ícones prontos (PNG) com par claro/escuro — a troca é 100% via CSS,
+   seguindo a classe "dark-mode" no <body>, sem precisar de JS por página. */
+.icon-claro { display: block; }
+.icon-escuro { display: none; }
+body.dark-mode .icon-claro { display: none; }
+body.dark-mode .icon-escuro { display: block; }
+
+.topbar-icon-btn:hover,
+.topbar-profile-btn:hover {
+    opacity: 0.7;
+    transform: scale(1.06);
+}
+
+.topbar-icon-btn.active {
+    opacity: 1;
+}
+
+/* ===== Layout base ===== */
+.main-container {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    width: 198px;
+    flex-shrink: 0;
+    background: var(--shell-panel-bg);
+    padding: 2rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    position: sticky;
+    top: 92px;
+    height: calc(100vh - 92px);
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.85rem 0.7rem;
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--shell-panel-text);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 1.08rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    color: var(--shell-panel-text);
+}
+
+.sidebar-nav-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.sidebar-nav-icon img {
+    width: 27px;
+    height: 27px;
+    object-fit: contain;
+}
+
+/* Ícone de engrenagem (Configurações) — o arquivo pronto (engrenagem.png)
+   é um silhueta preta única (sem par claro/escuro), então em vez de um
+   <img> ele entra como máscara CSS preenchida com a cor atual do tema,
+   exatamente como os outros itens trocam de cor entre claro/escuro. */
+.config-gear-icon {
+    width: 26px;
+    height: 26px;
+    background-color: currentColor;
+    -webkit-mask-image: url('/imagens/engrenagem.png');
+    mask-image: url('/imagens/engrenagem.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.sidebar-nav-item:hover {
+    background: var(--shell-panel-hover);
+}
+
+.sidebar-nav-item.active {
+    background: var(--shell-panel-active-bg);
+    color: var(--shell-panel-active-text);
+}
+
+.sidebar-nav-item.active .sidebar-nav-icon {
+    color: var(--shell-panel-active-text);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--shell-panel-divider);
+}
+
+.sidebar .config-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.sidebar .config-trigger {
+    display: flex;
+}
+
+.sidebar-icon {
+    display: none;
+}
+
+/* Badge de notificação — agora dentro do item "Notificações" da barra
+   lateral, então flui na própria linha (empurrado pra direita) em vez de
+   ficar absoluto sobre um ícone pequeno do topbar. */
+.notif-badge {
+    margin-left: auto;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 5px;
+    background: #E53935;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.sidebar-nav-item.active .notif-badge {
+    box-shadow: 0 0 0 2px var(--shell-panel-active-bg);
+}
+
+/* ===== Menu de configurações (dropdown) ===== */
+.config-menu {
+    display: none;
+    position: absolute;
+    background: #2E2A38;
+    border-radius: 14px;
+    padding: 0.5rem;
+    min-width: 210px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    flex-direction: column;
+    z-index: 300;
+}
+
+.config-menu.open {
+    display: flex;
+}
+
+.config-menu-sidebar {
+    bottom: calc(100% + 10px);
+    left: 0;
+    top: auto;
+    right: auto;
+}
+
+.config-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: none;
+    border: none;
+    color: #FDF8E3;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    padding: 0.7rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+}
+
+.config-item img,
+.config-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #FFC700;
+}
+
+.config-item:hover {
+    background: rgba(255, 199, 0, 0.1);
+}
+
+.config-item-sair {
+    color: #FF8A80;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 0.3rem;
+    padding-top: 0.9rem;
+}
+
+.config-item-sair svg {
+    color: #FF8A80;
+}
+
+@media (max-width: 900px) {
+    .header {
+        padding: 0 1.25rem;
+        height: 76px;
+    }
+
+    .sidebar {
+        top: 76px;
+        height: calc(100vh - 76px);
+        width: 172px;
+    }
+}
+
+@media (max-width: 680px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        border-right: none;
+        border-bottom: 1px solid var(--shell-panel-divider);
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex: 1;
+    }
+
+    .sidebar-nav-item {
+        width: auto;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .sidebar-nav-item .sidebar-nav-label {
+        display: none;
+    }
+
+    .sidebar-bottom {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+}

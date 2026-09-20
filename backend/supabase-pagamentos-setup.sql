@@ -27,11 +27,8 @@ create index if not exists idx_pagamentos_external_reference
 create index if not exists idx_pagamentos_usuario_email
     on pagamentos (usuario_email);
 
--- 3) RLS (Row Level Security) — a tabela pagamentos só é escrita
---    pelas Netlify Functions (que usam a service role / anon key
---    já usada no restante do projeto). Se RLS estiver ativado no
---    seu projeto Supabase, habilite acesso público de leitura/escrita
---    igual ao que já é usado na tabela "usuarios", ou desative RLS
---    nesta tabela para manter a mesma política do resto do app:
---
--- alter table pagamentos disable row level security;
+-- 3) RLS (Row Level Security) — a tabela pagamentos só deve ser
+--    escrita pelas Netlify Functions (que usam a SERVICE ROLE KEY,
+--    que ignora RLS). Rode backend/supabase-fix-rls.sql para ativar
+--    o RLS com a policy correta (leitura liberada, escrita só pelo
+--    backend).

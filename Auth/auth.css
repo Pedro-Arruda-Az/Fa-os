@@ -67,9 +67,9 @@ a {
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.14);
     width: 100%;
-    max-width: 420px;
+    max-width: 490px;
     border-radius: 28px;
-    padding: 2.2rem 2rem;
+    padding: 2.5rem 2.6rem;
     box-shadow: 0 0 55px rgba(255, 220, 150, 0.08), 0 25px 60px rgba(0, 0, 0, 0.5);
 }
 
@@ -200,6 +200,50 @@ a {
     background-position: center;
 }
 
+/* Fundo claro (colmeia) usado na tela de cadastro -- só nas páginas que
+   NÃO são a de login (essa já tem seu próprio fundo claro e cartão
+   opaco definidos em .auth-page-login mais abaixo). Como o fundo aqui
+   é claro, os textos que antes eram dourado/bege (pensados para o fundo
+   escuro) precisam ficar escuros para continuar legíveis. */
+.hex-page:not(.auth-page-login) {
+    background-color: #FFF8E1;
+    background-image: url('/imagens/fundo-cadastro-colmeia.png');
+}
+
+.hex-page:not(.auth-page-login) .auth-heading {
+    color: #2C1A0E;
+}
+
+.hex-page:not(.auth-page-login) .auth-heading-sub {
+    color: #6B5A48;
+}
+
+.hex-page:not(.auth-page-login) .auth-card {
+    background: rgba(255, 253, 248, 0.9);
+    border: 1px solid rgba(92, 58, 30, 0.1);
+    box-shadow: 0 30px 70px rgba(92, 58, 30, 0.16);
+}
+
+.hex-page:not(.auth-page-login) .auth-card h1 {
+    color: #2C1A0E;
+}
+
+.hex-page:not(.auth-page-login) .auth-card label {
+    color: #3E2711;
+}
+
+.hex-page:not(.auth-page-login) .auth-sub {
+    color: #7A6A5A;
+}
+
+.hex-page:not(.auth-page-login) .auth-troca {
+    color: #7A6A5A;
+}
+
+.hex-page:not(.auth-page-login) .auth-troca a {
+    color: #C98A12;
+}
+
 .auth-hero {
     display: flex;
     flex-direction: column;
@@ -211,8 +255,16 @@ a {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 5rem;
+    gap: 3.5rem;
     flex-wrap: wrap;
+    background-color: #FFF6DD;
+    background-image: url('/imagens/login-fundo-novo.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    color: #3E2711;
 }
 
 .auth-page-login .auth-hero {
@@ -227,6 +279,21 @@ a {
 .auth-page-login .auth-heading,
 .auth-page-login .auth-heading-sub {
     text-align: left;
+}
+
+.auth-page-login .auth-heading {
+    color: #2C1A0E;
+    font-size: 2rem;
+}
+
+.auth-page-login .auth-heading-sub {
+    color: #6B5A48;
+}
+
+.auth-page-login .auth-hero,
+.auth-page-login .auth-card {
+    position: relative;
+    z-index: 1;
 }
 
 @media (max-width: 860px) {
@@ -322,21 +389,26 @@ a {
 }
 
 .auth-page-login .tab-switch {
-    background: rgba(255, 255, 255, 0.1);
+    background: #FBF0D8;
+    box-shadow: inset 0 0 0 1px rgba(92, 58, 30, 0.06);
     width: 100%;
     max-width: 360px;
 }
 
 .auth-page-login .tab-btn {
-    color: #1A1208;
+    color: #8B7355;
 }
 
 .auth-page-login .tab-btn.active {
-    color: #1A1208;
+    background: linear-gradient(135deg, #FFCF3D 0%, #F5B400 100%);
+    color: #2C1A0E;
 }
 
 .auth-selos {
     margin-top: 0.6rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
 }
 
 .auth-selo-linha {
@@ -360,6 +432,47 @@ a {
     font-size: 0.85rem;
     font-weight: 500;
     color: #A79A88;
+}
+
+.selo-icone-lock {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FFF3D2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #C98A12;
+}
+
+.selo-icone-lock svg {
+    width: 19px;
+    height: 19px;
+}
+
+.selo-titulo {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #2C1A0E;
+    margin-bottom: 0.25rem;
+}
+
+.selo-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #7A6A5A;
+    flex-wrap: wrap;
+}
+
+.selo-sub svg {
+    width: 15px;
+    height: 15px;
+    color: #2FB344;
+    flex-shrink: 0;
 }
 
 .auth-voltar {
@@ -624,4 +737,110 @@ a {
     .escolha-grid {
         flex-direction: column;
     }
+}
+
+/* ===== Tela de login clara (referência) =====
+   O fundo (foto do profissional + hexágonos decorativos) agora vem
+   embutido na imagem de /imagens/login-fundo-novo.png (ver .auth-page-login
+   mais acima), então não precisamos mais de foto flutuante nem de SVGs
+   de hexágono separados por cima dela.
+
+   A foto do profissional faz parte da imagem de fundo (background-size:
+   cover), então a posição da borda dela, em pixels, cresce junto com a
+   largura da tela. Para o texto/card nunca ficar em cima da foto, o
+   afastamento da coluna de texto usa essa mesma lógica (mais afastamento
+   em telas menores, quase nenhum em telas bem largas, onde a foto já
+   ocupa uma fatia pequena). */
+.auth-page-login .auth-hero {
+    margin-left: clamp(0px, calc(1056px - 55.2vw), 420px);
+}
+
+@media (max-width: 860px) {
+    .auth-page-login .auth-hero {
+        margin-left: 0;
+    }
+}
+
+.auth-page-login .auth-card {
+    background: #FFFDF8;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid rgba(92, 58, 30, 0.06);
+    box-shadow: 0 30px 70px rgba(92, 58, 30, 0.18);
+    max-width: 540px;
+}
+
+.auth-page-login .auth-card label {
+    color: #3E2711;
+}
+
+.auth-page-login .auth-troca {
+    color: #8B7869;
+}
+
+.auth-page-login .auth-troca a {
+    color: #C98A12;
+}
+
+.input-icon-wrap {
+    position: relative;
+}
+
+.input-icon-wrap .input-icone {
+    position: absolute;
+    left: 0.95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: #A8925F;
+    pointer-events: none;
+}
+
+.input-icon-wrap input {
+    padding-left: 2.6rem;
+}
+
+.input-icon-wrap:has(.toggle-senha) input {
+    padding-right: 2.6rem;
+}
+
+.toggle-senha {
+    position: absolute;
+    right: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    color: #A8925F;
+    cursor: pointer;
+    display: flex;
+}
+
+.toggle-senha svg {
+    width: 18px;
+    height: 18px;
+}
+
+.toggle-senha.ativo {
+    color: #C98A12;
+}
+
+.auth-page-login .auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #FFCF3D 0%, #F5B400 100%);
+    color: #2C1A0E;
+}
+
+.auth-page-login .auth-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-page-login .auth-btn:hover {
+    background: linear-gradient(135deg, #FFD658 0%, #FFC107 100%);
 }

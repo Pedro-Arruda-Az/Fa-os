@@ -5,62 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faços - Eletricista</title>
     <link rel="stylesheet" href="/Servicos/Eletricista.css">
+    <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <header class="header">
+    <script>document.body.classList.toggle('dark-mode', localStorage.getItem('darkMode') === 'enabled');</script>
+
+        <header class="header">
         <div class="header-left">
-            <img src="/imagens/upscalemedia-transformed.png" alt="Faços" class="logo-img">
+            <a href="/Landing Page/TelaIni.html" class="brand-mark">
+                <img src="/imagens/facos-logo-marrom.png" alt="FAÇOS" class="brand-logo icon-claro">
+                <img src="/imagens/facos-logo-completo.png" alt="FAÇOS" class="brand-logo icon-escuro">
+            </a>
         </div>
         <div class="header-right">
-            <div class="header-icons">
-                <a href="/Landing Page/Perfil.html" class="icon-btn" title="Perfil">
-                    <img src="/imagens/icones-claro/perfil.png" alt="Perfil" width="32">
-                </a>
-                <a href="/Landing Page/TelaIni.html" class="icon-btn" title="Home">
-                    <img src="/imagens/icones-claro/casinha-header.png" alt="Home" width="28">
-                </a>
-            </div>
+            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil">
+                <img src="/imagens/icones-claro/perfil.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/perfil.png" alt="" class="icon-escuro">
+            </a>
+            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn" title="Início">
+                <img src="/imagens/icones-claro/casinha-header.png" alt="" class="icon-claro">
+                <img src="/imagens/icones-escuro/casinha-header.png" alt="" class="icon-escuro">
+            </a>
         </div>
     </header>
 
     <div class="main-container">
         <aside class="sidebar">
-            <a href="/Chat/Chat.html" class="sidebar-icon" title="Chat">
-                <img src="/imagens/icones-claro/mensagens.png" alt="Chat" width="32px">
-            </a>
-            <a href="/Localizacao/Localizacao.html" class="sidebar-icon" title="Localização">
-                <img src="/imagens/icones-claro/localizacao.png" alt="Localização" width="32px">
-            </a>
-            <a href="/Pedidos/Pedidos.html" class="sidebar-icon" title="Pedidos">
-                <img src="/imagens/icones-claro/pedidos.png" alt="Pedidos" width="32px">
-            </a>
-            <a href="/Pagamentos/Pagamentos.html" class="sidebar-icon" title="Pagamento">
-                <img src="/imagens/icones-claro/carteira.png" alt="Pagamento" width="32px">
-            </a>
-            <a href="/Sino/Sino.html" class="sidebar-icon" title="Notificações">
-                <img src="/imagens/icones-claro/notificacoes.png" alt="Notificações" width="32px">
-                <span class="notif-badge" data-notif-badge style="display:none;"></span>
-            </a>
-            <div class="config-wrap">
-                <button class="config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
-                    <img src="/imagens/engrenagem.png" alt="Configurações" width="22px">
-                </button>
-                <div class="config-menu config-menu-sidebar" id="configMenu">
-                    <button class="config-item" id="modoClaroBtn">
-                        <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-escuro-lua.png" alt="" width="18" height="18">
-                        <span id="modoClaroLabel" data-i18n="menu.modoEscuro">Modo escuro</span>
+            <nav class="sidebar-nav">
+                <a href="/Chat/Chat.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/mensagens.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/mensagens.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.mensagens">Mensagens</span>
+                </a>
+                <a href="/Pedidos/Pedidos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/pedidos.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/pedidos.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.pedidos">Pedidos</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/agenda.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/agenda.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.servicos">Serviços</span>
+                </a>
+                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/localizacao.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/localizacao.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.localizacao">Localização</span>
+                </a>
+                <a href="/Pagamentos/Pagamentos.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/carteira.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/carteira.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.carteira">Carteira</span>
+                </a>
+                <a href="/Sino/Sino.html" class="sidebar-nav-item">
+                    <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/notificacoes.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/notificacoes.png" alt="" class="icon-escuro"></span>
+                    <span class="sidebar-nav-label" data-i18n="menu.notificacoes">Notificações</span>
+                    <span class="notif-badge" data-notif-badge style="display:none;"></span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="config-wrap">
+                    <button class="sidebar-nav-item config-trigger" id="configBtn" title="Configurações" aria-label="Configurações">
+                        <span class="sidebar-nav-icon"><span class="config-gear-icon"></span></span>
+                        <span class="sidebar-nav-label" data-i18n="menu.configuracoes">Configurações</span>
                     </button>
-                    <button class="config-item" id="idiomaBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
-                        <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
-                    </button>
-                    <button class="config-item config-item-sair" id="logoutBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-                        <span data-i18n="menu.sair">Sair</span>
-                    </button>
+                    <div class="config-menu config-menu-sidebar" id="configMenu">
+                        <button class="config-item" id="modoClaroBtn">
+                            <img id="modoClaroIcone" src="/imagens/icones-escuro/modo-escuro-lua.png" alt="" width="18" height="18">
+                            <span id="modoClaroLabel" data-i18n="menu.modoEscuro">Modo escuro</span>
+                        </button>
+                        <button class="config-item" id="idiomaBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+                            <span id="idiomaLabel" data-i18n="menu.idioma">Idioma: PT</span>
+                        </button>
+                        <button class="config-item config-item-sair" id="logoutBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                            <span data-i18n="menu.sair">Sair</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -173,6 +194,41 @@
             </div>
 
             <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" disabled>Confirmar pagamento</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="detalhesModal">
+        <div class="modal-card">
+            <h2 class="pagamento-title">Solicitar agora</h2>
+            <p class="pagamento-subtitle">Encontraremos um profissional disponível imediatamente</p>
+            <p class="detalhes-servico-linha" id="detalhesServicoLinha">Serviço: —</p>
+
+            <div class="detalhes-campo">
+                <label for="detalhesEndereco">Endereço</label>
+                <input type="text" id="detalhesEndereco" placeholder="Rua, número, complemento">
+            </div>
+
+            <div class="detalhes-campo">
+                <label for="detalhesComodos">Número de cômodos</label>
+                <select id="detalhesComodos">
+                    <option value="" selected disabled>Selecione</option>
+                    <option value="1">1 cômodo</option>
+                    <option value="2">2 cômodos</option>
+                    <option value="3">3 cômodos</option>
+                    <option value="4">4 cômodos</option>
+                    <option value="5+">5 ou mais cômodos</option>
+                </select>
+            </div>
+
+            <div class="detalhes-campo">
+                <label for="detalhesObs">Informações adicionais</label>
+                <textarea id="detalhesObs" rows="3" placeholder="Alguma observação ou pedido especial?"></textarea>
+            </div>
+
+            <div class="detalhes-botoes">
+                <button type="button" class="detalhes-cancelar-btn" id="detalhesCancelarBtn">Cancelar</button>
+                <button type="button" class="detalhes-confirmar-btn" id="detalhesConfirmarBtn">Solicitar agora</button>
+            </div>
         </div>
     </div>
 
