@@ -114,6 +114,35 @@
     border-bottom-right-radius: 4px;
 }
 
+.buzz-digitando {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.85rem 1rem;
+}
+
+.buzz-digitando span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C4A15A;
+    animation: buzz-digitando-bounce 1.2s infinite ease-in-out;
+}
+
+.buzz-digitando span:nth-child(2) { animation-delay: 0.15s; }
+.buzz-digitando span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes buzz-digitando-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.buzz-input:disabled,
+.buzz-send:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .buzz-footer {
     display: flex;
     align-items: center;

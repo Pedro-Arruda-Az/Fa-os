@@ -277,6 +277,15 @@ html.light-mode .config-menu {
     padding: 1.5rem;
 }
 
+.atendimento-vazio {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    padding: 3rem 1.5rem;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+}
+
 .map-wrapper {
     position: relative;
     width: 100%;
@@ -285,6 +294,13 @@ html.light-mode .config-menu {
     overflow: hidden;
     margin-bottom: 1.25rem;
     border: 1px solid var(--border);
+    /* O Leaflet usa z-index alto (até 1000) nos próprios controles e
+       camadas internas. Sem isolar esse contexto de empilhamento aqui,
+       esses elementos competem diretamente com o cabeçalho fixo (que
+       tem z-index mais baixo) e "vazam" por cima dele ao rolar a
+       página. Isolando o wrapper, tudo do mapa fica contido nele. */
+    isolation: isolate;
+    z-index: 0;
 }
 
 #map {

@@ -1,3 +1,26 @@
+-- ============================================================
+-- FAÇOS - Banco de dados completo, do início ao fim
+--
+-- Este arquivo junta TODOS os scripts separados que fomos criando
+-- ao longo do projeto (schema base, cadastro de empresa/profissional,
+-- CNPJ/CPF, pedidos, pagamentos/carteira, e agora endereço +
+-- informações adicionais do pedido) num único lugar, já com as
+-- colunas mais novas incluídas.
+--
+-- É seguro rodar este arquivo inteiro de uma vez só:
+--   - Se o seu banco ainda não tem nada, ele cria tudo do zero.
+--   - Se o seu banco já tem as tabelas (é o seu caso agora), ele só
+--     adiciona o que ainda está faltando — nada é apagado e nada é
+--     duplicado.
+--
+-- Como rodar: Supabase → seu projeto → SQL Editor → cole este
+-- arquivo inteiro → Run.
+-- ============================================================
+
+
+-- ─────────────────────────────────────────────────────────────
+-- 1) USUÁRIOS (empresas — quem contrata o serviço)
+-- ─────────────────────────────────────────────────────────────
 create table if not exists usuarios (
     id bigserial primary key,
     nome varchar(255) not null,
@@ -24,6 +47,10 @@ create unique index if not exists usuarios_cnpj_key
 create unique index if not exists usuarios_cpf_key
     on usuarios (cpf) where cpf is not null;
 
+
+-- ─────────────────────────────────────────────────────────────
+-- 2) PROFISSIONAIS (quem presta o serviço)
+-- ─────────────────────────────────────────────────────────────
 create table if not exists profissionais (
     id bigserial primary key,
     nome_empresa varchar(255) not null,
@@ -63,18 +90,22 @@ create unique index if not exists profissionais_cpf_key
 create unique index if not exists profissionais_cnpj_key
     on profissionais (cnpj) where cnpj is not null;
 
+
+-- ─────────────────────────────────────────────────────────────
+-- 3) PAGAMENTOS (carteira + Mercado Pago)
+-- ─────────────────────────────────────────────────────────────
 create table if not exists pagamentos (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
     valor numeric(10,2) not null,
     forma_pagamento text,
-    status text not null default 'pendente',           
+    status text not null default 'pendente',            -- pendente | aprovado | rejeitado
     mp_payment_id text,
     mp_preference_id text,
     external_reference text,
     criado_em timestamptz not null default now(),
     atualizado_em timestamptz,
-    tipo text not null default 'credito',               
+    tipo text not null default 'credito',                -- credito | gasto | contratacao
     descricao text
 );
 
@@ -83,19 +114,31 @@ alter table pagamentos add column if not exists descricao text;
 alter table pagamentos add column if not exists profissional_email text;
 alter table pagamentos alter column external_reference drop not null;
 
+-- Endereço e observações do pedido, guardados aqui temporariamente
+-- quando o pagamento é via Mercado Pago (o pedido em si só é criado
+-- depois que o pagamento volta aprovado).
+alter table pagamentos add column if not exists endereco text;
+alter table pagamentos add column if not exists observacoes text;
+
 create index if not exists idx_pagamentos_external_reference on pagamentos (external_reference);
 create index if not exists idx_pagamentos_usuario_email on pagamentos (usuario_email);
 create index if not exists idx_pagamentos_tipo on pagamentos (tipo);
 create index if not exists idx_pagamentos_profissional_email on pagamentos (profissional_email);
 
 
+-- ─────────────────────────────────────────────────────────────
+-- 4) PEDIDOS (histórico real — tela "Meus pedidos" da empresa e
+--    "Pedidos" do profissional)
+--    ★ endereco / observacoes / profissional_email / usuario_nome
+--    são as colunas novas desta rodada.
+-- ─────────────────────────────────────────────────────────────
 create table if not exists pedidos (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
     titulo text not null,
     profissional text not null,
     valor numeric(10,2) not null,
-    status text not null default 'em_andamento',
+    status text not null default 'em_andamento',         -- em_andamento | concluido | cancelado
     avaliacao numeric(2,1),
     forma_pagamento text,
     criado_em timestamptz not null default now(),
@@ -110,14 +153,14 @@ alter table pedidos add column if not exists observacoes text;
 alter table pedidos add column if not exists profissional_email text;
 alter table pedidos add column if not exists usuario_nome text;
 
-alter table pagamentos add column if not exists endereco text;
-alter table pagamentos add column if not exists observacoes text;
-
 create index if not exists idx_pedidos_usuario_email on pedidos (usuario_email);
 create index if not exists idx_pedidos_status on pedidos (status);
 create index if not exists idx_pedidos_profissional_email on pedidos (profissional_email);
 
 
+-- ─────────────────────────────────────────────────────────────
+-- 5) CONVERSAS / MENSAGENS (chat entre empresa e profissional)
+-- ─────────────────────────────────────────────────────────────
 create table if not exists conversas (
     id uuid primary key default gen_random_uuid(),
     usuario_email text not null,
@@ -143,7 +186,6 @@ create index if not exists idx_conversas_usuario_email on conversas (usuario_ema
 create index if not exists idx_conversas_profissional_email on conversas (profissional_email);
 create index if not exists idx_mensagens_chat_conversa_id on mensagens_chat (conversa_id);
 
-
 do $$
 begin
     if not exists (
@@ -162,12 +204,14 @@ begin
 end $$;
 
 
-
+-- ─────────────────────────────────────────────────────────────
+-- 6) NOTIFICAÇÕES DO APP
+-- ─────────────────────────────────────────────────────────────
 create table if not exists notificacoes_app (
     id uuid primary key default gen_random_uuid(),
-    destinatario_tipo text not null,      
+    destinatario_tipo text not null,      -- usuario | profissional
     destinatario_email text not null,
-    tipo text not null,                   
+    tipo text not null,
     titulo text not null,
     descricao text,
     lida boolean not null default false,
@@ -188,7 +232,9 @@ begin
 end $$;
 
 
-
+-- ─────────────────────────────────────────────────────────────
+-- 7) Tabelas mais antigas do projeto (mantidas por compatibilidade)
+-- ─────────────────────────────────────────────────────────────
 create table if not exists service (
     id_servico bigserial unique,
     tipo_servico varchar(50) unique,
@@ -288,10 +334,19 @@ create index if not exists idx_profissional_servico_serv on profissional_servico
 create index if not exists idx_avaliacao_profissional on avaliacao(id_profissional);
 create index if not exists idx_agenda_profissional on agenda(id_profissional);
 
+
+-- ─────────────────────────────────────────────────────────────
+-- 8) Segurança (RLS - Row Level Security)
+--
+-- As tabelas antigas/gerais ficam com RLS desativado (mesmo nível
+-- de acesso que sempre tiveram). "pedidos" e "pagamentos" são mais
+-- sensíveis (têm valores em dinheiro), então elas ficam com RLS
+-- ATIVO: qualquer um pode LER (necessário pras telas "Meus pedidos"
+-- e "Carteira"), mas só o backend (Netlify Functions, com a chave
+-- de serviço) pode criar/alterar/apagar.
+-- ─────────────────────────────────────────────────────────────
 alter table usuarios disable row level security;
 alter table profissionais disable row level security;
-alter table pagamentos disable row level security;
-alter table pedidos disable row level security;
 alter table conversas disable row level security;
 alter table mensagens_chat disable row level security;
 alter table notificacoes_app disable row level security;
@@ -303,3 +358,22 @@ alter table avaliacao disable row level security;
 alter table mensagem disable row level security;
 alter table notificacao disable row level security;
 alter table agenda disable row level security;
+
+alter table pedidos enable row level security;
+alter table pagamentos enable row level security;
+
+drop policy if exists "pedidos leitura publica" on pedidos;
+create policy "pedidos leitura publica"
+    on pedidos for select
+    using (true);
+
+drop policy if exists "pagamentos leitura publica" on pagamentos;
+create policy "pagamentos leitura publica"
+    on pagamentos for select
+    using (true);
+
+-- Nenhuma policy de insert/update/delete é criada de propósito: sem
+-- uma policy que libere a operação, o Postgres bloqueia por padrão
+-- pra quem usa a chave anônima (o navegador). Só a service role key
+-- (usada exclusivamente pelas Netlify Functions) segue passando
+-- direto, ignorando RLS.

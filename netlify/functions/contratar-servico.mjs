@@ -61,14 +61,18 @@ async function garantirConversa(usuarioEmail, usuarioNome, pro, servico) {
 // + notificação + conversa, e credita o profissional. Usado tanto no
 // pagamento via carteira (na hora) quanto na confirmação de um
 // pagamento via Mercado Pago (depois de aprovado).
-async function finalizarContratacao({ usuario, pro, servico, valor, formaPagamento }) {
+async function finalizarContratacao({ usuario, pro, servico, valor, formaPagamento, endereco, observacoes }) {
     await supabasePost("pedidos", {
         usuario_email: usuario.email,
+        usuario_nome: usuario.nome || usuario.email,
         titulo: servico,
         profissional: pro.nome_empresa,
+        profissional_email: pro.email,
         valor,
         status: "em_andamento",
-        forma_pagamento: formaPagamento
+        forma_pagamento: formaPagamento,
+        endereco: endereco || null,
+        observacoes: observacoes || null
     });
 
     const novoSaldoProfissional =
@@ -129,12 +133,17 @@ export default async function contratarServico(request) {
         const servico = String(dados.servico || "").trim().slice(0, 120);
         const formaPagamento = String(dados.formaPagamento || "").trim();
         const origin = String(dados.origin || "").trim();
+        const endereco = String(dados.endereco || "").trim().slice(0, 300);
+        const observacoes = String(dados.observacoes || "").trim().slice(0, 800);
 
         if (!emailValido(usuarioEmail) || !emailValido(profissionalEmail)) {
             return respostaJson(400, { error: "Email inválido." });
         }
         if (!servico) {
             return respostaJson(400, { error: "Serviço inválido." });
+        }
+        if (!endereco) {
+            return respostaJson(400, { error: "Endereço é obrigatório." });
         }
         if (!["carteira", "mercadopago"].includes(formaPagamento)) {
             return respostaJson(400, { error: "Forma de pagamento inválida." });
@@ -188,7 +197,9 @@ export default async function contratarServico(request) {
                 pro,
                 servico,
                 valor,
-                formaPagamento: "carteira"
+                formaPagamento: "carteira",
+                endereco,
+                observacoes
             });
 
             return respostaJson(200, { ok: true, novoSaldo: novoSaldoUsuario });
@@ -208,7 +219,9 @@ export default async function contratarServico(request) {
         const externalReference = gerarReferencia("CONTRATO");
 
         // Guarda um registro "pendente" com tudo que precisamos pra
-        // concluir a contratação quando o pagamento for confirmado.
+        // concluir a contratação quando o pagamento for confirmado —
+        // incluindo endereço e observações, que só viram um pedido de
+        // verdade lá em confirmar-contratacao.mjs.
         await supabasePost("pagamentos", {
             usuario_email: usuarioEmail,
             profissional_email: profissionalEmail,
@@ -217,7 +230,9 @@ export default async function contratarServico(request) {
             status: "pendente",
             tipo: "contratacao",
             descricao: servico,
-            external_reference: externalReference
+            external_reference: externalReference,
+            endereco,
+            observacoes
         });
 
         const backUrl = `${origin}/Servicos/retorno-contratacao.html?ref=${encodeURIComponent(

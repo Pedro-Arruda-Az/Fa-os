@@ -53,6 +53,7 @@ cp .env.example .env
 | `MP_ACCESS_TOKEN` | `netlify/functions/criar-pagamento.mjs`, `contratar-servico.mjs`, `verificar-pagamento.mjs`, `confirmar-contratacao.mjs` | Mercado Pago → Suas integrações → Credenciais |
 | `BREVO_API_KEY` | `netlify/functions/enviar-email.mjs` | Brevo → SMTP & API → API Keys |
 | `BREVO_SENDER_EMAIL` / `BREVO_SENDER_NAME` / `BREVO_REPLY_EMAIL` | idem | seu remetente verificado na Brevo |
+| `ANTHROPIC_API_KEY` | `netlify/functions/assistente-suporte.mjs` | [console.anthropic.com](https://console.anthropic.com/) → Settings → API Keys. Usada pelo chat de suporte com IA (o Buzz, no botão "Ajuda/Suporte"). Sem essa chave configurada, o Buzz continua abrindo normalmente, mas avisa que ainda não foi configurado em vez de responder. |
 
 **Nunca** commite o `.env` real (ele já está no `.gitignore`). Em produção,
 essas variáveis ficam configuradas no painel da Netlify
@@ -65,8 +66,15 @@ permitir (veja [Segurança](#segurança)).
 
 ## Banco de dados (Supabase)
 
-Rode os scripts em `backend/*.sql` no SQL Editor do seu projeto Supabase,
-na ordem abaixo (todos são idempotentes — seguro rodar de novo se precisar):
+**Forma mais simples:** rode só o `backend/supabase-banco-completo.sql`
+inteiro, de uma vez, no SQL Editor do seu projeto Supabase. Ele já junta
+todos os scripts abaixo num só arquivo (schema base, cadastro, CNPJ/CPF,
+pedidos, pagamentos/carteira, endereço e observações do pedido, e a
+segurança/RLS) e é idempotente — seguro rodar de novo a qualquer momento,
+mesmo que seu banco já tenha essas tabelas.
+
+Se preferir rodar em partes (por exemplo, pra revisar cada mudança), os
+scripts individuais em `backend/*.sql` fazem a mesma coisa, nesta ordem:
 
 1. `supabase-schema-completo.sql` — schema base (usuários, profissionais, etc.)
 2. `supabase-cadastro-empresa-profissional.sql`
@@ -74,10 +82,20 @@ na ordem abaixo (todos são idempotentes — seguro rodar de novo se precisar):
 4. `supabase-pedidos-setup.sql`
 5. `supabase-pagamentos-setup.sql`
 6. `supabase-pagamentos-gastos-setup.sql`
-7. `supabase-fix-rls.sql` — **ativa o Row Level Security** em `pedidos` e `pagamentos` com as policies corretas (leitura pública, escrita só pelo backend). Rode por último.
+7. `supabase-pedidos-endereco-observacoes.sql` — adiciona `endereco`, `observacoes`, `profissional_email` e `usuario_nome` em `pedidos` (e o espaço temporário em `pagamentos`) para a tela de Pedidos do profissional.
+8. `supabase-fix-rls.sql` — **ativa o Row Level Security** em `pedidos` e `pagamentos` com as policies corretas (leitura pública, escrita só pelo backend). Rode por último.
 
-`supabase-setup-completo.sql` é um script de conveniência que junta boa
-parte dos passos acima — use-o só se estiver subindo o projeto do zero.
+Se o seu banco já existia antes desta atualização (ou seja, você já rodou
+o passo 1 numa versão anterior), rode também o
+`supabase-usuarios-localizacao.sql` — ele só adiciona as colunas
+`latitude`/`longitude` na tabela `usuarios`, usadas na tela de
+localização. Quem rodar o `supabase-banco-completo.sql` ou o
+`supabase-schema-completo.sql` já atualizados não precisa deste passo
+extra.
+
+`supabase-setup-completo.sql` é um script de conveniência mais antigo que
+junta boa parte dos passos acima (sem as colunas mais novas) — prefira o
+`supabase-banco-completo.sql`.
 
 ## Executando localmente
 

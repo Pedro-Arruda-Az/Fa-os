@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+    --yellow: #ffc70b;
+    --brown: #8B4513;
+    --brown-dark: #6B3410;
+    --brown-light: #A0522D;
+    --text-dark: #2C1A0E;
+    --text-mid: #5A3A1A;
+    --text-light: #A0826D;
+    --bg-white: #FFFFFF;
+    --bg-cream: #FFFBF2;
+    --bg-card: #FFFFFF;
+    --border: #F0E0C0;
+    --shadow: 0 2px 12px rgba(139,69,19,0.10);
+    --radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mapa-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 2.5rem 2.5rem;
+    gap: 1.25rem;
+    overflow: auto;
+}
+
+.mapa-topo {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.mapa-heading {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.mapa-vazio {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    padding: 3rem 1.5rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+}
+
+.map-wrapper {
+    position: relative;
+    height: 340px;
+    flex-shrink: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    /* Isola o contexto de empilhamento do mapa pra nenhum controle do
+       Leaflet (que usa z-index alto por padrão) vazar por cima do
+       cabeçalho fixo ao rolar a página. */
+    isolation: isolate;
+    z-index: 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-card);
+}
+
+.distancia-badge {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--bg-card);
+    color: var(--text-dark);
+    border-radius: 50px;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+}
+
+.distancia-badge svg {
+    width: 18px;
+    height: 18px;
+    color: var(--brown-light);
+    flex-shrink: 0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+.rota-card,
+.stats-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-card {
+    justify-content: center;
+}
+
+.card-titulo {
+    color: var(--text-dark);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1.1rem;
+}
+
+.rota-timeline {
+    margin-bottom: 1.25rem;
+}
+
+.rota-etapa {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.rota-icone {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rota-icone svg {
+    width: 18px;
+    height: 18px;
+}
+
+.rota-icone-ok {
+    background: rgba(52,211,153,0.18);
+    color: #1FA37A;
+}
+
+.rota-icone-proximo {
+    background: rgba(255,199,11,0.2);
+    color: var(--brown-light);
+}
+
+.rota-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.rota-nome {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.rota-sub {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.rota-linha {
+    width: 2px;
+    height: 22px;
+    background: repeating-linear-gradient(to bottom, var(--yellow) 0, var(--yellow) 4px, transparent 4px, transparent 8px);
+    margin-left: 17px;
+}
+
+.btn-navegar-proximo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    background: var(--yellow);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-navegar-proximo svg {
+    width: 17px;
+    height: 17px;
+}
+
+.btn-navegar-proximo:hover {
+    background: #FFDD3D;
+    transform: translateY(-1px);
+}
+
+.stat-bloco {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.stat-valor {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.help-button {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(139,69,19,0.3);
+    z-index: 200;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.help-button:hover {
+    background: var(--brown-dark);
+    transform: translateY(-2px);
+}
+
+body.dark-mode {
+    --yellow: #ffc70b;
+    --brown: #D2A679;
+    --brown-dark: #C17A4A;
+    --brown-light: #D9A066;
+    --text-dark: #F5E6D3;
+    --text-mid: #E6C8A8;
+    --text-light: #BFA88C;
+    --bg-white: #1E1A16;
+    --bg-cream: #2A241E;
+    --bg-card: #2E2822;
+    --border: #4A3A2A;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .leaflet-popup-content-wrapper {
+    background: #2A241E;
+    color: var(--text-dark);
+}
+
+body.dark-mode .leaflet-popup-tip {
+    background: #2A241E !important;
+}
+
+body.dark-mode .distancia-badge {
+    background: #2E2822;
+    color: var(--text-dark);
+}
+
+body.dark-mode .rota-card,
+body.dark-mode .stats-card {
+    background: #2E2822;
+    border-color: var(--border);
+}
+
+body.dark-mode .rota-icone-ok {
+    background: rgba(52,211,153,0.22);
+    color: #4FE3B0;
+}
+
+body.dark-mode .rota-icone-proximo {
+    background: rgba(255,199,11,0.22);
+    color: var(--yellow);
+}
+
+body.dark-mode .help-button {
+    background: #5C3A1E;
+    color: #FFE066;
+}
+
+body.dark-mode .help-button:hover {
+    background: #4A2E16;
+}
+
+@media (max-width: 700px) {
+    .mapa-container {
+        padding: 1.25rem 1.25rem 2rem;
+    }
+
+    .map-wrapper {
+        height: 280px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}

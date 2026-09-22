@@ -127,11 +127,15 @@ export default async function confirmarContratacao(request) {
 
         await supabasePost("pedidos", {
             usuario_email: usuario.email,
+            usuario_nome: usuario.nome || usuario.email,
             titulo: servico,
             profissional: pro.nome_empresa,
+            profissional_email: pro.email,
             valor,
             status: "em_andamento",
-            forma_pagamento: "mercadopago"
+            forma_pagamento: "mercadopago",
+            endereco: pagamento.endereco || null,
+            observacoes: pagamento.observacoes || null
         });
 
         const novoSaldoProfissional = Math.round((Number(pro.saldo || 0) + valor) * 100) / 100;

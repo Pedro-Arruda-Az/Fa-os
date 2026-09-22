@@ -47,7 +47,7 @@
                     <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/agenda.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/agenda.png" alt="" class="icon-escuro"></span>
                     <span class="sidebar-nav-label" data-i18n="menu.servicos">Serviços</span>
                 </a>
-                <a href="/Localizacao/Localizacao.html" class="sidebar-nav-item">
+                <a href="/Localizacao/Mapa.html" class="sidebar-nav-item">
                     <span class="sidebar-nav-icon"><img src="/imagens/icones-claro/localizacao.png" alt="" class="icon-claro"><img src="/imagens/icones-escuro/localizacao.png" alt="" class="icon-escuro"></span>
                     <span class="sidebar-nav-label" data-i18n="menu.localizacao">Localização</span>
                 </a>
@@ -105,62 +105,75 @@
                 </div>
             </section>
 
-            <h2 class="section-title" data-i18n="tela.servicosMaisProcurados">Serviços mais procurados</h2>
-            <div class="services-grid">
-                <a class="service-card" href="/Servicos/Limpeza.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></span>
-                    <span data-i18n="servico.limpeza">Limpeza</span>
-                </a>
-                <a class="service-card" href="/Servicos/Eletricista.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
-                    <span data-i18n="servico.eletricista">Eletricista</span>
-                </a>
-                <a class="service-card" href="/Servicos/CasaInstalacoes.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
-                    <span data-i18n="servico.casaInstalacoes">Casa e instalações</span>
-                </a>
-                <a class="service-card" href="/Servicos/Manutencao.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span>
-                    <span data-i18n="servico.manutencao">Manutenção</span>
-                </a>
-                <a class="service-card" href="/Servicos/Jardinagem.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
-                    <span data-i18n="servico.jardinagem">Jardinagem e áreas externas</span>
-                </a>
-                <a class="service-card" href="/Servicos/TecnologiaAssistencia.html">
-                    <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
-                    <span data-i18n="servico.tecnologia">Tecnologia e assistência</span>
-                </a>
+            <section class="search-results" id="searchResultsSection" style="display:none;">
+                <div class="search-results-header">
+                    <h2 class="section-title" id="searchResultsTitle">Resultados da busca</h2>
+                    <button type="button" class="search-results-clear" id="searchResultsClear">Limpar busca</button>
+                </div>
+                <div class="results-count" id="searchResultsCount"></div>
+                <div class="professionals-list" id="searchResultsList"></div>
+            </section>
+
+            <div id="defaultSectionServicos">
+                <h2 class="section-title" data-i18n="tela.servicosMaisProcurados">Serviços mais procurados</h2>
+                <div class="services-grid">
+                    <a class="service-card" href="/Servicos/Limpeza.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></span>
+                        <span data-i18n="servico.limpeza">Limpeza</span>
+                    </a>
+                    <a class="service-card" href="/Servicos/Eletricista.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+                        <span data-i18n="servico.eletricista">Eletricista</span>
+                    </a>
+                    <a class="service-card" href="/Servicos/CasaInstalacoes.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+                        <span data-i18n="servico.casaInstalacoes">Casa e instalações</span>
+                    </a>
+                    <a class="service-card" href="/Servicos/Manutencao.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span>
+                        <span data-i18n="servico.manutencao">Manutenção</span>
+                    </a>
+                    <a class="service-card" href="/Servicos/Jardinagem.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
+                        <span data-i18n="servico.jardinagem">Jardinagem e áreas externas</span>
+                    </a>
+                    <a class="service-card" href="/Servicos/TecnologiaAssistencia.html">
+                        <span class="service-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                        <span data-i18n="servico.tecnologia">Tecnologia e assistência</span>
+                    </a>
+                </div>
             </div>
 
-            <h2 class="section-title" data-i18n="tela.estatisticas">Estatísticas da plataforma</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                    <div class="stat-texts">
-                        <span class="stat-numero">500+</span>
-                        <span class="stat-label" data-i18n="tela.profissionaisAtivos">Profissionais cadastrados</span>
+            <div id="defaultSectionStats">
+                <h2 class="section-title" data-i18n="tela.estatisticas">Estatísticas da plataforma</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <div class="stat-texts">
+                            <span class="stat-numero">500+</span>
+                            <span class="stat-label" data-i18n="tela.profissionaisAtivos">Profissionais cadastrados</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span>
-                    <div class="stat-texts">
-                        <span class="stat-numero">2.5k</span>
-                        <span class="stat-label" data-i18n="tela.servicosRealizados">Serviços concluídos</span>
+                    <div class="stat-card">
+                        <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span>
+                        <div class="stat-texts">
+                            <span class="stat-numero">2.5k</span>
+                            <span class="stat-label" data-i18n="tela.servicosRealizados">Serviços concluídos</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-                    <div class="stat-texts">
-                        <span class="stat-numero">4.80</span>
-                        <span class="stat-label" data-i18n="tela.avaliacaoMedia">Avaliação média</span>
+                    <div class="stat-card">
+                        <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                        <div class="stat-texts">
+                            <span class="stat-numero">4.80</span>
+                            <span class="stat-label" data-i18n="tela.avaliacaoMedia">Avaliação média</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-                    <div class="stat-texts">
-                        <span class="stat-numero">98%</span>
-                        <span class="stat-label" data-i18n="tela.satisfacao">Satisfação dos clientes</span>
+                    <div class="stat-card">
+                        <span class="stat-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                        <div class="stat-texts">
+                            <span class="stat-numero">98%</span>
+                            <span class="stat-label" data-i18n="tela.satisfacao">Satisfação dos clientes</span>
+                        </div>
                     </div>
                 </div>
             </div>

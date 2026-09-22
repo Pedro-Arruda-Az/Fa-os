@@ -129,6 +129,45 @@ function escutarUltimasNotificacoesEmTempoReal() {
         .subscribe();
 }
 
+function ehHoje(dataIso) {
+    if (!dataIso) return false;
+    const data = new Date(dataIso);
+    const hoje = new Date();
+    return data.getFullYear() === hoje.getFullYear()
+        && data.getMonth() === hoje.getMonth()
+        && data.getDate() === hoje.getDate();
+}
+
+// Busca os pedidos reais do profissional (mesmo endpoint usado na tela de
+// Pedidos) e soma os de hoje pra preencher o card "Resumo do dia" — nada
+// de número fixo: conforme mais gente contrata e paga o serviço dele ao
+// longo do dia, o total de atendimentos e a previsão de ganhos crescem.
+// Pedidos cancelados não entram na conta.
+async function carregarResumoDoDia() {
+    const elAtendimentos = document.getElementById('resumoAtendimentos');
+    const elValor = document.getElementById('resumoValor');
+    if ((!elAtendimentos && !elValor) || !profissionalAtual || !profissionalAtual.email) return;
+
+    let pedidos = [];
+    try {
+        const resposta = await fetch(`/api/pedidos-profissional?email=${encodeURIComponent(profissionalAtual.email)}`);
+        if (!resposta.ok) return;
+        const dados = await resposta.json();
+        pedidos = Array.isArray(dados.pedidos) ? dados.pedidos : [];
+    } catch (err) {
+        console.error('Não foi possível carregar o resumo do dia:', err);
+        return;
+    }
+
+    const pedidosDeHoje = pedidos.filter((p) => p.status !== 'cancelado' && ehHoje(p.criado_em));
+    const totalGanhos = pedidosDeHoje.reduce((soma, p) => soma + (Number(p.valor) || 0), 0);
+
+    if (elAtendimentos) elAtendimentos.textContent = String(pedidosDeHoje.length);
+    if (elValor) {
+        elValor.textContent = `R$ ${totalGanhos.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+}
+
 function fazerLogout() {
     localStorage.removeItem('profissionalLogado');
     window.location.href = '/index.html';
@@ -141,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profissionalAtual) {
         carregarUltimasNotificacoes();
         escutarUltimasNotificacoesEmTempoReal();
+        carregarResumoDoDia();
     }
 
     const configBtn = document.getElementById('configBtn');
@@ -211,10 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const helpBtn = document.getElementById('helpBtn');
-    if (helpBtn) {
-        helpBtn.addEventListener('click', function () {
-            alert('Precisa de ajuda? Em breve você poderá falar com nosso suporte por aqui.');
-        });
-    }
+    // O botão de ajuda já é tratado pelo Buzz (Buzz/buzz.js), que abre
+    // o chat de suporte de verdade — não precisa de handler aqui.
 });

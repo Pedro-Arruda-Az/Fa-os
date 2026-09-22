@@ -94,6 +94,18 @@ async function salvarAlteracoes() {
     salvarBtn.disabled = true;
     salvarBtn.textContent = 'Salvando...';
 
+    // Endereço mudou? Tenta achar a coordenada de novo, pra tela de
+    // localização (tanto a do profissional quanto a da empresa que
+    // contratou) mostrar o pino certo. Se não mudou, não precisa
+    // geocodificar de novo.
+    if (endereco && endereco !== (profissional.endereco || '') && window.geocodificarEndereco) {
+        const coordenadas = await geocodificarEndereco(endereco);
+        if (coordenadas) {
+            dadosAtualizar.latitude = coordenadas.latitude;
+            dadosAtualizar.longitude = coordenadas.longitude;
+        }
+    }
+
     try {
         const { error } = await supabaseClient
             .from('profissionais')
@@ -215,10 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const helpBtn = document.getElementById('helpBtn');
-    if (helpBtn) {
-        helpBtn.addEventListener('click', () => {
-            alert('Precisa de ajuda? Em breve você poderá falar com nosso suporte por aqui.');
-        });
-    }
+    // O botão de ajuda já é tratado pelo Buzz (Buzz/buzz.js), que abre
+    // o chat de suporte de verdade — não precisa de handler aqui.
 });

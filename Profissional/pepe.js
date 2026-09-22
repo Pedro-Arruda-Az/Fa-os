@@ -7,20 +7,153 @@ function verificarLogin() {
     return profissional ? JSON.parse(profissional) : null;
 }
 
+// Usamos delegação de evento no container da lista (em vez de um listener
+// por botão) porque os pedidos salvos localmente são inseridos depois que
+// a página carrega, e assim eles ficam clicáveis sem precisar reconfigurar
+// nada.
 function configurarBotoes() {
-    document.querySelectorAll('.btn-detalhes').forEach((btn) => {
-        btn.addEventListener('click', function () {
-            const nome = this.closest('.pedido-card').querySelector('.pedido-nome').textContent;
-            alert(`Detalhes do pedido de ${nome}`);
+    const lista = document.getElementById('pedidosList');
+    if (!lista) return;
+
+    lista.addEventListener('click', function (e) {
+        const btnDetalhes = e.target.closest('.btn-detalhes');
+        if (btnDetalhes) {
+            abrirDetalhesPedido(btnDetalhes.closest('.pedido-card'));
+            return;
+        }
+
+        const btnComprovante = e.target.closest('.btn-comprovante');
+        if (btnComprovante) {
+            const nome = btnComprovante.closest('.pedido-card').querySelector('.pedido-nome').textContent;
+            alert(`Comprovante do pedido de ${nome}`);
+        }
+    });
+}
+
+function textoMetaSemIcone(item) {
+    if (!item) return '—';
+    let texto = '';
+    item.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) texto += node.textContent;
+    });
+    return texto.trim() || '—';
+}
+
+function abrirDetalhesPedido(card) {
+    if (!card) return;
+
+    const nome = card.querySelector('.pedido-nome')?.textContent.trim() || '—';
+    const servico = card.querySelector('.pedido-servico')?.textContent.trim() || '—';
+    const metaItems = card.querySelectorAll('.pedido-meta .meta-item');
+
+    document.getElementById('detalhesPedidoNome').textContent = nome;
+    document.getElementById('detalhesPedidoServico').textContent = servico;
+    document.getElementById('detalhesPedidoData').textContent = textoMetaSemIcone(metaItems[0]);
+    document.getElementById('detalhesPedidoHora').textContent = textoMetaSemIcone(metaItems[1]);
+    document.getElementById('detalhesPedidoEndereco').textContent = card.dataset.endereco || 'Não informado';
+    document.getElementById('detalhesPedidoObs').textContent = card.dataset.observacoes || 'Sem observações adicionais';
+
+    document.getElementById('detalhesPedidoModal').classList.add('open');
+}
+
+function fecharDetalhesPedido() {
+    const modal = document.getElementById('detalhesPedidoModal');
+    if (modal) modal.classList.remove('open');
+}
+
+function configurarModalDetalhes() {
+    const modal = document.getElementById('detalhesPedidoModal');
+    const closeBtn = document.getElementById('detalhesPedidoClose');
+
+    if (closeBtn) closeBtn.addEventListener('click', fecharDetalhesPedido);
+    if (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) fecharDetalhesPedido();
         });
+    }
+}
+
+function escapeHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto == null ? '' : String(texto);
+    return div.innerHTML;
+}
+
+function formatarStatusPedido(status) {
+    if (status === 'concluido') return { classe: 'status-concluido', texto: 'Concluído' };
+    if (status === 'cancelado') return { classe: 'status-cancelado', texto: 'Cancelado' };
+    return { classe: 'status-andamento', texto: 'Em andamento' };
+}
+
+// Busca os pedidos reais do profissional logado direto no banco de dados
+// (tabela "pedidos" no Supabase, via /api/pedidos-profissional) e desenha
+// os cardzinhos na lista, do mais recente pro mais antigo. Não tem mais
+// pedidos de demonstração — se ainda não tiver nenhum pedido real, fica
+// a mensagem de "Nenhum pedido ainda".
+async function carregarPedidosReais(email) {
+    const lista = document.getElementById('pedidosList');
+    const vazio = document.getElementById('pedidosVazio');
+    if (!lista || !email) return;
+
+    let pedidos = [];
+    try {
+        const resposta = await fetch(`/api/pedidos-profissional?email=${encodeURIComponent(email)}`);
+        if (!resposta.ok) return;
+        const dados = await resposta.json();
+        pedidos = Array.isArray(dados.pedidos) ? dados.pedidos : [];
+    } catch (err) {
+        console.error('Não foi possível buscar os pedidos:', err);
+        return;
+    }
+    if (!pedidos.length) return;
+
+    if (vazio) vazio.remove();
+
+    const fragment = document.createDocumentFragment();
+
+    pedidos.forEach((pedido) => {
+        const card = document.createElement('div');
+        card.className = 'pedido-card';
+        card.dataset.endereco = pedido.endereco || 'Não informado';
+        card.dataset.observacoes = pedido.observacoes || 'Sem observações adicionais';
+
+        const { classe, texto } = formatarStatusPedido(pedido.status);
+        const criadoEm = pedido.criado_em ? new Date(pedido.criado_em) : null;
+        const data = criadoEm ? criadoEm.toLocaleDateString('pt-BR') : '—';
+        const hora = criadoEm ? criadoEm.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '—';
+
+        const valorNumero = Number(pedido.valor);
+        const valorTexto = Number.isFinite(valorNumero)
+            ? valorNumero.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            : pedido.valor;
+
+        const nome = pedido.usuario_nome || pedido.usuario_email || 'Cliente';
+        const botaoHtml = pedido.status === 'em_andamento'
+            ? '<button class="pedido-btn btn-detalhes">Detalhes</button>'
+            : '<button class="pedido-btn btn-comprovante">Ver comprovante</button>';
+
+        card.innerHTML = `
+            <div class="pedido-info">
+                <div class="pedido-top">
+                    <span class="pedido-nome">${escapeHtml(nome)}</span>
+                    <span class="status-badge ${classe}">${texto}</span>
+                </div>
+                <p class="pedido-servico">${escapeHtml(pedido.titulo || 'Serviço solicitado')}</p>
+                <div class="pedido-meta">
+                    <span class="meta-item"><span class="meta-icon">📅</span>${escapeHtml(data)}</span>
+                    <span class="meta-item"><span class="meta-icon">🕐</span>${escapeHtml(hora)}</span>
+                </div>
+            </div>
+            <div class="pedido-valor">
+                <span class="valor">${valorTexto ? `R$ ${escapeHtml(valorTexto)}` : ''}</span>
+                ${botaoHtml}
+            </div>
+        `;
+
+        fragment.appendChild(card);
     });
 
-    document.querySelectorAll('.btn-comprovante').forEach((btn) => {
-        btn.addEventListener('click', function () {
-            const nome = this.closest('.pedido-card').querySelector('.pedido-nome').textContent;
-            alert(`Comprovante do pedido de ${nome}`);
-        });
-    });
+    lista.insertBefore(fragment, lista.firstChild);
 }
 
 function configurarMenuConfiguracoes() {
@@ -88,8 +221,12 @@ function configurarMenuConfiguracoes() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    verificarLogin();
+document.addEventListener('DOMContentLoaded', async () => {
+    const profissional = verificarLogin();
+    if (profissional && profissional.email) {
+        await carregarPedidosReais(profissional.email);
+    }
     configurarBotoes();
+    configurarModalDetalhes();
     configurarMenuConfiguracoes();
 });

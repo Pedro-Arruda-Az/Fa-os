@@ -324,12 +324,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const helpBtn = document.getElementById('helpBtn');
-    if (helpBtn) {
-        helpBtn.addEventListener('click', function () {
-            alert('Precisa de ajuda? Em breve você poderá falar com nosso suporte por aqui.');
-        });
-    }
+    // O botão de ajuda já é tratado pelo Buzz (Buzz/buzz.js), que abre
+    // o chat de suporte de verdade — não precisa de handler aqui.
 
     notificacoes = await buscarNotificacoes();
     renderNotificacoes(notificacoes);

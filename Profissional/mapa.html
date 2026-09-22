@@ -80,69 +80,38 @@
             <section class="atendimentos-card">
                 <h2 class="card-titulo">Seus atendimentos</h2>
 
-                <div class="map-wrapper">
+                <p class="atendimento-vazio" id="atendimentoVazio">Nenhum atendimento em andamento no momento. Assim que uma empresa contratar o seu serviço, ele aparece aqui, com a localização e a distância até você.</p>
+
+                <div class="map-wrapper" id="mapWrapper" style="display:none;">
                     <div id="map"></div>
                     <div class="map-legend">
                         <div class="legend-item">
                             <span class="legend-dot dot-verde"></span>
-                            Cliente atendido
+                            Você
                         </div>
                         <div class="legend-item">
                             <span class="legend-dot dot-amarelo"></span>
-                            Próximo cliente
+                            Cliente
                         </div>
                     </div>
                 </div>
 
-                <div class="clientes-list" id="clientesList">
-
-                    <div class="cliente-item">
-                        <div class="cliente-topo">
-                            <span class="cliente-nome">João Silva</span>
-                            <span class="status-badge status-atendido">atendido</span>
-                        </div>
-                        <p class="cliente-servico">Limpeza residencial</p>
-                        <div class="cliente-baixo">
-                            <div class="cliente-meta">
-                                <span class="meta-item">2.3km</span>
-                                <span class="meta-item meta-ok">Concluído às 14:30</span>
-                            </div>
-                            <span class="cliente-valor">R$ 150,00</span>
-                        </div>
-                    </div>
-
-                    <div class="cliente-item">
-                        <div class="cliente-topo">
-                            <span class="cliente-nome">Mariana Costa</span>
-                            <span class="status-badge status-proximo">próximo</span>
-                        </div>
-                        <p class="cliente-servico">Limpeza residencial</p>
-                        <div class="cliente-baixo">
-                            <div class="cliente-meta">
-                                <span class="meta-item">3.8km</span>
-                                <span class="meta-item">16:00</span>
-                            </div>
-                            <span class="cliente-valor">R$ 180,00</span>
-                        </div>
-                        <button class="btn-navegar" id="iniciarNavegacaoBtn">Iniciar navegação</button>
-                    </div>
-
-                </div>
+                <div class="clientes-list" id="clientesList"></div>
             </section>
 
             <aside class="sidebar-col">
 
-                <div class="rota-card">
-                    <h2 class="card-titulo">Rota do dia</h2>
+                <div class="rota-card" id="rotaCard" style="display:none;">
+                    <h2 class="card-titulo">Rota até o cliente</h2>
 
                     <div class="rota-timeline">
                         <div class="rota-etapa">
                             <span class="rota-icone rota-icone-ok">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome">João Silva</span>
-                                <span class="rota-sub">2.3km · Concluído</span>
+                                <span class="rota-nome">Você</span>
+                                <span class="rota-sub">Ponto de partida</span>
                             </div>
                         </div>
 
@@ -150,32 +119,27 @@
 
                         <div class="rota-etapa">
                             <span class="rota-icone rota-icone-proximo">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome">Mariana Costa</span>
-                                <span class="rota-sub">3.8km · 16:00</span>
+                                <span class="rota-nome" id="rotaClienteNome">Cliente</span>
+                                <span class="rota-sub" id="rotaClienteSub">— km</span>
                             </div>
                         </div>
                     </div>
 
                     <button class="btn-navegar-proximo" id="navegarProximoBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-                        Navegar para próximo
+                        Navegar até o cliente
                     </button>
                 </div>
 
-                <div class="stats-card">
+                <div class="stats-card" id="statsCard" style="display:none;">
                     <h2 class="card-titulo">Estatísticas</h2>
 
                     <div class="stat-bloco">
-                        <span class="stat-label">Distância total hoje</span>
-                        <span class="stat-valor">6.1 km</span>
-                    </div>
-
-                    <div class="stat-bloco">
-                        <span class="stat-label">Serviços concluídos</span>
-                        <span class="stat-valor stat-verde">1</span>
+                        <span class="stat-label">Distância até o cliente</span>
+                        <span class="stat-valor" id="statDistancia">— km</span>
                     </div>
                 </div>
 

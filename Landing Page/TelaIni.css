@@ -154,6 +154,149 @@ body.dark-mode .hero-search-btn:hover {
     font-weight: 700;
 }
 
+/* ===== Resultados da busca ===== */
+.search-results {
+    margin-bottom: 3rem;
+}
+
+.search-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.search-results-clear {
+    background: none;
+    border: none;
+    color: var(--shell-orange);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    padding: 0.3rem 0.2rem;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.search-results-clear:hover {
+    text-decoration: underline;
+}
+
+.results-count {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--shell-text-muted);
+    margin: -0.6rem 0 1.1rem;
+}
+
+.professionals-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.9rem;
+}
+
+.pro-card {
+    background: var(--shell-card-bg);
+    border: 1.5px solid var(--shell-border);
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pro-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shell-shadow);
+    border-color: var(--shell-orange-soft);
+}
+
+.pro-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--shell-orange-soft);
+    color: var(--shell-orange);
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pro-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pro-name {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--shell-navy);
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pro-service {
+    font-size: 0.8rem;
+    color: var(--shell-text-muted);
+    margin-bottom: 0.35rem;
+}
+
+.pro-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pro-dist {
+    font-size: 0.78rem;
+    color: var(--shell-text-muted);
+    font-weight: 600;
+}
+
+.pro-rating-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: auto;
+}
+
+.stars {
+    display: flex;
+    gap: 1px;
+}
+
+.star {
+    font-size: 0.8rem;
+    color: var(--shell-orange);
+}
+
+.star.empty {
+    color: var(--shell-border);
+}
+
+.pro-score {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--shell-navy);
+}
+
+.search-results-vazio {
+    text-align: center;
+    color: var(--shell-text-muted);
+    padding: 2rem 1rem;
+    font-size: 0.95rem;
+    background: var(--shell-card-bg);
+    border: 1px dashed var(--shell-border);
+    border-radius: 16px;
+}
+
 /* ===== Serviços mais procurados ===== */
 .services-grid {
     display: grid;

@@ -191,12 +191,11 @@ function closePaymentModal() {
     document.getElementById('paymentModal').classList.remove('open');
 }
 
-let detalhesAtuais = { endereco: '', comodos: '', observacoes: '' };
+let detalhesAtuais = { endereco: '', observacoes: '' };
 
 function abrirModalDetalhes(pro) {
     document.getElementById('detalhesServicoLinha').textContent = `Serviço: ${pro.service}`;
     document.getElementById('detalhesEndereco').value = '';
-    document.getElementById('detalhesComodos').value = '';
     document.getElementById('detalhesObs').value = '';
     document.getElementById('detalhesModal').classList.add('open');
 }
@@ -222,10 +221,10 @@ async function buscarSaldoCarteira() {
     return Number(data.saldo || 0);
 }
 
-// A partir daqui, registrar o pedido, debitar/creditar saldo e criar o
-// pagamento passaram a acontecer no backend (/api/contratar-servico),
-// que confere o preço real do profissional no banco antes de gravar
-// qualquer coisa. O navegador só manda quem, com quem e como paga.
+// Agora quem grava o pedido, credita o profissional e o pagamento
+// (gasto do cliente / ganho do profissional) é o backend
+// (/api/contratar-servico), que também guarda o endereço e as
+// observações que a empresa preencheu, direto no banco de dados.
 
 async function pagarComCarteira(pro) {
     const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
@@ -243,7 +242,6 @@ async function pagarComCarteira(pro) {
                 servico: pro.service,
                 formaPagamento: 'carteira',
                 endereco: detalhesAtuais.endereco,
-                comodos: detalhesAtuais.comodos,
                 observacoes: detalhesAtuais.observacoes
             })
         });
@@ -284,7 +282,6 @@ async function iniciarPagamento(pro) {
                 formaPagamento: 'mercadopago',
                 origin: window.location.origin,
                 endereco: detalhesAtuais.endereco,
-                comodos: detalhesAtuais.comodos,
                 observacoes: detalhesAtuais.observacoes
             })
         });
@@ -336,20 +333,14 @@ function bindEvents() {
 
     document.getElementById('detalhesConfirmarBtn').addEventListener('click', () => {
         const endereco = document.getElementById('detalhesEndereco').value.trim();
-        const comodos = document.getElementById('detalhesComodos').value;
 
         if (!endereco) {
             alert('Por favor, informe o endereço.');
             return;
         }
-        if (!comodos) {
-            alert('Por favor, selecione o número de cômodos.');
-            return;
-        }
 
         detalhesAtuais = {
             endereco,
-            comodos,
             observacoes: document.getElementById('detalhesObs').value.trim()
         };
 

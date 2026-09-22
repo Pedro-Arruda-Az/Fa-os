@@ -41,6 +41,11 @@
 
         const helpButtons = document.querySelectorAll('.help-button');
 
+        // Histórico da conversa (só na memória — some se recarregar a
+        // página), mandado inteiro pro backend a cada mensagem pra IA
+        // ter contexto do que já foi falado.
+        const historico = [];
+
         helpButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
                 buzzWidget.classList.toggle('active');
@@ -54,25 +59,66 @@
             buzzWidget.classList.remove('active');
         });
 
-        function enviarMensagem() {
+        function adicionarMensagem(texto, quemFalou) {
+            const msg = document.createElement('div');
+            msg.className = `buzz-message buzz-message-${quemFalou}`;
+            msg.textContent = texto;
+            buzzMessages.appendChild(msg);
+            buzzMessages.scrollTop = buzzMessages.scrollHeight;
+            return msg;
+        }
+
+        function mostrarDigitando() {
+            const indicador = document.createElement('div');
+            indicador.className = 'buzz-message buzz-message-bot buzz-digitando';
+            indicador.id = 'buzzDigitando';
+            indicador.innerHTML = '<span></span><span></span><span></span>';
+            buzzMessages.appendChild(indicador);
+            buzzMessages.scrollTop = buzzMessages.scrollHeight;
+        }
+
+        function removerDigitando() {
+            const indicador = document.getElementById('buzzDigitando');
+            if (indicador) indicador.remove();
+        }
+
+        async function enviarMensagem() {
             const texto = buzzInput.value.trim();
             if (!texto) return;
 
-            const msgUsuario = document.createElement('div');
-            msgUsuario.className = 'buzz-message buzz-message-user';
-            msgUsuario.textContent = texto;
-            buzzMessages.appendChild(msgUsuario);
+            adicionarMensagem(texto, 'user');
+            historico.push({ role: 'user', content: texto });
 
             buzzInput.value = '';
-            buzzMessages.scrollTop = buzzMessages.scrollHeight;
+            buzzInput.disabled = true;
+            buzzSend.disabled = true;
+            mostrarDigitando();
 
-            setTimeout(() => {
-                const msgBot = document.createElement('div');
-                msgBot.className = 'buzz-message buzz-message-bot';
-                msgBot.textContent = 'Obrigado pela mensagem! Nossa equipe vai te responder em breve.';
-                buzzMessages.appendChild(msgBot);
-                buzzMessages.scrollTop = buzzMessages.scrollHeight;
-            }, 600);
+            try {
+                const resposta = await fetch('/api/assistente-suporte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagens: historico })
+                });
+
+                const dados = await resposta.json().catch(() => null);
+                removerDigitando();
+
+                if (!resposta.ok || !dados || !dados.resposta) {
+                    adicionarMensagem('Desculpa, não consegui responder agora. Tenta de novo em instantes.', 'bot');
+                } else {
+                    adicionarMensagem(dados.resposta, 'bot');
+                    historico.push({ role: 'assistant', content: dados.resposta });
+                }
+            } catch (err) {
+                console.error('Não foi possível falar com o assistente:', err);
+                removerDigitando();
+                adicionarMensagem('Não consegui me conectar agora. Confere sua internet e tenta de novo.', 'bot');
+            } finally {
+                buzzInput.disabled = false;
+                buzzSend.disabled = false;
+                buzzInput.focus();
+            }
         }
 
         buzzSend.addEventListener('click', enviarMensagem);

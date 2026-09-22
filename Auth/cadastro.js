@@ -211,9 +211,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cnpjHash = CryptoJS.SHA256(cnpj).toString(CryptoJS.enc.Hex);
                 const telefoneHash = CryptoJS.SHA256(telefone).toString(CryptoJS.enc.Hex);
 
+                // Tenta converter o endereço digitado em coordenadas reais —
+                // se não conseguir, segue o cadastro sem elas (fica null,
+                // igual já era antes disso existir).
+                const coordenadas = window.geocodificarEndereco
+                    ? await geocodificarEndereco(endereco)
+                    : null;
+
                 const { error } = await supabaseClient
                     .from('usuarios')
-                    .insert([{ nome, nome_user, cnpj: cnpjHash, email, telefone: telefoneHash, endereco, senha: senhaHash }])
+                    .insert([{
+                        nome, nome_user, cnpj: cnpjHash, email, telefone: telefoneHash, endereco, senha: senhaHash,
+                        latitude: coordenadas ? coordenadas.latitude : null,
+                        longitude: coordenadas ? coordenadas.longitude : null
+                    }])
                     .select();
 
                 if (error) {
@@ -296,6 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cpfHash = CryptoJS.SHA256(cpf).toString(CryptoJS.enc.Hex);
                 const telefoneHash = CryptoJS.SHA256(telefone).toString(CryptoJS.enc.Hex);
 
+                // Tenta converter o endereço digitado em coordenadas reais —
+                // se não conseguir, segue o cadastro sem elas (fica null,
+                // igual já era antes disso existir).
+                const coordenadas = window.geocodificarEndereco
+                    ? await geocodificarEndereco(endereco)
+                    : null;
+
                 const { error } = await supabaseClient
                     .from('profissionais')
                     .insert([{
@@ -309,7 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         sobre,
                         senha: senhaHash,
                         data_cadastro: new Date().toISOString(),
-                        status: 'ativo'
+                        status: 'ativo',
+                        latitude: coordenadas ? coordenadas.latitude : null,
+                        longitude: coordenadas ? coordenadas.longitude : null
                     }])
                     .select();
 

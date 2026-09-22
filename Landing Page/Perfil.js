@@ -73,6 +73,17 @@ async function salvarAlteracoes() {
         endereco: endereco
     };
 
+    // Endereço mudou? Tenta achar a coordenada de novo, pra tela de
+    // localização mostrar o pino certo. Se o endereço não mudou desde a
+    // última vez, não precisa geocodificar de novo.
+    if (endereco && endereco.trim() !== '' && endereco !== (usuario.endereco || '') && window.geocodificarEndereco) {
+        const coordenadas = await geocodificarEndereco(endereco);
+        if (coordenadas) {
+            dadosAtualizar.latitude = coordenadas.latitude;
+            dadosAtualizar.longitude = coordenadas.longitude;
+        }
+    }
+
     if (telefone && telefone.trim() !== '') {
         dadosAtualizar.telefone = CryptoJS.SHA256(telefone.replace(/\D/g, '')).toString(CryptoJS.enc.Hex);
     }
