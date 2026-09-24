@@ -10,6 +10,7 @@ backend/.env.*
 .netlify/
 node_modules/
 dist/
+netlify.toml
 
 # Sistema
 .DS_Store
