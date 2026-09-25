@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="Mapa.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" />
 </head>
 <body>
 
@@ -88,10 +88,10 @@
 
         <section class="mapa-container">
             <div class="mapa-topo">
-                <h2 class="mapa-heading" data-i18n="titulo.localizacaoProfissional">Localização do profissional</h2>
+                <h2 class="mapa-heading" data-i18n="mapa.tituloLocalizacaoProfissional">Localização do profissional</h2>
             </div>
 
-            <p class="mapa-vazio" id="mapaVazio">Você ainda não tem nenhum serviço em andamento. Assim que contratar um profissional, a localização aparece aqui.</p>
+            <p class="mapa-vazio" id="mapaVazio" data-i18n="mapa.semServicoAndamento">Você ainda não tem nenhum serviço em andamento. Assim que contratar um profissional, a localização aparece aqui.</p>
 
             <div class="map-wrapper" id="mapWrapper" style="display:none;">
                 <div id="map"></div>
@@ -103,7 +103,7 @@
 
             <div class="info-grid" id="infoGrid" style="display:none;">
                 <div class="rota-card">
-                    <h2 class="card-titulo">Rota até você</h2>
+                    <h2 class="card-titulo" data-i18n="mapa.rotaAteVoce">Rota até você</h2>
 
                     <div class="rota-timeline">
                         <div class="rota-etapa">
@@ -111,7 +111,7 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome" id="rotaProfissionalNome">Profissional</span>
+                                <span class="rota-nome" id="rotaProfissionalNome" data-i18n="mapa.profissionalGenerico">Profissional</span>
                                 <span class="rota-sub" id="rotaProfissionalSub">— km · a caminho</span>
                             </div>
                         </div>
@@ -123,23 +123,23 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome">Você</span>
-                                <span class="rota-sub">Destino</span>
+                                <span class="rota-nome" data-i18n="mapa.voce">Você</span>
+                                <span class="rota-sub" data-i18n="mapa.destino">Destino</span>
                             </div>
                         </div>
                     </div>
 
                     <button class="btn-navegar-proximo" id="navegarBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-                        Navegar até o profissional
+                        <span data-i18n="mapa.navegarAteProfissional">Navegar até o profissional</span>
                     </button>
                 </div>
 
                 <div class="stats-card">
-                    <h2 class="card-titulo">Estatísticas</h2>
+                    <h2 class="card-titulo" data-i18n="mapa.estatisticas">Estatísticas</h2>
 
                     <div class="stat-bloco">
-                        <span class="stat-label">Distância do profissional até você</span>
+                        <span class="stat-label" data-i18n="mapa.distanciaLabel">Distância do profissional até você</span>
                         <span class="stat-valor" id="statDistancia">— km</span>
                     </div>
                 </div>
@@ -147,11 +147,12 @@
         </section>
     </div>
 
-    <button class="help-button">
+    <button class="help-button" data-i18n="tela.ajudaSuporte">
         Ajuda / Suporte
     </button>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+    <script src="/Shared/mapbox-config.js"></script>
     <script src="/Shared/i18n-cliente.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/Shared/notificacoes-badge.js"></script>

@@ -287,6 +287,13 @@ body.dark-mode .hero-search-btn:hover {
     color: var(--shell-navy);
 }
 
+.pro-score-novo {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-light, #A0826D);
+    font-style: italic;
+}
+
 .search-results-vazio {
     text-align: center;
     color: var(--shell-text-muted);

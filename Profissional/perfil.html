@@ -20,23 +20,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -71,7 +71,7 @@
             <a href="/Profissional/dashboard.html" class="back-btn" aria-label="Voltar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
             </a>
-            <h1 class="page-title">Meu perfil</h1>
+            <h1 class="page-title" data-i18n="perfil.titulo">Meu perfil</h1>
         </div>
 
         <div class="perfil-grid">
@@ -80,61 +80,61 @@
                 <div class="avatar-circle avatar-circle-grande" id="avatarCircle">
                     <span id="avatarIniciais">FP</span>
                 </div>
-                <button class="trocar-foto-btn" id="trocarFotoBtn">Trocar foto</button>
+                <button class="trocar-foto-btn" id="trocarFotoBtn" data-i18n="perfil.trocarFoto">Trocar foto</button>
                 <input type="file" id="fotoInput" accept="image/*" style="display: none;">
             </div>
 
             <div class="perfil-edit-card">
-                <h2 class="edit-title">Editar seu perfil</h2>
+                <h2 class="edit-title" data-i18n="perfil.editarSeuPerfil">Editar seu perfil</h2>
 
                 <div class="edit-form">
                     <div class="form-group">
-                        <label>Nome da empresa</label>
+                        <label data-i18n="perfil.labelNomeEmpresa">Nome da empresa</label>
                         <input type="text" id="editNome" placeholder="Faços Serviços LTDA">
                     </div>
 
                     <div class="form-group">
-                        <label>Telefone</label>
+                        <label data-i18n="perfil.labelTelefone">Telefone</label>
                         <input type="tel" id="editTelefone" placeholder="(11) 99999-9999" maxlength="14">
                     </div>
 
                     <div class="form-group">
-                        <label>Endereço</label>
-                        <input type="text" id="editEndereco" placeholder="Rua, número, cidade">
+                        <label data-i18n="perfil.labelEndereco">Endereço</label>
+                        <input type="text" id="editEndereco" data-i18n-placeholder="perfil.placeholderEndereco" placeholder="Rua, número, cidade">
                     </div>
 
                     <div class="form-group">
-                        <label>Área de atuação</label>
+                        <label data-i18n="perfil.labelAreaAtuacao">Área de atuação</label>
                         <select id="editAreaAtuacao">
-                            <option value="" disabled>Selecione uma área</option>
-                            <option value="Limpeza">Limpeza</option>
-                            <option value="Casa e instalações">Casa e instalações</option>
-                            <option value="Eletricista">Eletricista</option>
-                            <option value="Manutenção">Manutenção</option>
-                            <option value="Tecnologia e assistência">Tecnologia e assistência</option>
-                            <option value="Beleza e estética">Beleza e estética</option>
-                            <option value="Alimentação">Alimentação</option>
-                            <option value="Eventos">Eventos</option>
-                            <option value="Jardinagem e áreas externas">Jardinagem e áreas externas</option>
-                            <option value="Aulas e educação">Aulas e educação</option>
-                            <option value="Design e criação">Design e criação</option>
-                            <option value="Redação e tradução">Redação e tradução</option>
-                            <option value="Serviços administrativos">Serviços administrativos</option>
+                            <option value="" disabled data-i18n="perfil.opcaoSelecioneArea">Selecione uma área</option>
+                            <option value="Limpeza" data-i18n="perfil.areaLimpeza">Limpeza</option>
+                            <option value="Casa e instalações" data-i18n="perfil.areaCasaInstalacoes">Casa e instalações</option>
+                            <option value="Eletricista" data-i18n="perfil.areaEletricista">Eletricista</option>
+                            <option value="Manutenção" data-i18n="perfil.areaManutencao">Manutenção</option>
+                            <option value="Tecnologia e assistência" data-i18n="perfil.areaTecnologia">Tecnologia e assistência</option>
+                            <option value="Beleza e estética" data-i18n="perfil.areaBeleza">Beleza e estética</option>
+                            <option value="Alimentação" data-i18n="perfil.areaAlimentacao">Alimentação</option>
+                            <option value="Eventos" data-i18n="perfil.areaEventos">Eventos</option>
+                            <option value="Jardinagem e áreas externas" data-i18n="perfil.areaJardinagem">Jardinagem e áreas externas</option>
+                            <option value="Aulas e educação" data-i18n="perfil.areaAulas">Aulas e educação</option>
+                            <option value="Design e criação" data-i18n="perfil.areaDesign">Design e criação</option>
+                            <option value="Redação e tradução" data-i18n="perfil.areaRedacao">Redação e tradução</option>
+                            <option value="Serviços administrativos" data-i18n="perfil.areaAdministrativos">Serviços administrativos</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Sobre</label>
-                        <textarea id="editSobre" rows="4" placeholder="Conte um pouco sobre você e os serviços que oferece"></textarea>
+                        <label data-i18n="perfil.labelSobre">Sobre</label>
+                        <textarea id="editSobre" rows="4" data-i18n-placeholder="perfil.placeholderSobre" placeholder="Conte um pouco sobre você e os serviços que oferece"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Senha</label>
+                        <label data-i18n="perfil.labelSenha">Senha</label>
                         <input type="password" id="editSenha" placeholder="••••••••">
-                        <small class="senha-obs">Deixe em branco para manter a mesma senha</small>
+                        <small class="senha-obs" data-i18n="perfil.senhaObs">Deixe em branco para manter a mesma senha</small>
                     </div>
 
-                    <button class="salvar-btn" id="salvarBtn">Salvar alterações</button>
+                    <button class="salvar-btn" id="salvarBtn" data-i18n="perfil.salvarAlteracoes">Salvar alterações</button>
                 </div>
             </div>
         </div>
@@ -142,7 +142,7 @@
 
     <button class="help-button" id="helpBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Ajuda / Suporte
+        <span data-i18n="painel.ajudaSuporte">Ajuda / Suporte</span>
     </button>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -150,6 +150,7 @@
     <script src="i18n.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
     <script src="/Shared/geocoding.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="perfil.js"></script>
     <script src="/Buzz/buzz.js"></script>
 </body>

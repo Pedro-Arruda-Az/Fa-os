@@ -87,36 +87,36 @@
         </aside>
 
         <main class="pagamentos-content">
-            <h1 class="page-title">Pagamentos e Transações</h1>
+            <h1 class="page-title" data-i18n="pagamentos.tituloPagina">Pagamentos e Transações</h1>
 
             <div class="saldo-container">
                 <div class="saldo-item saldo-principal">
-                    <span class="saldo-label">saldo disponível</span>
+                    <span class="saldo-label" data-i18n="pagamentos.saldoDisponivel">saldo disponível</span>
                     <span class="saldo-valor positivo" id="saldoValor">R$ 280,00</span>
-                    <button class="adicionar-credito-btn" id="adicionarCreditoBtn">Adicionar crédito</button>
+                    <button class="adicionar-credito-btn" id="adicionarCreditoBtn" data-i18n="pagamentos.adicionarCredito">Adicionar crédito</button>
                 </div>
                 <div class="saldo-item total-gasto">
-                    <span class="saldo-label">total gasto</span>
+                    <span class="saldo-label" data-i18n="pagamentos.totalGasto">total gasto</span>
                     <span class="saldo-valor gasto" id="totalGasto">R$ 880,00</span>
                 </div>
             </div>
 
-            <h2 class="section-title">histórico de transações</h2>
+            <h2 class="section-title" data-i18n="pagamentos.historicoTransacoes">histórico de transações</h2>
 
             <div class="transacoes-list" id="transacoesList">
             </div>
         </main>
     </div>
 
-    <button class="help-button">
+    <button class="help-button" data-i18n="tela.ajudaSuporte">
         Ajuda / Suporte
     </button>
 
     <div class="modal-overlay" id="creditoModal">
         <div class="modal-card">
             <button class="modal-close" id="modalClose">&times;</button>
-            <h2 class="modal-title">Adicionar crédito</h2>
-            <p class="modal-subtitle">Escolha o valor e a forma de pagamento</p>
+            <h2 class="modal-title" data-i18n="pagamentos.adicionarCredito">Adicionar crédito</h2>
+            <p class="modal-subtitle" data-i18n="pagamentos.escolhaValorForma">Escolha o valor e a forma de pagamento</p>
 
             <div class="valor-opcoes">
                 <button class="valor-btn" data-valor="50">R$ 50</button>
@@ -126,20 +126,20 @@
             </div>
 
             <div class="modal-form-group">
-                <label>Valor personalizado</label>
-                <input type="number" id="valorPersonalizado" placeholder="Digite o valor" min="1">
+                <label data-i18n="pagamentos.valorPersonalizado">Valor personalizado</label>
+                <input type="number" id="valorPersonalizado" placeholder="Digite o valor" data-i18n-placeholder="pagamentos.digiteValor" min="1">
             </div>
 
             <div class="modal-form-group">
-                <label for="formaPagamento">Forma de pagamento</label>
+                <label for="formaPagamento" data-i18n="pagamentos.formaPagamento">Forma de pagamento</label>
                 <select id="formaPagamento" aria-label="Forma de pagamento">
-                    <option value="cartao">Cartão de crédito</option>
-                    <option value="pix">PIX</option>
-                    <option value="boleto">Boleto</option>
+                    <option value="cartao" data-i18n="pagamentos.cartaoCredito">Cartão de crédito</option>
+                    <option value="pix" data-i18n="pagamentos.pix">PIX</option>
+                    <option value="boleto" data-i18n="pagamentos.boleto">Boleto</option>
                 </select>
             </div>
 
-            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn">Confirmar pagamento</button>
+            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" data-i18n="pagamentos.confirmarPagamento">Confirmar pagamento</button>
         </div>
     </div>
     <script src="/Shared/i18n-cliente.js"></script>

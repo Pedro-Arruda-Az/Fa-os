@@ -71,7 +71,7 @@ body {
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
     /* Isola o contexto de empilhamento do mapa pra nenhum controle do
-       Leaflet (que usa z-index alto por padrão) vazar por cima do
+       Mapbox (que usa z-index alto por padrão) vazar por cima do
        cabeçalho fixo ao rolar a página. */
     isolation: isolate;
     z-index: 0;
@@ -281,13 +281,14 @@ body.dark-mode {
     --shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 
-body.dark-mode .leaflet-popup-content-wrapper {
+body.dark-mode .mapboxgl-popup-content {
     background: #2A241E;
     color: var(--text-dark);
 }
 
-body.dark-mode .leaflet-popup-tip {
-    background: #2A241E !important;
+body.dark-mode .mapboxgl-popup-tip {
+    border-top-color: #2A241E !important;
+    border-bottom-color: #2A241E !important;
 }
 
 body.dark-mode .distancia-badge {

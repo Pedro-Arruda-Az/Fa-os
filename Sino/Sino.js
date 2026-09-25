@@ -19,6 +19,7 @@ function verificarLogin() {
 }
 
 function formatarTempoRelativo(isoString) {
+    const idioma = window.facosClienteIdiomaAtual ? facosClienteIdiomaAtual() : 'pt';
     const data = new Date(isoString);
     const agora = new Date();
     const diffMs = agora - data;
@@ -26,11 +27,15 @@ function formatarTempoRelativo(isoString) {
     const diffHoras = Math.floor(diffMin / 60);
     const diffDias = Math.floor(diffHoras / 24);
 
-    if (diffMin < 1) return 'Agora';
-    if (diffMin < 60) return `${diffMin} min atrás`;
-    if (diffHoras < 24) return `${diffHoras} hora${diffHoras !== 1 ? 's' : ''} atrás`;
-    if (diffDias === 1) return 'Ontem';
-    return `${diffDias} dias atrás`;
+    if (diffMin < 1) return idioma === 'en' ? 'Just now' : 'Agora';
+    if (diffMin < 60) return idioma === 'en' ? `${diffMin} min ago` : `${diffMin} min atrás`;
+    if (diffHoras < 24) {
+        return idioma === 'en'
+            ? `${diffHoras} hour${diffHoras !== 1 ? 's' : ''} ago`
+            : `${diffHoras} hora${diffHoras !== 1 ? 's' : ''} atrás`;
+    }
+    if (diffDias === 1) return idioma === 'en' ? 'Yesterday' : 'Ontem';
+    return idioma === 'en' ? `${diffDias} days ago` : `${diffDias} dias atrás`;
 }
 
 async function buscarNotificacoes() {
@@ -62,8 +67,8 @@ function renderNotificacoes(lista) {
     if (lista.length === 0) {
         container.innerHTML = `
             <div style="text-align:center;padding:3rem;color:var(--text-light);">
-                <p style="font-size:1.2rem;">Nenhuma notificação</p>
-                <p style="font-size:0.9rem;margin-top:0.5rem;">Você está em dia!</p>
+                <p style="font-size:1.2rem;" data-i18n="sino.nenhumaNotificacao">${traduzirCliente('sino.nenhumaNotificacao')}</p>
+                <p style="font-size:0.9rem;margin-top:0.5rem;" data-i18n="sino.vocEstaEmDia">${traduzirCliente('sino.vocEstaEmDia')}</p>
             </div>
         `;
         return;
@@ -191,6 +196,9 @@ function configurarMenuConfiguracoes() {
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', function () {
             if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+            // "há X min/horas" é montado na hora, então não é coberto pela
+            // reaplicação genérica de data-i18n — refaz a lista pra atualizar.
+            renderNotificacoes(notificacoes);
         });
     }
 }

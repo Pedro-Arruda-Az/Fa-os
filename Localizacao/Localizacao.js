@@ -52,7 +52,8 @@ async function buscarProfissionaisPorCategoria(area) {
         service: area,
         distance: Number((0.8 + (index % 6) * 0.6).toFixed(1)),
         price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
-        initials: gerarIniciais(row.nome_empresa)
+        initials: gerarIniciais(row.nome_empresa),
+        foto: row.foto_perfil || null
     }));
 }
 
@@ -63,7 +64,8 @@ function renderColuna(listaId, pagina, profissionais) {
     container.innerHTML = '';
 
     if (profissionais.length === 0) {
-        container.innerHTML = `<p class="categoria-vazio">Nenhum profissional cadastrado ainda.</p>`;
+        const textoVazio = window.traduzirCliente ? traduzirCliente('localizacao.nenhumProfissional') : 'Nenhum profissional cadastrado ainda.';
+        container.innerHTML = `<p class="categoria-vazio" data-i18n="localizacao.nenhumProfissional">${textoVazio}</p>`;
         return;
     }
 
@@ -74,7 +76,7 @@ function renderColuna(listaId, pagina, profissionais) {
         card.dataset.nome = pro.name.toLowerCase();
 
         card.innerHTML = `
-            <div class="pro-avatar">${pro.initials}</div>
+            <div class="pro-avatar">${avatarConteudo(pro.foto, pro.initials)}</div>
             <div class="pro-info">
                 <div class="pro-name">${pro.name}</div>
                 <div class="pro-service">${pro.price}</div>

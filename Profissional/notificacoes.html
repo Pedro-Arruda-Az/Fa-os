@@ -20,23 +20,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -73,20 +73,20 @@
             </a>
             <h1 class="page-title" data-i18n="titulo.notificacoes">Notificações</h1>
 
-            <button class="btn-marcar-lidas" id="marcarLidasBtn">Marcar todas como lidas</button>
+            <button class="btn-marcar-lidas" id="marcarLidasBtn" data-i18n="notificacoes.marcarTodasLidas">Marcar todas como lidas</button>
         </div>
 
         <div class="notif-grid">
 
             <section class="notif-coluna">
 
-                <h2 class="secao-titulo">Novas</h2>
+                <h2 class="secao-titulo" data-i18n="notificacoes.novas">Novas</h2>
 
                 <div class="notif-list" id="notifNovas">
-                    
+
                 </div>
 
-                <h2 class="secao-titulo">Anteriores</h2>
+                <h2 class="secao-titulo" data-i18n="notificacoes.anteriores">Anteriores</h2>
 
                 <div class="notif-list" id="notifAnteriores">
 
@@ -97,47 +97,47 @@
             <aside class="sidebar-col">
 
                 <div class="resumo-card">
-                    <h2 class="card-titulo">Resumo</h2>
+                    <h2 class="card-titulo" data-i18n="notificacoes.resumo">Resumo</h2>
 
                     <div class="resumo-linha">
-                        <span>Novas</span>
+                        <span data-i18n="notificacoes.novas">Novas</span>
                         <span class="resumo-valor" id="resumoNovas">3</span>
                     </div>
                     <div class="resumo-linha">
-                        <span>Não lidas</span>
+                        <span data-i18n="notificacoes.naoLidas">Não lidas</span>
                         <span class="resumo-valor" id="resumoNaoLidas">5</span>
                     </div>
                     <div class="resumo-linha">
-                        <span>Total</span>
+                        <span data-i18n="notificacoes.total">Total</span>
                         <span class="resumo-valor" id="resumoTotal">7</span>
                     </div>
                 </div>
 
                 <div class="prefs-card">
-                    <h2 class="card-titulo">Preferências</h2>
+                    <h2 class="card-titulo" data-i18n="notificacoes.preferencias">Preferências</h2>
 
                     <label class="pref-linha">
-                        <span>Pagamentos</span>
+                        <span data-i18n="notificacoes.pagamentos">Pagamentos</span>
                         <input type="checkbox" class="pref-check" data-pref="pagamentos" checked>
                     </label>
                     <label class="pref-linha">
-                        <span>Mensagens</span>
+                        <span data-i18n="painel.mensagens">Mensagens</span>
                         <input type="checkbox" class="pref-check" data-pref="mensagens" checked>
                     </label>
                     <label class="pref-linha">
-                        <span>Lembretes</span>
+                        <span data-i18n="notificacoes.lembretes">Lembretes</span>
                         <input type="checkbox" class="pref-check" data-pref="lembretes" checked>
                     </label>
                 </div>
 
                 <div class="filtros-card">
-                    <h2 class="card-titulo">Filtros rápidos</h2>
+                    <h2 class="card-titulo" data-i18n="notificacoes.filtrosRapidos">Filtros rápidos</h2>
 
                     <div class="filtros-lista">
-                        <button class="filtro-rapido-btn" data-filtro="nao-lidas">Apenas não lidas</button>
-                        <button class="filtro-rapido-btn" data-filtro="pagamentos">Pagamentos</button>
-                        <button class="filtro-rapido-btn" data-filtro="mensagens">Mensagens</button>
-                        <button class="filtro-rapido-btn" data-filtro="lembretes">Lembretes</button>
+                        <button class="filtro-rapido-btn" data-filtro="nao-lidas" data-i18n="notificacoes.apenasNaoLidas">Apenas não lidas</button>
+                        <button class="filtro-rapido-btn" data-filtro="pagamentos" data-i18n="notificacoes.pagamentos">Pagamentos</button>
+                        <button class="filtro-rapido-btn" data-filtro="mensagens" data-i18n="painel.mensagens">Mensagens</button>
+                        <button class="filtro-rapido-btn" data-filtro="lembretes" data-i18n="notificacoes.lembretes">Lembretes</button>
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@
 
     <button class="help-button" id="helpBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Ajuda / Suporte
+        <span data-i18n="painel.ajudaSuporte">Ajuda / Suporte</span>
     </button>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -83,7 +83,9 @@ scripts individuais em `backend/*.sql` fazem a mesma coisa, nesta ordem:
 5. `supabase-pagamentos-setup.sql`
 6. `supabase-pagamentos-gastos-setup.sql`
 7. `supabase-pedidos-endereco-observacoes.sql` — adiciona `endereco`, `observacoes`, `profissional_email` e `usuario_nome` em `pedidos` (e o espaço temporário em `pagamentos`) para a tela de Pedidos do profissional.
-8. `supabase-fix-rls.sql` — **ativa o Row Level Security** em `pedidos` e `pagamentos` com as policies corretas (leitura pública, escrita só pelo backend). Rode por último.
+8. `supabase-avaliacao-pedido.sql` — adiciona `avaliacao_motivos` e `avaliacao_comentario` em `pedidos`, usados pela telinha de avaliação do profissional (estilo Uber) na tela "Meus pedidos".
+9. `supabase-foto-perfil.sql` — adiciona `foto_perfil` em `usuarios` (a coluna em `profissionais` já existia), usada pra foto de perfil da empresa e do profissional aparecer nas bolinhas de avatar em vez das iniciais.
+10. `supabase-fix-rls.sql` — **ativa o Row Level Security** em `pedidos` e `pagamentos` com as policies corretas (leitura pública, escrita só pelo backend). Rode por último.
 
 Se o seu banco já existia antes desta atualização (ou seja, você já rodou
 o passo 1 numa versão anterior), rode também o
@@ -146,9 +148,9 @@ imagens/                Assets estáticos
   antes de falar com o Mercado Pago.
 
 > Se este repositório (ou um `.zip` dele) já foi compartilhado com alguém
-> fora do time, rotacione a `SUPABASE_SERVICE_ROLE_KEY` e o
-> `MP_ACCESS_TOKEN` nos respectivos painéis antes de ir pra produção —
-> qualquer pessoa com o valor antigo consegue usá-lo até lá.
+> fora do time, rotacione a `SUPABASE_SERVICE_ROLE_KEY`, o
+> `MP_ACCESS_TOKEN` e a `BREVO_API_KEY` nos respectivos painéis antes de ir
+> pra produção — qualquer pessoa com o valor antigo consegue usá-lo até lá.
 
 ## Testes
 

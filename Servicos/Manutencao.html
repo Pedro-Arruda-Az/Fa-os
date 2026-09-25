@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faços - Manutenção</title>
+    <title data-i18n="servicosPag.tituloAbaManutencao">Faços - Manutenção</title>
     <link rel="stylesheet" href="/Servicos/Manutencao.css">
     <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
@@ -94,6 +94,7 @@
                     id="searchInput"
                     class="search-input"
                     placeholder="procurar por serviço / profissional"
+                    data-i18n-placeholder="servicosPag.buscaPlaceholder"
                     value="Manutenção"
                     autocomplete="off"
                 >
@@ -109,8 +110,8 @@
         <section class="detail-panel" id="detailPanel">
             <div class="detail-empty" id="detailEmpty">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <h3>Selecione um profissional</h3>
-                <p>Clique em alguém da lista para ver os detalhes e solicitar o serviço</p>
+                <h3 data-i18n="servicosPag.selecioneProfissional">Selecione um profissional</h3>
+                <p data-i18n="servicosPag.selecioneProfissionalDesc">Clique em alguém da lista para ver os detalhes e solicitar o serviço</p>
             </div>
 
             <div class="detail-content" id="detailContent">
@@ -121,44 +122,45 @@
                     <div class="modal-avatar" id="modalAvatar">?</div>
                     <div>
                         <h2 class="modal-name" id="modalName">—</h2>
-                        <p class="modal-service">perfil do profissional</p>
+                        <p class="modal-service" data-i18n="servicosPag.perfilProfissional">perfil do profissional</p>
                     </div>
                 </div>
 
                 <div class="info-servico-card">
-                    <h3 class="info-servico-titulo">informações do serviço</h3>
+                    <h3 class="info-servico-titulo" data-i18n="servicosPag.infoServicoTitulo">informações do serviço</h3>
 
                     <div class="info-grid">
                         <div class="info-bloco">
-                            <span class="info-label">Categoria:</span>
+                            <span class="info-label" data-i18n="servicosPag.categoria">Categoria:</span>
                             <span class="info-valor" id="modalCategoria">—</span>
                         </div>
 
                         <div class="info-bloco">
-                            <span class="info-label">Distância:</span>
+                            <span class="info-label" data-i18n="servicosPag.distancia">Distância:</span>
                             <span class="info-valor" id="modalDist">—</span>
                         </div>
 
                         <div class="info-bloco">
-                            <span class="info-label">Avaliação geral:</span>
+                            <span class="info-label" data-i18n="servicosPag.avaliacaoGeral">Avaliação geral:</span>
                             <div class="modal-stars-linha">
                                 <div class="modal-stars" id="modalStars"></div>
                                 <span class="info-valor" id="modalRating">—</span>
+                                <button type="button" class="btn-ver-avaliacoes" id="verAvaliacoesBtn" data-i18n="servicosPag.verAvaliacoes">Ver avaliações</button>
                             </div>
                         </div>
 
                         <div class="info-bloco">
-                            <span class="info-label">Horário de atendimento:</span>
-                            <span class="info-valor">Segunda a Sábado: 8h - 18h</span>
+                            <span class="info-label" data-i18n="servicosPag.horarioAtendimento">Horário de atendimento:</span>
+                            <span class="info-valor" data-i18n="servicosPag.horarioValor">Segunda a Sábado: 8h - 18h</span>
                         </div>
                     </div>
 
                     <div class="info-bloco info-bloco-largo">
-                        <span class="info-label">Sobre:</span>
+                        <span class="info-label" data-i18n="servicosPag.sobreLabel">Sobre:</span>
                         <p class="info-texto" id="modalSobre">—</p>
                     </div>
 
-                    <button class="solicitar-btn" id="solicitarBtn">Solicitar agora</button>
+                    <button class="solicitar-btn" id="solicitarBtn" data-i18n="servicosPag.solicitarAgora">Solicitar agora</button>
                 </div>
             </div>
         </section>
@@ -168,11 +170,11 @@
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-card">
             <button class="modal-close" id="paymentModalClose">&times;</button>
-            <h2 class="pagamento-title">Forma de pagamento</h2>
+            <h2 class="pagamento-title" data-i18n="servicosPag.formaPagamento">Forma de pagamento</h2>
             <p class="pagamento-subtitle" id="pagamentoSubtitle">Como você quer pagar por esse serviço?</p>
 
             <div class="pagamento-resumo">
-                <span class="pagamento-resumo-label">Valor do serviço</span>
+                <span class="pagamento-resumo-label" data-i18n="servicosPag.valorServico">Valor do serviço</span>
                 <span class="pagamento-resumo-valor" id="pagamentoValor">R$ 0,00</span>
             </div>
 
@@ -180,7 +182,7 @@
                 <button class="pagamento-opcao" data-metodo="carteira">
                     <span class="pagamento-opcao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>
                     <span class="pagamento-opcao-texto">
-                        <span class="pagamento-opcao-titulo">Saldo da carteira</span>
+                        <span class="pagamento-opcao-titulo" data-i18n="servicosPag.saldoCarteira">Saldo da carteira</span>
                         <span class="pagamento-opcao-sub" id="saldoDisponivelTexto">Carregando saldo...</span>
                     </span>
                 </button>
@@ -188,44 +190,55 @@
                     <span class="pagamento-opcao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
                     <span class="pagamento-opcao-texto">
                         <span class="pagamento-opcao-titulo">Mercado Pago</span>
-                        <span class="pagamento-opcao-sub">Cartão, PIX ou boleto</span>
+                        <span class="pagamento-opcao-sub" data-i18n="servicosPag.cartaoPixBoleto">Cartão, PIX ou boleto</span>
                     </span>
                 </button>
             </div>
 
-            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" disabled>Confirmar pagamento</button>
+            <button class="confirmar-pagamento-btn" id="confirmarPagamentoBtn" disabled data-i18n="servicosPag.confirmarPagamento">Confirmar pagamento</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="detalhesModal">
         <div class="modal-card">
-            <h2 class="pagamento-title">Solicitar agora</h2>
-            <p class="pagamento-subtitle">Encontraremos um profissional disponível imediatamente</p>
+            <h2 class="pagamento-title" data-i18n="servicosPag.solicitarAgora">Solicitar agora</h2>
+            <p class="pagamento-subtitle" data-i18n="servicosPag.encontraremosProfissional">Encontraremos um profissional disponível imediatamente</p>
             <p class="detalhes-servico-linha" id="detalhesServicoLinha">Serviço: —</p>
 
             <div class="detalhes-campo">
-                <label for="detalhesEndereco">Endereço</label>
-                <input type="text" id="detalhesEndereco" placeholder="Rua, número, complemento">
+                <label for="detalhesEndereco" data-i18n="servicosPag.endereco">Endereço</label>
+                <input type="text" id="detalhesEndereco" placeholder="Rua, número, complemento" data-i18n-placeholder="servicosPag.enderecoPlaceholder">
             </div>
 
 
             <div class="detalhes-campo">
-                <label for="detalhesObs">Informações adicionais</label>
-                <textarea id="detalhesObs" rows="3" placeholder="Alguma observação ou pedido especial?"></textarea>
+                <label for="detalhesObs" data-i18n="servicosPag.infoAdicionais">Informações adicionais</label>
+                <textarea id="detalhesObs" rows="3" placeholder="Alguma observação ou pedido especial?" data-i18n-placeholder="servicosPag.obsPlaceholder"></textarea>
             </div>
 
             <div class="detalhes-botoes">
-                <button type="button" class="detalhes-cancelar-btn" id="detalhesCancelarBtn">Cancelar</button>
-                <button type="button" class="detalhes-confirmar-btn" id="detalhesConfirmarBtn">Solicitar agora</button>
+                <button type="button" class="detalhes-cancelar-btn" id="detalhesCancelarBtn" data-i18n="servicosPag.cancelar">Cancelar</button>
+                <button type="button" class="detalhes-confirmar-btn" id="detalhesConfirmarBtn" data-i18n="servicosPag.solicitarAgora">Solicitar agora</button>
             </div>
         </div>
     </div>
 
-    <button class="help-button">
+    <div class="modal-overlay" id="avaliacoesListaModal">
+        <div class="modal-card avaliacoes-lista-card">
+            <button class="modal-close" id="avaliacoesListaClose">&times;</button>
+            <h2 class="pagamento-title" data-i18n="servicosPag.avaliacoesTitulo">Avaliações</h2>
+            <p class="avaliacoes-lista-nome" id="avaliacoesListaNome">—</p>
+            <div class="avaliacoes-lista-resumo" id="avaliacoesListaResumo"></div>
+            <div class="avaliacoes-lista-itens" id="avaliacoesListaItens"></div>
+        </div>
+    </div>
+
+    <button class="help-button" data-i18n="tela.ajudaSuporte">
         Ajuda / Suporte
     </button>
 
     <script src="/Shared/i18n-cliente.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
     <script src="/Servicos/Manutencao.js"></script>
     <script src="/Buzz/buzz.js"></script>

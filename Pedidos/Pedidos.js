@@ -32,13 +32,22 @@ async function buscarPedidos(email) {
     if (error || !data) return [];
 
     return data.map((p) => ({
+        id: p.id,
         titulo: p.titulo,
         profissional: p.profissional,
-        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        profissionalEmail: p.profissional_email || null,
+        data: formatarDataPedido(p.criado_em),
+        criadoEmISO: p.criado_em,
         preco: `R$ ${Number(p.valor).toFixed(2).replace('.', ',')}`,
         status: p.status,
         avaliacao: p.avaliacao !== null && p.avaliacao !== undefined ? Number(p.avaliacao) : null
     }));
+}
+
+function formatarDataPedido(isoString) {
+    const idioma = facosClienteIdiomaAtual();
+    const locale = idioma === 'en' ? 'en-US' : 'pt-BR';
+    return new Date(isoString).toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
 }
 
 function renderPedidos(lista) {
@@ -48,8 +57,8 @@ function renderPedidos(lista) {
     if (lista.length === 0) {
         container.innerHTML = `
             <div style="text-align:center;padding:3rem;color:var(--text-light);">
-                <p style="font-size:1.2rem;">Nenhum pedido encontrado</p>
-                <p style="font-size:0.9rem;margin-top:0.5rem;">Você ainda não tem pedidos nesta categoria</p>
+                <p style="font-size:1.2rem;" data-i18n="pedidos.nenhumPedido">${traduzirCliente('pedidos.nenhumPedido')}</p>
+                <p style="font-size:0.9rem;margin-top:0.5rem;" data-i18n="pedidos.semPedidosCategoria">${traduzirCliente('pedidos.semPedidosCategoria')}</p>
             </div>
         `;
         return;
@@ -72,20 +81,24 @@ function renderPedidos(lista) {
                     <span class="avaliacao-nota">${pedido.avaliacao}</span>
                 </div>
             `;
-        } else {
+        } else if (pedido.status === 'concluido') {
             avaliacaoHtml = `
                 <div class="pedido-avaliacao">
-                    <span class="sem-avaliacao">Aguardando avaliação</span>
+                    <span class="sem-avaliacao" data-i18n="pedidos.aguardandoAvaliacao">${traduzirCliente('pedidos.aguardandoAvaliacao')}</span>
+                    <button type="button" class="btn-avaliar-pedido" data-pedido-id="${pedido.id}" data-i18n="pedidos.avaliar">${traduzirCliente('pedidos.avaliar')}</button>
                 </div>
             `;
+        } else {
+            avaliacaoHtml = '';
         }
 
         const statusClass = `status-${pedido.status === 'em_andamento' ? 'andamento' : pedido.status}`;
-        const statusLabel = {
-            'concluido': 'Concluído',
-            'em_andamento': 'Em andamento',
-            'cancelado': 'Cancelado'
-        }[pedido.status] || pedido.status;
+        const statusKey = {
+            'concluido': 'pedidos.status.concluido',
+            'em_andamento': 'pedidos.status.emAndamento',
+            'cancelado': 'pedidos.status.cancelado'
+        }[pedido.status];
+        const statusLabel = statusKey ? traduzirCliente(statusKey) : pedido.status;
 
         card.innerHTML = `
             <div class="pedido-info">
@@ -96,11 +109,186 @@ function renderPedidos(lista) {
             </div>
             <div class="pedido-right">
                 <div class="pedido-preco">${pedido.preco}</div>
-                <span class="pedido-status ${statusClass}">${statusLabel}</span>
+                <span class="pedido-status ${statusClass}"${statusKey ? ` data-i18n="${statusKey}"` : ''}>${statusLabel}</span>
             </div>
         `;
 
         container.appendChild(card);
+    });
+}
+
+// ===== Modal de avaliação do profissional (estilo Uber) =====
+
+let pedidoEmAvaliacao = null;
+let notaEmAvaliacao = 0;
+const motivosSelecionados = new Set();
+
+function elementosModalAvaliacao() {
+    return {
+        overlay: document.getElementById('avaliacaoModalOverlay'),
+        nome: document.getElementById('avaliacaoModalNome'),
+        estrelas: document.querySelectorAll('#avaliacaoModalEstrelas .avaliacao-estrela'),
+        blocoMotivos: document.getElementById('avaliacaoModalMotivos'),
+        chips: document.querySelectorAll('#avaliacaoChips .avaliacao-chip'),
+        textarea: document.getElementById('avaliacaoOutrosMotivos'),
+        btnEnviar: document.getElementById('avaliacaoModalEnviar')
+    };
+}
+
+function abrirModalAvaliacao(pedido) {
+    pedidoEmAvaliacao = pedido;
+    notaEmAvaliacao = 0;
+    motivosSelecionados.clear();
+
+    const el = elementosModalAvaliacao();
+    el.nome.textContent = pedido.profissional;
+    el.textarea.value = '';
+    el.blocoMotivos.hidden = true;
+    el.chips.forEach((chip) => chip.classList.remove('selecionado'));
+    atualizarEstrelasVisual(0);
+    el.btnEnviar.disabled = true;
+
+    el.overlay.classList.add('open');
+}
+
+function fecharModalAvaliacao() {
+    const el = elementosModalAvaliacao();
+    el.overlay.classList.remove('open');
+    pedidoEmAvaliacao = null;
+}
+
+function atualizarEstrelasVisual(nota) {
+    const el = elementosModalAvaliacao();
+    el.estrelas.forEach((estrela) => {
+        const valor = Number(estrela.dataset.valor);
+        estrela.classList.toggle('selecionada', valor <= nota);
+    });
+}
+
+function escolherNota(nota) {
+    notaEmAvaliacao = nota;
+    atualizarEstrelasVisual(nota);
+
+    const el = elementosModalAvaliacao();
+    el.blocoMotivos.hidden = nota > 3 || nota === 0;
+    el.btnEnviar.disabled = false;
+}
+
+async function enviarAvaliacao() {
+    if (!pedidoEmAvaliacao || notaEmAvaliacao === 0 || !usuario) return;
+
+    const el = elementosModalAvaliacao();
+    const textoOriginal = el.btnEnviar.textContent;
+    el.btnEnviar.disabled = true;
+    el.btnEnviar.textContent = traduzirCliente('pedidos.enviandoAvaliacao');
+
+    try {
+        const resposta = await fetch('/api/avaliar-pedido', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                pedidoId: pedidoEmAvaliacao.id,
+                usuarioEmail: usuario.email,
+                nota: notaEmAvaliacao,
+                motivos: Array.from(motivosSelecionados),
+                comentario: el.textarea.value
+            })
+        });
+
+        const resultado = await resposta.json().catch(() => ({}));
+
+        if (!resposta.ok) {
+            alert(resultado.error || traduzirCliente('pedidos.erroAvaliacao'));
+            return;
+        }
+
+        const pedidoAtualizado = pedidos.find((p) => p.id === pedidoEmAvaliacao.id);
+        if (pedidoAtualizado) pedidoAtualizado.avaliacao = notaEmAvaliacao;
+
+        fecharModalAvaliacao();
+        filtrarPedidos(filtroAtual);
+    } catch (err) {
+        console.error(err);
+        alert(traduzirCliente('pedidos.erroAvaliacao'));
+    } finally {
+        el.btnEnviar.disabled = false;
+        el.btnEnviar.textContent = textoOriginal;
+    }
+}
+
+function configurarModalAvaliacao() {
+    const el = elementosModalAvaliacao();
+
+    document.getElementById('pedidosList').addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-avaliar-pedido');
+        if (!btn) return;
+        const pedido = pedidos.find((p) => p.id === btn.dataset.pedidoId);
+        if (pedido) abrirModalAvaliacao(pedido);
+    });
+
+    el.estrelas.forEach((estrela) => {
+        estrela.addEventListener('click', () => escolherNota(Number(estrela.dataset.valor)));
+        estrela.addEventListener('mouseenter', () => atualizarEstrelasVisual(Number(estrela.dataset.valor)));
+    });
+    document.getElementById('avaliacaoModalEstrelas').addEventListener('mouseleave', () => {
+        atualizarEstrelasVisual(notaEmAvaliacao);
+    });
+
+    el.chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+            const motivo = chip.dataset.motivo;
+            if (motivosSelecionados.has(motivo)) {
+                motivosSelecionados.delete(motivo);
+                chip.classList.remove('selecionado');
+            } else {
+                motivosSelecionados.add(motivo);
+                chip.classList.add('selecionado');
+            }
+        });
+    });
+
+    document.getElementById('avaliacaoModalClose').addEventListener('click', fecharModalAvaliacao);
+    el.overlay.addEventListener('click', (e) => {
+        if (e.target === el.overlay) fecharModalAvaliacao();
+    });
+    el.btnEnviar.addEventListener('click', enviarAvaliacao);
+}
+
+// ===== Conclusão automática de pedidos "em andamento" após 30s =====
+// (assim a empresa consegue avaliar o profissional sem precisar
+// esperar ele marcar o serviço como concluído manualmente)
+
+const TEMPO_PARA_CONCLUIR_MS = 30_000;
+
+async function concluirPedidoAutomaticamente(pedido) {
+    if (!usuario || pedido.status !== 'em_andamento') return;
+
+    try {
+        const resposta = await fetch('/api/concluir-pedido-automatico', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pedidoId: pedido.id, usuarioEmail: usuario.email })
+        });
+
+        const resultado = await resposta.json().catch(() => ({}));
+
+        if (resposta.ok && resultado.ok) {
+            pedido.status = 'concluido';
+            filtrarPedidos(filtroAtual);
+        }
+    } catch (err) {
+        console.error('Erro ao concluir pedido automaticamente:', err);
+    }
+}
+
+function agendarConclusoesAutomaticas() {
+    pedidos.forEach((pedido) => {
+        if (pedido.status !== 'em_andamento' || !pedido.criadoEmISO) return;
+
+        const decorrido = Date.now() - new Date(pedido.criadoEmISO).getTime();
+        const restante = Math.max(TEMPO_PARA_CONCLUIR_MS - decorrido, 0);
+
+        setTimeout(() => concluirPedidoAutomaticamente(pedido), restante);
     });
 }
 
@@ -212,9 +400,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     configurarModoEscuro();
     configurarMenuConfiguracoes();
+    configurarModalAvaliacao();
 
     pedidos = await buscarPedidos(usuario.email);
     filtrarPedidos('todos');
+    agendarConclusoesAutomaticas();
 
     document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
 

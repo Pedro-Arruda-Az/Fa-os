@@ -43,9 +43,9 @@ async function buscarCreditosAprovados(email) {
     if (error || !data) return [];
 
     return data.map((p) => ({
-        titulo: 'Crédito adicionado',
+        titulo: traduzirCliente('pagamentos.creditoAdicionado'),
         descricao: formatarFormaPagamento(p.forma_pagamento),
-        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        data: formatarDataTransacao(p.criado_em),
         dataOrdenacao: p.criado_em,
         valor: Number(p.valor)
     }));
@@ -64,17 +64,28 @@ async function buscarGastosAprovados(email) {
     if (error || !data) return [];
 
     return data.map((p) => ({
-        titulo: p.descricao || 'Serviço contratado',
+        titulo: p.descricao || traduzirCliente('pagamentos.servicoContratado'),
         descricao: formatarFormaPagamento(p.forma_pagamento),
-        data: new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+        data: formatarDataTransacao(p.criado_em),
         dataOrdenacao: p.criado_em,
         valor: -Number(p.valor)
     }));
 }
 
+function formatarDataTransacao(isoString) {
+    const idioma = facosClienteIdiomaAtual();
+    const locale = idioma === 'en' ? 'en-US' : 'pt-BR';
+    return new Date(isoString).toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
+}
+
 function formatarFormaPagamento(forma) {
-    const mapa = { cartao: 'Cartão de crédito', pix: 'PIX', boleto: 'Boleto', carteira: 'Saldo da carteira' };
-    return mapa[forma] || 'Mercado Pago';
+    const mapa = {
+        cartao: traduzirCliente('pagamentos.cartaoCredito'),
+        pix: traduzirCliente('pagamentos.pix'),
+        boleto: traduzirCliente('pagamentos.boleto'),
+        carteira: traduzirCliente('pagamentos.saldoCarteira')
+    };
+    return mapa[forma] || traduzirCliente('pagamentos.mercadoPago');
 }
 
 function renderTransacoes(lista) {
@@ -84,7 +95,7 @@ function renderTransacoes(lista) {
     if (lista.length === 0) {
         container.innerHTML = `
             <div style="text-align:center;padding:2rem;color:var(--text-light);">
-                <p>Nenhuma transação encontrada</p>
+                <p data-i18n="pagamentos.nenhumaTransacao">${traduzirCliente('pagamentos.nenhumaTransacao')}</p>
             </div>
         `;
         return;
@@ -246,7 +257,7 @@ function configurarModalCredito() {
     confirmarBtn.addEventListener('click', async () => {
         const valor = parseFloat(valorPersonalizado.value);
         if (!valor || valor <= 0) {
-            alert('Por favor, insira um valor válido!');
+            alert(traduzirCliente('pagamentos.valorInvalido'));
             return;
         }
 
@@ -255,7 +266,7 @@ function configurarModalCredito() {
 
         const textoOriginal = confirmarBtn.textContent;
         confirmarBtn.disabled = true;
-        confirmarBtn.textContent = 'Abrindo Mercado Pago...';
+        confirmarBtn.textContent = traduzirCliente('pagamentos.abrindoMercadoPago');
 
         try {
             const resposta = await fetch('/api/criar-pagamento', {
@@ -273,13 +284,13 @@ function configurarModalCredito() {
             const resultado = await resposta.json();
 
             if (!resposta.ok) {
-                throw new Error(resultado.error || 'Não foi possível iniciar o pagamento.');
+                throw new Error(resultado.error || traduzirCliente('pagamentos.erroIniciarPagamento'));
             }
 
             window.location.href = resultado.init_point;
         } catch (err) {
             console.error(err);
-            alert(err.message || 'Ocorreu um erro ao iniciar o pagamento. Tente novamente.');
+            alert(err.message || traduzirCliente('pagamentos.erroGenericoPagamento'));
             confirmarBtn.disabled = false;
             confirmarBtn.textContent = textoOriginal;
         }
@@ -300,19 +311,23 @@ async function verificarRetornoPagamento() {
         const resultado = await resposta.json();
 
         if (!resposta.ok) {
-            throw new Error(resultado.error || 'Não foi possível confirmar o pagamento.');
+            throw new Error(resultado.error || traduzirCliente('pagamentos.erroConfirmarPagamento'));
         }
 
         if (resultado.status === 'aprovado' || resultado.status === 'ja_processado') {
-            alert(`Pagamento aprovado! Foi creditado R$ ${resultado.valor.toFixed(2).replace('.', ',')} na sua carteira.`);
+            const idioma = facosClienteIdiomaAtual();
+            const valorFormatado = resultado.valor.toFixed(2).replace('.', ',');
+            alert(idioma === 'en'
+                ? `Payment approved! R$ ${valorFormatado} was credited to your wallet.`
+                : `Pagamento aprovado! Foi creditado R$ ${valorFormatado} na sua carteira.`);
         } else if (resultado.status === 'pending' || resultado.status === 'in_process') {
-            alert('Seu pagamento ainda está sendo processado pelo Mercado Pago. Assim que for aprovado, o valor cai na sua carteira.');
+            alert(traduzirCliente('pagamentos.pagamentoProcessando'));
         } else {
-            alert('O pagamento não foi aprovado. Tente novamente.');
+            alert(traduzirCliente('pagamentos.pagamentoNaoAprovado'));
         }
     } catch (err) {
         console.error(err);
-        alert(err.message || 'Ocorreu um erro ao confirmar seu pagamento.');
+        alert(err.message || traduzirCliente('pagamentos.erroConfirmarSeuPagamento'));
     } finally {
         window.history.replaceState(null, '', window.location.pathname);
     }

@@ -23,6 +23,28 @@ function verificarLogin() {
     return JSON.parse(profissional);
 }
 
+function gerarIniciais(nome) {
+    const partes = (nome || '').trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 0) return '?';
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+}
+
+async function buscarFotosUsuarios(emails) {
+    if (!supabaseClient || emails.length === 0) return {};
+
+    const { data, error } = await supabaseClient
+        .from('usuarios')
+        .select('email, foto_perfil')
+        .in('email', emails);
+
+    if (error || !data) return {};
+
+    const mapa = {};
+    data.forEach((row) => { mapa[row.email] = row.foto_perfil || null; });
+    return mapa;
+}
+
 async function buscarConversas() {
     if (!supabaseClient || !profissionalAtual) return [];
 
@@ -37,7 +59,14 @@ async function buscarConversas() {
         return [];
     }
 
-    return data || [];
+    const emails = [...new Set((data || []).map((c) => c.usuario_email).filter(Boolean))];
+    const fotos = await buscarFotosUsuarios(emails);
+
+    return (data || []).map((c) => ({
+        ...c,
+        foto: fotos[c.usuario_email] || null,
+        iniciais: gerarIniciais(c.usuario_nome || c.usuario_email)
+    }));
 }
 
 async function buscarMensagens(conversaId) {
@@ -69,7 +98,7 @@ function formatarQuando(isoString) {
         return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     }
     if (mesmoDia(data, ontem)) {
-        return 'Ontem';
+        return traduzirProfissional('mensagens.ontem');
     }
     return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 }
@@ -77,6 +106,7 @@ function formatarQuando(isoString) {
 const conversasList = document.getElementById('conversasList');
 const chatMensagens = document.getElementById('chatMensagens');
 const chatContatoNome = document.getElementById('chatContatoNome');
+const chatContatoAvatar = document.getElementById('chatContatoAvatar');
 const chatInput = document.getElementById('chatInput');
 const enviarBtn = document.getElementById('enviarBtn');
 
@@ -84,7 +114,7 @@ function renderizarLista() {
     conversasList.innerHTML = '';
 
     if (conversas.length === 0) {
-        conversasList.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:2rem 1rem;font-size:0.9rem;">Nenhuma conversa ainda. Quando um cliente contrata seu serviço, a conversa aparece aqui.</p>`;
+        conversasList.innerHTML = `<p data-i18n="mensagens.semConversas" style="text-align:center;color:var(--text-muted);padding:2rem 1rem;font-size:0.9rem;">${traduzirProfissional('mensagens.semConversas')}</p>`;
         return;
     }
 
@@ -94,11 +124,14 @@ function renderizarLista() {
         btn.dataset.id = c.id;
 
         btn.innerHTML = `
-            <div class="conversa-top">
-                <span class="conversa-nome">${c.usuario_nome || c.usuario_email}</span>
-                <span class="conversa-hora">${formatarQuando(c.ultima_mensagem_em)}</span>
+            <div class="conversa-avatar">${avatarConteudo(c.foto, c.iniciais)}</div>
+            <div class="conversa-info">
+                <div class="conversa-top">
+                    <span class="conversa-nome">${c.usuario_nome || c.usuario_email}</span>
+                    <span class="conversa-hora">${formatarQuando(c.ultima_mensagem_em)}</span>
+                </div>
+                <p class="conversa-preview">${c.ultima_mensagem || ''}</p>
             </div>
-            <p class="conversa-preview">${c.ultima_mensagem || ''}</p>
         `;
 
         conversasList.appendChild(btn);
@@ -109,7 +142,7 @@ function renderizarMensagens(mensagens) {
     chatMensagens.innerHTML = '';
 
     if (mensagens.length === 0) {
-        chatMensagens.innerHTML = `<p class="chat-vazio-aviso" style="text-align:center;color:var(--text-muted);padding:2rem;font-size:0.9rem;">Nenhuma mensagem ainda.</p>`;
+        chatMensagens.innerHTML = `<p class="chat-vazio-aviso" data-i18n="mensagens.semMensagens" style="text-align:center;color:var(--text-muted);padding:2rem;font-size:0.9rem;">${traduzirProfissional('mensagens.semMensagens')}</p>`;
         return;
     }
 
@@ -140,6 +173,7 @@ async function abrirConversa(id) {
 
     conversaAtivaId = id;
     chatContatoNome.textContent = conversa.usuario_nome || conversa.usuario_email;
+    if (chatContatoAvatar) chatContatoAvatar.innerHTML = avatarConteudo(conversa.foto, conversa.iniciais);
 
     document.querySelectorAll('.conversa-item').forEach((el) => el.classList.remove('active'));
     const item = document.querySelector(`.conversa-item[data-id="${id}"]`);
@@ -244,7 +278,7 @@ async function enviarMensagem() {
 
     if (erroMsg) {
         console.error('Erro ao enviar mensagem:', erroMsg);
-        alert('Não foi possível enviar a mensagem. Tente novamente.');
+        alert(traduzirProfissional('mensagens.alertErroEnviar'));
         return;
     }
 
@@ -334,7 +368,7 @@ function configurarMenuConfiguracoes() {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('mensagens.confirmarSair'))) {
                 localStorage.removeItem('profissionalLogado');
                 window.location.href = '/index.html';
             }

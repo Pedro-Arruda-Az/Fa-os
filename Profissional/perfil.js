@@ -28,12 +28,12 @@ function carregarDadosPerfil() {
     const sobre = profissional.sobre || '';
 
     const iniciais = nomeEmpresa.trim().substring(0, 2).toUpperCase();
-    document.getElementById('avatarIniciais').textContent = iniciais;
+    document.getElementById('avatarCircle').innerHTML = avatarConteudo(profissional.foto_perfil, iniciais);
 
     document.getElementById('editNome').value = nomeEmpresa;
     document.getElementById('editTelefone').value = '';
     document.getElementById('editTelefone').placeholder = telefone !== '-'
-        ? 'Telefone cadastrado — deixe em branco para manter'
+        ? traduzirProfissional('perfil.telefoneCadastradoPlaceholder')
         : '(11) 99999-9999';
     document.getElementById('editEndereco').value = endereco !== '-' ? endereco : '';
     document.getElementById('editSobre').value = sobre;
@@ -59,12 +59,12 @@ async function salvarAlteracoes() {
     const novaSenha = document.getElementById('editSenha').value;
 
     if (!nome_empresa) {
-        alert('Por favor, preencha o nome da empresa!');
+        alert(traduzirProfissional('perfil.alertPreencherNome'));
         return;
     }
 
     if (!window.supabase) {
-        alert('Não foi possível conectar ao servidor. Tente novamente mais tarde.');
+        alert(traduzirProfissional('perfil.alertSemConexao'));
         return;
     }
 
@@ -83,7 +83,7 @@ async function salvarAlteracoes() {
 
     if (novaSenha && novaSenha.trim() !== '') {
         if (novaSenha.length < 6) {
-            alert('A nova senha deve ter pelo menos 6 caracteres!');
+            alert(traduzirProfissional('perfil.alertSenhaCurta'));
             return;
         }
         dadosAtualizar.senha = CryptoJS.SHA256(novaSenha).toString(CryptoJS.enc.Hex);
@@ -92,7 +92,7 @@ async function salvarAlteracoes() {
     const salvarBtn = document.getElementById('salvarBtn');
     const textoOriginal = salvarBtn.textContent;
     salvarBtn.disabled = true;
-    salvarBtn.textContent = 'Salvando...';
+    salvarBtn.textContent = traduzirProfissional('perfil.salvando');
 
     // Endereço mudou? Tenta achar a coordenada de novo, pra tela de
     // localização (tanto a do profissional quanto a da empresa que
@@ -113,19 +113,20 @@ async function salvarAlteracoes() {
             .eq('id', profissional.id);
 
         if (error) {
-            alert('Erro ao salvar: ' + error.message);
+            const idioma = facosIdiomaAtual();
+            alert((idioma === 'en' ? 'Error saving: ' : 'Erro ao salvar: ') + error.message);
             return;
         }
 
         const profissionalAtualizado = { ...profissional, ...dadosAtualizar };
         localStorage.setItem('profissionalLogado', JSON.stringify(profissionalAtualizado));
 
-        alert('Alterações salvas com sucesso!');
+        alert(traduzirProfissional('perfil.alertSalvoComSucesso'));
         carregarDadosPerfil();
         document.getElementById('editSenha').value = '';
     } catch (err) {
         console.error('Erro ao salvar:', err);
-        alert('Erro ao conectar com o servidor!');
+        alert(traduzirProfissional('perfil.alertErroConexaoServidor'));
     } finally {
         salvarBtn.disabled = false;
         salvarBtn.textContent = textoOriginal;
@@ -191,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', () => {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('perfil.confirmarSair'))) {
                 fazerLogout();
             }
         });
@@ -206,15 +207,39 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = document.getElementById('fotoInput');
             input.click();
 
-            input.onchange = function (e) {
+            input.onchange = async function (e) {
                 const file = e.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (event) {
-                        const avatarCircle = document.getElementById('avatarCircle');
-                        avatarCircle.innerHTML = `<img src="${event.target.result}" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-                    };
-                    reader.readAsDataURL(file);
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    alert(traduzirProfissional('perfil.alertaImagemInvalida'));
+                    return;
+                }
+
+                const profissional = verificarLogin();
+                if (!profissional) return;
+
+                try {
+                    const fotoBase64 = await redimensionarFoto(file);
+
+                    document.getElementById('avatarCircle').innerHTML = avatarConteudo(fotoBase64, null);
+
+                    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    const { error } = await supabaseClient
+                        .from('profissionais')
+                        .update({ foto_perfil: fotoBase64 })
+                        .eq('id', profissional.id);
+
+                    if (error) {
+                        console.error(error);
+                        alert(traduzirProfissional('perfil.alertaErroFoto'));
+                        return;
+                    }
+
+                    const profissionalAtualizado = { ...profissional, foto_perfil: fotoBase64 };
+                    localStorage.setItem('profissionalLogado', JSON.stringify(profissionalAtualizado));
+                } catch (err) {
+                    console.error(err);
+                    alert(traduzirProfissional('perfil.alertaErroFoto'));
                 }
             };
         });

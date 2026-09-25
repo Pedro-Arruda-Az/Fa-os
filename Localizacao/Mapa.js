@@ -21,6 +21,12 @@ const DESLOCAMENTO_EMPRESA = { lat: 0.015, lng: -0.012 };
 
 let map = null;
 
+// Guarda o último cálculo de rota/distância pra poder retraduzir os textos
+// na hora (sem precisar refazer o mapa) quando o idioma é trocado depois
+// que a tela já carregou.
+let ultimoPontoProfissional = null;
+let ultimaDistanciaKm = null;
+
 function verificarLogin() {
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -108,20 +114,17 @@ function calcularDistanciaKm(a, b) {
     return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
 
-function criarIcone(cor) {
-    return L.divIcon({
-        className: '',
-        html: `<div style="
-            width:24px; height:24px;
-            border-radius:50% 50% 50% 0;
-            background:${cor};
-            border:2px solid #171717;
-            transform: rotate(-45deg);
-            box-shadow:0 3px 8px rgba(0,0,0,0.35);
-        "></div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 24]
-    });
+function criarElementoMarcador(cor) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+        width:24px; height:24px;
+        border-radius:50% 50% 50% 0;
+        background:${cor};
+        border:2px solid #171717;
+        transform: rotate(-45deg);
+        box-shadow:0 3px 8px rgba(0,0,0,0.35);
+    `;
+    return el;
 }
 
 function initMap(pontoEmpresa, pontoProfissional) {
@@ -130,48 +133,64 @@ function initMap(pontoEmpresa, pontoProfissional) {
     if (mapaVazio) mapaVazio.style.display = 'none';
     if (mapWrapper) mapWrapper.style.display = 'block';
 
-    const centro = [
-        (pontoEmpresa.lat + pontoProfissional.lat) / 2,
-        (pontoEmpresa.lng + pontoProfissional.lng) / 2
+    // Mapbox GL usa [longitude, latitude] (ao contrário do Leaflet, que
+    // usava [latitude, longitude]) — daí os pontos abaixo virem invertidos.
+    const pontos = [
+        [pontoEmpresa.lng, pontoEmpresa.lat],
+        [pontoProfissional.lng, pontoProfissional.lat]
     ];
 
-    map = L.map('map', {
+    const centro = [
+        (pontos[0][0] + pontos[1][0]) / 2,
+        (pontos[0][1] + pontos[1][1]) / 2
+    ];
+
+    mapboxgl.accessToken = window.MAPBOX_TOKEN;
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: centro,
-        zoom: 13,
-        zoomControl: true,
-        scrollWheelZoom: false
+        zoom: 13
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19
-    }).addTo(map);
+    map.scrollZoom.disable();
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    const pontos = [
-        [pontoEmpresa.lat, pontoEmpresa.lng],
-        [pontoProfissional.lat, pontoProfissional.lng]
-    ];
+    const idiomaAtual = window.facosClienteIdiomaAtual ? facosClienteIdiomaAtual() : 'pt';
 
-    L.polyline(pontos, {
-        color: '#3B82F6',
-        weight: 4,
-        opacity: 0.85
-    }).addTo(map);
+    new mapboxgl.Marker({ element: criarElementoMarcador('#34D399'), anchor: 'bottom' })
+        .setLngLat(pontos[0])
+        .setPopup(new mapboxgl.Popup({ offset: 24 }).setHTML(idiomaAtual === 'en' ? '<strong>You</strong>' : '<strong>Você</strong>'))
+        .addTo(map);
 
-    L.marker(pontos[0], { icon: criarIcone('#34D399') })
-        .addTo(map)
-        .bindPopup('<strong>Você</strong>');
+    const nomeProfissionalPopup = pontoProfissional.nome || (idiomaAtual === 'en' ? 'Professional' : 'Profissional');
+    new mapboxgl.Marker({ element: criarElementoMarcador('#FFC700'), anchor: 'bottom' })
+        .setLngLat(pontos[1])
+        .setPopup(new mapboxgl.Popup({ offset: 24 }).setHTML(`<strong>${nomeProfissionalPopup}</strong>`))
+        .addTo(map);
 
-    L.marker(pontos[1], { icon: criarIcone('#FFC700') })
-        .addTo(map)
-        .bindPopup(`<strong>${pontoProfissional.nome || 'Profissional'}</strong>`);
+    const bounds = new mapboxgl.LngLatBounds(pontos[0], pontos[0]);
+    bounds.extend(pontos[1]);
+    map.fitBounds(bounds, { padding: 50, duration: 0 });
 
-    const bounds = L.latLngBounds(pontos);
-    map.fitBounds(bounds, { padding: [40, 40] });
+    map.on('load', () => {
+        map.addSource('rota', {
+            type: 'geojson',
+            data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: pontos } }
+        });
+        map.addLayer({
+            id: 'rota',
+            type: 'line',
+            source: 'rota',
+            layout: { 'line-join': 'round', 'line-cap': 'round' },
+            paint: { 'line-color': '#3B82F6', 'line-width': 4, 'line-opacity': 0.85 }
+        });
+    });
 
     // O tamanho do mapa só fica certo depois que ele já está visível na
-    // tela — sem isso o Leaflet pode desenhar os ladrilhos torto.
-    setTimeout(() => map.invalidateSize(), 50);
+    // tela — sem isso o Mapbox pode desenhar torto.
+    setTimeout(() => map.resize(), 50);
 
     const distancia = calcularDistanciaKm(pontoEmpresa, pontoProfissional);
     const badgeValor = document.getElementById('distanciaBadgeValor');
@@ -188,17 +207,11 @@ function preencherInfoGrid(pontoProfissional, distancia) {
     const infoGrid = document.getElementById('infoGrid');
     if (infoGrid) infoGrid.style.display = 'grid';
 
-    const nome = pontoProfissional.nome || 'Profissional';
-    const distanciaTexto = `${distancia.toFixed(1)} km`;
+    // Guarda pra poder reaplicar os textos se o idioma for trocado depois.
+    ultimoPontoProfissional = pontoProfissional;
+    ultimaDistanciaKm = distancia;
 
-    const rotaNome = document.getElementById('rotaProfissionalNome');
-    if (rotaNome) rotaNome.textContent = nome;
-
-    const rotaSub = document.getElementById('rotaProfissionalSub');
-    if (rotaSub) rotaSub.textContent = `${distanciaTexto} · a caminho`;
-
-    const statDistancia = document.getElementById('statDistancia');
-    if (statDistancia) statDistancia.textContent = distanciaTexto;
+    atualizarTextosRotaIdioma();
 
     const navegarBtn = document.getElementById('navegarBtn');
     if (navegarBtn) {
@@ -207,6 +220,30 @@ function preencherInfoGrid(pontoProfissional, distancia) {
             window.open(url, '_blank');
         };
     }
+}
+
+// Retraduz o nome do profissional (fallback) e o texto "X km · a
+// caminho"/"on the way" usando o último cálculo de rota, sem precisar
+// refazer o mapa. Chamado ao carregar e de novo quando o idioma muda.
+function atualizarTextosRotaIdioma() {
+    if (!ultimoPontoProfissional || ultimaDistanciaKm == null) return;
+
+    const idioma = window.facosClienteIdiomaAtual ? facosClienteIdiomaAtual() : 'pt';
+    const nome = ultimoPontoProfissional.nome || (idioma === 'en' ? 'Professional' : 'Profissional');
+    const distanciaTexto = `${ultimaDistanciaKm.toFixed(1)} km`;
+
+    const rotaNome = document.getElementById('rotaProfissionalNome');
+    if (rotaNome) rotaNome.textContent = nome;
+
+    const rotaSub = document.getElementById('rotaProfissionalSub');
+    if (rotaSub) {
+        rotaSub.textContent = idioma === 'en'
+            ? `${distanciaTexto} · on the way`
+            : `${distanciaTexto} · a caminho`;
+    }
+
+    const statDistancia = document.getElementById('statDistancia');
+    if (statDistancia) statDistancia.textContent = distanciaTexto;
 }
 
 async function carregarLocalizacao(usuario) {
@@ -302,6 +339,10 @@ function configurarMenuConfiguracoes() {
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', function () {
             if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+            // Os textos da rota (nome/"X km · a caminho") são montados à mão
+            // com valores dinâmicos, então não são cobertos pela reaplicação
+            // genérica de data-i18n — precisam ser refeitos aqui.
+            atualizarTextosRotaIdioma();
         });
     }
 }

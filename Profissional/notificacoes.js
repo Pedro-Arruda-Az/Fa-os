@@ -28,7 +28,7 @@ const CONFIG_TIPO = {
         classeIconeLido: 'icon-pagamento-lido',
         classeCard: 'notif-pagamento',
         link: '/Profissional/carteira.html',
-        linkTexto: 'Ver detalhes'
+        linkTexto: 'notificacoes.verDetalhes'
     },
     mensagem: {
         dataTipo: 'mensagens',
@@ -37,7 +37,7 @@ const CONFIG_TIPO = {
         classeIconeLido: 'icon-mensagem',
         classeCard: 'notif-mensagem',
         link: '/Profissional/mensagens.html',
-        linkTexto: 'Ver mensagem'
+        linkTexto: 'notificacoes.verMensagem'
     },
     sistema: {
         dataTipo: 'lembretes',
@@ -51,17 +51,18 @@ const CONFIG_TIPO = {
 };
 
 function formatarTempoRelativo(isoString) {
+    const idioma = facosIdiomaAtual();
     const data = new Date(isoString);
     const agora = new Date();
     const diffMin = Math.floor((agora - data) / 60000);
     const diffHoras = Math.floor(diffMin / 60);
     const diffDias = Math.floor(diffHoras / 24);
 
-    if (diffMin < 1) return 'Agora';
+    if (diffMin < 1) return idioma === 'en' ? 'Now' : 'Agora';
     if (diffMin < 60) return `${diffMin} min`;
     if (diffHoras < 24) return `${diffHoras}h`;
-    if (diffDias === 1) return 'Ontem';
-    return `${diffDias} dias`;
+    if (diffDias === 1) return idioma === 'en' ? 'Yesterday' : 'Ontem';
+    return idioma === 'en' ? `${diffDias} days` : `${diffDias} dias`;
 }
 
 async function buscarNotificacoes() {
@@ -92,7 +93,7 @@ function criarCard(notif) {
     card.dataset.tipo = cfg.dataTipo;
 
     const linkHtml = (cfg.link && !notif.lida)
-        ? `<a href="${cfg.link}" class="notif-link">${cfg.linkTexto}</a>`
+        ? `<a href="${cfg.link}" class="notif-link" data-i18n="${cfg.linkTexto}">${traduzirProfissional(cfg.linkTexto)}</a>`
         : '';
 
     card.innerHTML = `
@@ -123,13 +124,13 @@ function renderNotificacoes(lista) {
     const lidas = lista.filter(n => n.lida);
 
     if (naoLidas.length === 0) {
-        containerNovas.innerHTML = `<p style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">Nenhuma notificação nova.</p>`;
+        containerNovas.innerHTML = `<p data-i18n="notificacoes.semNovas" style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">${traduzirProfissional('notificacoes.semNovas')}</p>`;
     } else {
         naoLidas.forEach(n => containerNovas.appendChild(criarCard(n)));
     }
 
     if (lidas.length === 0) {
-        containerAnteriores.innerHTML = `<p style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">Nada por aqui ainda.</p>`;
+        containerAnteriores.innerHTML = `<p data-i18n="notificacoes.nadaAinda" style="color:var(--text-muted);font-size:0.9rem;padding:0.5rem 0;">${traduzirProfissional('notificacoes.nadaAinda')}</p>`;
     } else {
         lidas.slice(0, 20).forEach(n => containerAnteriores.appendChild(criarCard(n)));
     }
@@ -318,7 +319,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('notificacoes.confirmarSair'))) {
                 fazerLogout();
             }
         });

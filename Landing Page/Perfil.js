@@ -9,13 +9,30 @@ function verificarLogin() {
     return usuarioLogado ? JSON.parse(usuarioLogado) : null;
 }
 
+function idiomaAtualPerfil() {
+    return window.facosClienteIdiomaAtual ? facosClienteIdiomaAtual() : 'pt';
+}
+
+// Atualiza o placeholder do campo telefone conforme idioma + se já existe
+// telefone cadastrado. Separado de carregarDadosPerfil() pra poder ser
+// chamado de novo quando o usuário só troca o idioma (sem recarregar tudo).
+function atualizarPlaceholderTelefone() {
+    const telefoneInput = document.getElementById('editTelefone');
+    if (!telefoneInput) return;
+    const usuarioLogadoRaw = localStorage.getItem('usuarioLogado');
+    const usuario = usuarioLogadoRaw ? JSON.parse(usuarioLogadoRaw) : null;
+    telefoneInput.placeholder = (usuario && usuario.telefone)
+        ? traduzirCliente('perfil.telefoneCadastrado')
+        : '(11) 99999-9999';
+}
+
 function carregarDadosPerfil() {
     const usuario = verificarLogin();
     if (!usuario) return;
 
     const nome = usuario.nome || '';
     const nomeUsuario = usuario.nome_user || usuario.email?.split('@')[0] || 'usuario';
-    const endereco = usuario.endereco || 'Rua XXXXX, 000 - Cidade, Estado';
+    const endereco = usuario.endereco || traduzirCliente('perfil.enderecoPadrao');
     const sexo = usuario.sexo || 'Prefiro não dizer';
 
     const iniciais = nome ? nome.substring(0, 2).toUpperCase() : nomeUsuario.substring(0, 2).toUpperCase();
@@ -24,9 +41,7 @@ function carregarDadosPerfil() {
 
     document.getElementById('editNome').value = nome;
     document.getElementById('editTelefone').value = '';
-    document.getElementById('editTelefone').placeholder = usuario.telefone
-        ? 'Telefone cadastrado — deixe em branco para manter'
-        : '(11) 99999-9999';
+    atualizarPlaceholderTelefone();
     document.getElementById('editSexo').value = sexo;
     document.getElementById('editEndereco').value = endereco;
 }
@@ -61,7 +76,7 @@ async function salvarAlteracoes() {
     const novaSenha = document.getElementById('editSenha').value;
 
     if (!nome) {
-        alert('Por favor, preencha o nome!');
+        alert(traduzirCliente('perfil.alertaNomeObrigatorio'));
         return;
     }
 
@@ -100,22 +115,22 @@ async function salvarAlteracoes() {
             .eq('id', usuario.id);
 
         if (error) {
-            alert('Erro ao salvar: ' + error.message);
+            alert(traduzirCliente('perfil.alertaErroSalvarPrefixo') + error.message);
             return;
         }
 
         const usuarioAtualizado = { ...usuario, ...dadosAtualizar };
         localStorage.setItem('usuarioLogado', JSON.stringify(usuarioAtualizado));
 
-        alert('Alterações salvas com sucesso!');
-        
+        alert(traduzirCliente('perfil.alertaSalvoSucesso'));
+
         carregarDadosPerfil();
-        
+
         document.getElementById('editSenha').value = '';
-        
+
     } catch (err) {
         console.error('Erro ao salvar:', err);
-        alert('Erro ao conectar com o servidor!');
+        alert(traduzirCliente('perfil.alertaErroServidor'));
     }
 }
 
@@ -123,27 +138,49 @@ function trocarFotoPerfil() {
     const input = document.getElementById('fotoInput');
     input.click();
 
-    input.onchange = function(e) {
+    input.onchange = async function(e) {
         const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const avatarCircle = document.getElementById('avatarCircle');
-                avatarCircle.innerHTML = `<img src="${event.target.result}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                localStorage.setItem('fotoPerfil', event.target.result);
-            };
-            reader.readAsDataURL(file);
-        } else if (file) {
-            alert('Por favor, selecione uma imagem válida!');
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            alert(traduzirCliente('perfil.alertaImagemInvalida'));
+            return;
+        }
+
+        const usuario = verificarLogin();
+        if (!usuario) return;
+
+        try {
+            const fotoBase64 = await redimensionarFoto(file);
+
+            const avatarCircle = document.getElementById('avatarCircle');
+            avatarCircle.innerHTML = avatarConteudo(fotoBase64, null);
+
+            const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const { error } = await supabaseClient
+                .from('usuarios')
+                .update({ foto_perfil: fotoBase64 })
+                .eq('id', usuario.id);
+
+            if (error) {
+                console.error(error);
+                alert(traduzirCliente('perfil.alertaErroFoto'));
+                return;
+            }
+
+            const usuarioAtualizado = { ...usuario, foto_perfil: fotoBase64 };
+            localStorage.setItem('usuarioLogado', JSON.stringify(usuarioAtualizado));
+        } catch (err) {
+            console.error(err);
+            alert(traduzirCliente('perfil.alertaErroFoto'));
         }
     };
 }
 
 function carregarFotoSalva() {
-    const fotoSalva = localStorage.getItem('fotoPerfil');
-    if (fotoSalva) {
+    const usuario = verificarLogin();
+    if (usuario && usuario.foto_perfil) {
         const avatarCircle = document.getElementById('avatarCircle');
-        avatarCircle.innerHTML = `<img src="${fotoSalva}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+        avatarCircle.innerHTML = avatarConteudo(usuario.foto_perfil, null);
     }
 }
 
@@ -191,6 +228,31 @@ function configurarModoEscuro() {
     });
 }
 
+// Retraduz pedacinhos da tela que não usam data-i18n (tooltips, título da
+// aba, placeholder que depende de dado do usuário) porque não são um
+// simples textContent/innerHTML/placeholder fixo.
+function atualizarTraducoesExtrasPerfil() {
+    const idioma = idiomaAtualPerfil();
+
+    const linkPerfil = document.getElementById('topbarProfileLink');
+    if (linkPerfil) linkPerfil.title = window.traduzirCliente ? traduzirCliente('landingpage.tooltipMeuPerfil') : (idioma === 'en' ? 'My profile' : 'Meu perfil');
+
+    const linkInicio = document.getElementById('topbarInicioLink');
+    if (linkInicio) linkInicio.title = window.traduzirCliente ? traduzirCliente('menu.inicio') : (idioma === 'en' ? 'Home' : 'Início');
+
+    const configBtn = document.getElementById('configBtn');
+    if (configBtn) {
+        const rotulo = window.traduzirCliente ? traduzirCliente('menu.configuracoes') : (idioma === 'en' ? 'Settings' : 'Configurações');
+        configBtn.title = rotulo;
+        configBtn.setAttribute('aria-label', rotulo);
+    }
+
+    const tituloAba = document.getElementById('pageTitleTag');
+    if (tituloAba) tituloAba.textContent = idioma === 'en' ? 'Faços - My Profile' : 'Faços - Meu Perfil';
+
+    atualizarPlaceholderTelefone();
+}
+
 function configurarMenuConfiguracoes() {
     const configBtn = document.getElementById('configBtn');
     const configMenu = document.getElementById('configMenu');
@@ -212,6 +274,7 @@ function configurarMenuConfiguracoes() {
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', function () {
             if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+            atualizarTraducoesExtrasPerfil();
         });
     }
 }
@@ -222,6 +285,7 @@ function inicializar() {
     carregarFotoSalva();
     configurarModoEscuro();
     configurarMenuConfiguracoes();
+    atualizarTraducoesExtrasPerfil();
 
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) logoutBtn.addEventListener('click', fazerLogout);

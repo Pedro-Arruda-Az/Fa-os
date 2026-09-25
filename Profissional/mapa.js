@@ -49,20 +49,17 @@ function calcularDistanciaKm(a, b) {
     return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
 
-function criarIcone(cor) {
-    return L.divIcon({
-        className: '',
-        html: `<div style="
-            width:26px; height:26px;
-            border-radius:50% 50% 50% 0;
-            background:${cor};
-            border:2px solid #171717;
-            transform: rotate(-45deg);
-            box-shadow:0 3px 8px rgba(0,0,0,0.35);
-        "></div>`,
-        iconSize: [26, 26],
-        iconAnchor: [13, 26]
-    });
+function criarElementoMarcador(cor) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+        width:26px; height:26px;
+        border-radius:50% 50% 50% 0;
+        background:${cor};
+        border:2px solid #171717;
+        transform: rotate(-45deg);
+        box-shadow:0 3px 8px rgba(0,0,0,0.35);
+    `;
+    return el;
 }
 
 // Busca, no backend, os pedidos reais do profissional logado e devolve o
@@ -102,48 +99,61 @@ function initMap(pontoVoce, pontoCliente) {
     const mapWrapper = document.getElementById('mapWrapper');
     if (mapWrapper) mapWrapper.style.display = 'block';
 
-    const centro = [
-        (pontoVoce.lat + pontoCliente.lat) / 2,
-        (pontoVoce.lng + pontoCliente.lng) / 2
+    // Mapbox GL usa [longitude, latitude] (ao contrário do Leaflet, que
+    // usava [latitude, longitude]) — daí os pontos abaixo virem invertidos.
+    const pontos = [
+        [pontoVoce.lng, pontoVoce.lat],
+        [pontoCliente.lng, pontoCliente.lat]
     ];
 
-    map = L.map('map', {
+    const centro = [
+        (pontos[0][0] + pontos[1][0]) / 2,
+        (pontos[0][1] + pontos[1][1]) / 2
+    ];
+
+    mapboxgl.accessToken = window.MAPBOX_TOKEN;
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: centro,
-        zoom: 13,
-        zoomControl: true,
-        scrollWheelZoom: false
+        zoom: 13
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19
-    }).addTo(map);
+    map.scrollZoom.disable();
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    const pontos = [
-        [pontoVoce.lat, pontoVoce.lng],
-        [pontoCliente.lat, pontoCliente.lng]
-    ];
+    new mapboxgl.Marker({ element: criarElementoMarcador('#34D399'), anchor: 'bottom' })
+        .setLngLat(pontos[0])
+        .setPopup(new mapboxgl.Popup({ offset: 26 }).setHTML(`<strong>${traduzirProfissional('mapa.voce')}</strong>`))
+        .addTo(map);
 
-    L.polyline(pontos, {
-        color: '#3B82F6',
-        weight: 4,
-        opacity: 0.85
-    }).addTo(map);
+    new mapboxgl.Marker({ element: criarElementoMarcador('#FFC700'), anchor: 'bottom' })
+        .setLngLat(pontos[1])
+        .setPopup(new mapboxgl.Popup({ offset: 26 }).setHTML(`<strong>${escapeHtml(pontoCliente.nome) || traduzirProfissional('mapa.cliente')}</strong>`))
+        .addTo(map);
 
-    L.marker(pontos[0], { icon: criarIcone('#34D399') })
-        .addTo(map)
-        .bindPopup('<strong>Você</strong>');
+    const bounds = new mapboxgl.LngLatBounds(pontos[0], pontos[0]);
+    bounds.extend(pontos[1]);
+    map.fitBounds(bounds, { padding: 60, duration: 0 });
 
-    L.marker(pontos[1], { icon: criarIcone('#FFC700') })
-        .addTo(map)
-        .bindPopup(`<strong>${pontoCliente.nome || 'Cliente'}</strong>`);
-
-    const bounds = L.latLngBounds(pontos);
-    map.fitBounds(bounds, { padding: [50, 50] });
+    map.on('load', () => {
+        map.addSource('rota', {
+            type: 'geojson',
+            data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: pontos } }
+        });
+        map.addLayer({
+            id: 'rota',
+            type: 'line',
+            source: 'rota',
+            layout: { 'line-join': 'round', 'line-cap': 'round' },
+            paint: { 'line-color': '#3B82F6', 'line-width': 4, 'line-opacity': 0.85 }
+        });
+    });
 
     // O tamanho do mapa só fica certo depois que ele já está visível na
-    // tela — sem isso o Leaflet pode desenhar os ladrilhos torto.
-    setTimeout(() => map.invalidateSize(), 50);
+    // tela — sem isso o Mapbox pode desenhar torto.
+    setTimeout(() => map.resize(), 50);
 }
 
 function navegarPara(ponto) {
@@ -157,7 +167,7 @@ function navegarPara(ponto) {
 // navegar até a localização do cliente.
 function preencherPainel(pedido, pontoCliente, distancia) {
     const distanciaTexto = `${distancia.toFixed(1)} km`;
-    const nome = pontoCliente.nome || 'Cliente';
+    const nome = pontoCliente.nome || traduzirProfissional('mapa.cliente');
 
     const lista = document.getElementById('clientesList');
     if (lista) {
@@ -171,16 +181,16 @@ function preencherPainel(pedido, pontoCliente, distancia) {
         item.innerHTML = `
             <div class="cliente-topo">
                 <span class="cliente-nome">${escapeHtml(nome)}</span>
-                <span class="status-badge status-proximo">em andamento</span>
+                <span class="status-badge status-proximo" data-i18n="mapa.emAndamento">${traduzirProfissional('mapa.emAndamento')}</span>
             </div>
-            <p class="cliente-servico">${escapeHtml(pedido.titulo || 'Serviço solicitado')}</p>
+            <p class="cliente-servico">${escapeHtml(pedido.titulo || traduzirProfissional('mapa.servicoSolicitado'))}</p>
             <div class="cliente-baixo">
                 <div class="cliente-meta">
                     <span class="meta-item">${distanciaTexto}</span>
                 </div>
                 ${valorTexto ? `<span class="cliente-valor">R$ ${escapeHtml(valorTexto)}</span>` : ''}
             </div>
-            <button class="btn-navegar" id="iniciarNavegacaoBtn">Iniciar navegação</button>
+            <button class="btn-navegar" id="iniciarNavegacaoBtn" data-i18n="mapa.iniciarNavegacao">${traduzirProfissional('mapa.iniciarNavegacao')}</button>
         `;
         lista.appendChild(item);
 
@@ -221,7 +231,7 @@ async function carregarAtendimento(profissional) {
         ? { lat: pontoVoce.lat + DESLOCAMENTO_CLIENTE.lat, lng: pontoVoce.lng + DESLOCAMENTO_CLIENTE.lng }
         : PONTO_RESERVA_EMPRESA;
 
-    const pontoCliente = { ...pontoClienteBase, nome: pedido.usuario_nome || pedido.usuario_email || 'Cliente' };
+    const pontoCliente = { ...pontoClienteBase, nome: pedido.usuario_nome || pedido.usuario_email || traduzirProfissional('mapa.cliente') };
 
     const distancia = calcularDistanciaKm(pontoVoce, pontoCliente);
 
@@ -291,7 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('mapa.confirmarSair'))) {
                 localStorage.removeItem('profissionalLogado');
                 window.location.href = '/index.html';
             }

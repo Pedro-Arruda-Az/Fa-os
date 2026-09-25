@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faços - Meu Perfil</title>
+    <title id="pageTitleTag">Faços - Meu Perfil</title>
     <link rel="stylesheet" href="/Landing Page/Perfil.css">
     <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
@@ -19,11 +19,11 @@
             </a>
         </div>
         <div class="header-right">
-            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil">
+            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil" id="topbarProfileLink">
                 <img src="/imagens/icones-claro/perfil.png" alt="" class="icon-claro">
                 <img src="/imagens/icones-escuro/perfil.png" alt="" class="icon-escuro">
             </a>
-            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn" title="Início">
+            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn" title="Início" id="topbarInicioLink">
                 <img src="/imagens/icones-claro/casinha-header.png" alt="" class="icon-claro">
                 <img src="/imagens/icones-escuro/casinha-header.png" alt="" class="icon-escuro">
             </a>
@@ -92,54 +92,54 @@
                         <div class="avatar-circle" id="avatarCircle">
                             <span id="avatarIniciais">U</span>
                         </div>
-                        <button class="trocar-foto-btn" id="trocarFotoBtn">Trocar foto</button>
+                        <button class="trocar-foto-btn" id="trocarFotoBtn" data-i18n="perfil.trocarFoto">Trocar foto</button>
                         <input type="file" id="fotoInput" accept="image/*" style="display: none;">
                     </div>
                 </div>
 
                 <div class="perfil-edit-card">
-                    <h2 class="edit-title">Editar seu perfil</h2>
+                    <h2 class="edit-title" data-i18n="perfil.editarPerfil">Editar seu perfil</h2>
 
                     <div class="edit-form">
                         <div class="form-group">
-                            <label>Nome:</label>
-                            <input type="text" id="editNome" placeholder="Seu nome completo">
+                            <label data-i18n="perfil.labelNome">Nome:</label>
+                            <input type="text" id="editNome" placeholder="Seu nome completo" data-i18n-placeholder="perfil.placeholderNome">
                         </div>
 
                         <div class="form-group">
-                            <label>Telefone:</label>
+                            <label data-i18n="perfil.labelTelefone">Telefone:</label>
                             <input type="tel" id="editTelefone" placeholder="(00) 00000-0000" maxlength="15">
                         </div>
 
                         <div class="form-group">
-                            <label>Sexo:</label>
+                            <label data-i18n="perfil.labelSexo">Sexo:</label>
                             <select id="editSexo">
-                                <option value="Prefiro não dizer">Prefiro não dizer</option>
-                                <option value="Feminino">Feminino</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Outro">Outro</option>
+                                <option value="Prefiro não dizer" data-i18n="perfil.sexoNaoDizer">Prefiro não dizer</option>
+                                <option value="Feminino" data-i18n="perfil.sexoFeminino">Feminino</option>
+                                <option value="Masculino" data-i18n="perfil.sexoMasculino">Masculino</option>
+                                <option value="Outro" data-i18n="perfil.sexoOutro">Outro</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>Endereço:</label>
-                            <input type="text" id="editEndereco" placeholder="Rua, número, bairro, cidade - Estado">
+                            <label data-i18n="perfil.labelEndereco">Endereço:</label>
+                            <input type="text" id="editEndereco" placeholder="Rua, número, bairro, cidade - Estado" data-i18n-placeholder="perfil.placeholderEndereco">
                         </div>
 
                         <div class="form-group">
-                            <label>Senha:</label>
+                            <label data-i18n="perfil.labelSenha">Senha:</label>
                             <input type="password" id="editSenha" placeholder="**********">
-                            <small class="senha-obs">Deixe em branco para manter a mesma senha</small>
+                            <small class="senha-obs" data-i18n="perfil.senhaObs">Deixe em branco para manter a mesma senha</small>
                         </div>
 
-                        <button class="salvar-btn" id="salvarBtn">salvar alterações</button>
+                        <button class="salvar-btn" id="salvarBtn" data-i18n="perfil.salvarAlteracoes">salvar alterações</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <button class="help-button" id="helpButton">
+    <button class="help-button" id="helpButton" data-i18n="tela.ajudaSuporte">
         Ajuda / Suporte
     </button>
 
@@ -148,6 +148,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
     <script src="/Shared/geocoding.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="/Landing Page/Perfil.js"></script>
     <script src="/Buzz/buzz.js"></script>
 </body>

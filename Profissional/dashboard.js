@@ -40,16 +40,17 @@ const LINK_POR_TIPO = {
 };
 
 function formatarTempoRelativo(isoString) {
+    const idioma = facosIdiomaAtual();
     const data = new Date(isoString);
     const diffMin = Math.floor((new Date() - data) / 60000);
     const diffHoras = Math.floor(diffMin / 60);
     const diffDias = Math.floor(diffHoras / 24);
 
-    if (diffMin < 1) return 'Agora';
-    if (diffMin < 60) return `${diffMin} min atrás`;
-    if (diffHoras < 24) return `${diffHoras}h atrás`;
-    if (diffDias === 1) return 'Ontem';
-    return `${diffDias} dias atrás`;
+    if (diffMin < 1) return idioma === 'en' ? 'Now' : 'Agora';
+    if (diffMin < 60) return idioma === 'en' ? `${diffMin} min ago` : `${diffMin} min atrás`;
+    if (diffHoras < 24) return idioma === 'en' ? `${diffHoras}h ago` : `${diffHoras}h atrás`;
+    if (diffDias === 1) return idioma === 'en' ? 'Yesterday' : 'Ontem';
+    return idioma === 'en' ? `${diffDias} days ago` : `${diffDias} dias atrás`;
 }
 
 async function carregarUltimasNotificacoes() {
@@ -77,7 +78,7 @@ function renderUltimasNotificacoes(lista) {
     grid.innerHTML = '';
 
     if (lista.length === 0) {
-        grid.innerHTML = `<p class="notif-linha-vazio">Nenhuma notificação ainda.</p>`;
+        grid.innerHTML = `<p class="notif-linha-vazio" data-i18n="dashboard.semNotificacoes">${traduzirProfissional('dashboard.semNotificacoes')}</p>`;
         return;
     }
 
@@ -245,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('dashboard.confirmarSair'))) {
                 fazerLogout();
             }
         });

@@ -25,7 +25,8 @@ function configurarBotoes() {
         const btnComprovante = e.target.closest('.btn-comprovante');
         if (btnComprovante) {
             const nome = btnComprovante.closest('.pedido-card').querySelector('.pedido-nome').textContent;
-            alert(`Comprovante do pedido de ${nome}`);
+            const idioma = facosIdiomaAtual();
+            alert(idioma === 'en' ? `Receipt for the order from ${nome}` : `Comprovante do pedido de ${nome}`);
         }
     });
 }
@@ -50,8 +51,8 @@ function abrirDetalhesPedido(card) {
     document.getElementById('detalhesPedidoServico').textContent = servico;
     document.getElementById('detalhesPedidoData').textContent = textoMetaSemIcone(metaItems[0]);
     document.getElementById('detalhesPedidoHora').textContent = textoMetaSemIcone(metaItems[1]);
-    document.getElementById('detalhesPedidoEndereco').textContent = card.dataset.endereco || 'Não informado';
-    document.getElementById('detalhesPedidoObs').textContent = card.dataset.observacoes || 'Sem observações adicionais';
+    document.getElementById('detalhesPedidoEndereco').textContent = card.dataset.endereco || traduzirProfissional('pepe.naoInformado');
+    document.getElementById('detalhesPedidoObs').textContent = card.dataset.observacoes || traduzirProfissional('pepe.semObservacoes');
 
     document.getElementById('detalhesPedidoModal').classList.add('open');
 }
@@ -80,9 +81,9 @@ function escapeHtml(texto) {
 }
 
 function formatarStatusPedido(status) {
-    if (status === 'concluido') return { classe: 'status-concluido', texto: 'Concluído' };
-    if (status === 'cancelado') return { classe: 'status-cancelado', texto: 'Cancelado' };
-    return { classe: 'status-andamento', texto: 'Em andamento' };
+    if (status === 'concluido') return { classe: 'status-concluido', chave: 'pepe.statusConcluido' };
+    if (status === 'cancelado') return { classe: 'status-cancelado', chave: 'pepe.statusCancelado' };
+    return { classe: 'status-andamento', chave: 'pepe.statusAndamento' };
 }
 
 // Busca os pedidos reais do profissional logado direto no banco de dados
@@ -114,10 +115,11 @@ async function carregarPedidosReais(email) {
     pedidos.forEach((pedido) => {
         const card = document.createElement('div');
         card.className = 'pedido-card';
-        card.dataset.endereco = pedido.endereco || 'Não informado';
-        card.dataset.observacoes = pedido.observacoes || 'Sem observações adicionais';
+        card.dataset.endereco = pedido.endereco || '';
+        card.dataset.observacoes = pedido.observacoes || '';
 
-        const { classe, texto } = formatarStatusPedido(pedido.status);
+        const { classe, chave } = formatarStatusPedido(pedido.status);
+        const texto = traduzirProfissional(chave);
         const criadoEm = pedido.criado_em ? new Date(pedido.criado_em) : null;
         const data = criadoEm ? criadoEm.toLocaleDateString('pt-BR') : '—';
         const hora = criadoEm ? criadoEm.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '—';
@@ -127,18 +129,18 @@ async function carregarPedidosReais(email) {
             ? valorNumero.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
             : pedido.valor;
 
-        const nome = pedido.usuario_nome || pedido.usuario_email || 'Cliente';
+        const nome = pedido.usuario_nome || pedido.usuario_email || traduzirProfissional('mapa.cliente');
         const botaoHtml = pedido.status === 'em_andamento'
-            ? '<button class="pedido-btn btn-detalhes">Detalhes</button>'
-            : '<button class="pedido-btn btn-comprovante">Ver comprovante</button>';
+            ? `<button class="pedido-btn btn-detalhes" data-i18n="pepe.detalhes">${traduzirProfissional('pepe.detalhes')}</button>`
+            : `<button class="pedido-btn btn-comprovante" data-i18n="pepe.verComprovante">${traduzirProfissional('pepe.verComprovante')}</button>`;
 
         card.innerHTML = `
             <div class="pedido-info">
                 <div class="pedido-top">
                     <span class="pedido-nome">${escapeHtml(nome)}</span>
-                    <span class="status-badge ${classe}">${texto}</span>
+                    <span class="status-badge ${classe}" data-i18n="${chave}">${texto}</span>
                 </div>
-                <p class="pedido-servico">${escapeHtml(pedido.titulo || 'Serviço solicitado')}</p>
+                <p class="pedido-servico">${escapeHtml(pedido.titulo || traduzirProfissional('mapa.servicoSolicitado'))}</p>
                 <div class="pedido-meta">
                     <span class="meta-item"><span class="meta-icon">📅</span>${escapeHtml(data)}</span>
                     <span class="meta-item"><span class="meta-icon">🕐</span>${escapeHtml(hora)}</span>
@@ -213,7 +215,7 @@ function configurarMenuConfiguracoes() {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('pepe.confirmarSair'))) {
                 localStorage.removeItem('profissionalLogado');
                 window.location.href = '/index.html';
             }

@@ -57,12 +57,23 @@ function formatarMoeda(valor) {
     return `R$ ${Number(valor || 0).toFixed(2).replace('.', ',')}`;
 }
 
+function traduzirStatusTransacao(status) {
+    const mapaChaves = {
+        aprovado: 'carteira.statusPago',
+        pendente: 'carteira.statusPendente',
+        cancelado: 'carteira.statusCancelado',
+        rejeitado: 'carteira.statusRejeitado'
+    };
+    const chave = mapaChaves[status];
+    return chave ? traduzirProfissional(chave) : status;
+}
+
 function renderizarTransacoes(lista) {
     const container = document.getElementById('transacoesList');
     container.innerHTML = '';
 
     if (lista.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:2rem;font-size:0.9rem;">Nenhuma transação ainda. Quando um cliente pagar por um serviço seu, aparece aqui.</p>`;
+        container.innerHTML = `<p data-i18n="carteira.semTransacoes" style="text-align:center;color:var(--text-muted);padding:2rem;font-size:0.9rem;">${traduzirProfissional('carteira.semTransacoes')}</p>`;
         return;
     }
 
@@ -83,12 +94,12 @@ function renderizarTransacoes(lista) {
                 </svg>
             </div>
             <div class="transacao-info">
-                <span class="transacao-nome">${t.descricao || (positivo ? 'Pagamento recebido' : 'Saída')}</span>
+                <span class="transacao-nome">${t.descricao || (positivo ? traduzirProfissional('carteira.pagamentoRecebido') : traduzirProfissional('carteira.saida'))}</span>
                 <span class="transacao-data">${data}</span>
             </div>
             <div class="transacao-valor-col">
                 <span class="transacao-valor ${positivo ? 'valor-positivo' : 'valor-negativo'}">${positivo ? '+' : ''}${formatarMoeda(t.valor)}</span>
-                <span class="status-pago">${t.status === 'aprovado' ? 'pago' : t.status}</span>
+                <span class="status-pago">${traduzirStatusTransacao(t.status)}</span>
             </div>
         `;
 
@@ -150,12 +161,12 @@ function configurarEdicaoDados(dadosAtuais) {
 
             if (error) {
                 console.error('Erro ao salvar dados:', error);
-                alert('Não foi possível salvar. Tente novamente.');
+                alert(traduzirProfissional('carteira.alertErroSalvar'));
                 return;
             }
 
-            document.getElementById('dadoChavePix').textContent = chave_pix || 'Não cadastrada';
-            document.getElementById('dadoBanco').textContent = banco || 'Não cadastrado';
+            document.getElementById('dadoChavePix').textContent = chave_pix || traduzirProfissional('carteira.naoCadastradaFem');
+            document.getElementById('dadoBanco').textContent = banco || traduzirProfissional('carteira.naoCadastradoMasc');
             modal.classList.remove('open');
         });
     }
@@ -165,21 +176,21 @@ function configurarAcoes() {
     const sacarBtn = document.getElementById('sacarBtn');
     if (sacarBtn) {
         sacarBtn.addEventListener('click', () => {
-            alert('Saque via Mercado Pago em breve! Ainda estamos preparando essa parte.');
+            alert(traduzirProfissional('carteira.alertSaqueBreve'));
         });
     }
 
     const pixBtn = document.getElementById('pixBtn');
     if (pixBtn) {
         pixBtn.addEventListener('click', () => {
-            alert('Transferência via Pix em breve! Ainda estamos preparando essa parte.');
+            alert(traduzirProfissional('carteira.alertPixBreve'));
         });
     }
 
     const exportarBtn = document.getElementById('exportarBtn');
     if (exportarBtn) {
         exportarBtn.addEventListener('click', () => {
-            alert('Exportação do histórico em breve!');
+            alert(traduzirProfissional('carteira.alertExportarBreve'));
         });
     }
 }
@@ -241,7 +252,7 @@ function configurarMenuConfiguracoes() {
     const sairBtn = document.getElementById('sairBtn');
     if (sairBtn) {
         sairBtn.addEventListener('click', function () {
-            if (confirm('Deseja sair do painel profissional?')) {
+            if (confirm(traduzirProfissional('carteira.confirmarSair'))) {
                 localStorage.removeItem('profissionalLogado');
                 window.location.href = '/index.html';
             }
@@ -261,9 +272,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (dados) {
         document.getElementById('saldoValor').textContent = formatarMoeda(dados.saldo);
-        document.getElementById('dadoChavePix').textContent = dados.chave_pix || 'Não cadastrada';
-        document.getElementById('dadoBanco').textContent = dados.banco || 'Não cadastrado';
-        document.getElementById('dadoCnpj').textContent = (dados.cnpj || dados.cpf) ? 'Cadastrado' : '—';
+        document.getElementById('dadoChavePix').textContent = dados.chave_pix || traduzirProfissional('carteira.naoCadastradaFem');
+        document.getElementById('dadoBanco').textContent = dados.banco || traduzirProfissional('carteira.naoCadastradoMasc');
+        document.getElementById('dadoCnpj').textContent = (dados.cnpj || dados.cpf) ? traduzirProfissional('carteira.cadastrado') : '—';
     }
 
     configurarEdicaoDados(dados);

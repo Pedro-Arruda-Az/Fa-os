@@ -6,7 +6,7 @@
     <title>Faços - Mapa</title>
     <link rel="stylesheet" href="mapa.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" />
     <script src="theme.js"></script>
 </head>
 <body>
@@ -21,23 +21,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -78,20 +78,20 @@
         <div class="mapa-grid">
 
             <section class="atendimentos-card">
-                <h2 class="card-titulo">Seus atendimentos</h2>
+                <h2 class="card-titulo" data-i18n="titulo.mapa">Seus atendimentos</h2>
 
-                <p class="atendimento-vazio" id="atendimentoVazio">Nenhum atendimento em andamento no momento. Assim que uma empresa contratar o seu serviço, ele aparece aqui, com a localização e a distância até você.</p>
+                <p class="atendimento-vazio" id="atendimentoVazio" data-i18n="mapa.semAtendimento">Nenhum atendimento em andamento no momento. Assim que uma empresa contratar o seu serviço, ele aparece aqui, com a localização e a distância até você.</p>
 
                 <div class="map-wrapper" id="mapWrapper" style="display:none;">
                     <div id="map"></div>
                     <div class="map-legend">
                         <div class="legend-item">
                             <span class="legend-dot dot-verde"></span>
-                            Você
+                            <span data-i18n="mapa.voce">Você</span>
                         </div>
                         <div class="legend-item">
                             <span class="legend-dot dot-amarelo"></span>
-                            Cliente
+                            <span data-i18n="mapa.cliente">Cliente</span>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
             <aside class="sidebar-col">
 
                 <div class="rota-card" id="rotaCard" style="display:none;">
-                    <h2 class="card-titulo">Rota até o cliente</h2>
+                    <h2 class="card-titulo" data-i18n="mapa.rotaAteCliente">Rota até o cliente</h2>
 
                     <div class="rota-timeline">
                         <div class="rota-etapa">
@@ -110,8 +110,8 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome">Você</span>
-                                <span class="rota-sub">Ponto de partida</span>
+                                <span class="rota-nome" data-i18n="mapa.voce">Você</span>
+                                <span class="rota-sub" data-i18n="mapa.pontoPartida">Ponto de partida</span>
                             </div>
                         </div>
 
@@ -122,7 +122,7 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                             </span>
                             <div class="rota-info">
-                                <span class="rota-nome" id="rotaClienteNome">Cliente</span>
+                                <span class="rota-nome" id="rotaClienteNome" data-i18n="mapa.cliente">Cliente</span>
                                 <span class="rota-sub" id="rotaClienteSub">— km</span>
                             </div>
                         </div>
@@ -130,21 +130,21 @@
 
                     <button class="btn-navegar-proximo" id="navegarProximoBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-                        Navegar até o cliente
+                        <span data-i18n="mapa.navegarAteCliente">Navegar até o cliente</span>
                     </button>
                 </div>
 
                 <div class="stats-card" id="statsCard" style="display:none;">
-                    <h2 class="card-titulo">Estatísticas</h2>
+                    <h2 class="card-titulo" data-i18n="mapa.estatisticas">Estatísticas</h2>
 
                     <div class="stat-bloco">
-                        <span class="stat-label">Distância até o cliente</span>
+                        <span class="stat-label" data-i18n="mapa.distanciaAteCliente">Distância até o cliente</span>
                         <span class="stat-valor" id="statDistancia">— km</span>
                     </div>
                 </div>
 
                 <div class="area-card">
-                    <h2 class="card-titulo">Área de atuação</h2>
+                    <h2 class="card-titulo" data-i18n="mapa.areaAtuacao">Área de atuação</h2>
 
                     <ul class="area-list">
                         <li>Centro</li>
@@ -152,7 +152,7 @@
                         <li>Zona Sul</li>
                     </ul>
 
-                    <span class="area-raio">Raio máximo: 15km</span>
+                    <span class="area-raio" data-i18n="mapa.raioMaximo">Raio máximo: 15km</span>
                 </div>
 
             </aside>
@@ -161,10 +161,11 @@
 
     <button class="help-button" id="helpBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        ajuda / suporte
+        <span data-i18n="painel.ajudaSuporte">ajuda / suporte</span>
     </button>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+    <script src="/Shared/mapbox-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>

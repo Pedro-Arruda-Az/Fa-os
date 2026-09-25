@@ -86,7 +86,7 @@
 
         <section class="chat-list">
             <div class="chat-header">
-                <h2>Mensagens</h2>
+                <h2 data-i18n="menu.mensagens">Mensagens</h2>
                 <span class="chat-count" id="chatCount">0 conversas</span>
             </div>
 
@@ -97,6 +97,7 @@
                     id="searchChat"
                     class="search-input"
                     placeholder="procurar conversa..."
+                    data-i18n-placeholder="chat.procurarConversa"
                     autocomplete="off"
                 >
             </div>
@@ -108,8 +109,8 @@
         <section class="chat-window" id="chatWindow">
             <div class="chat-placeholder" id="chatPlaceholder">
                 <img src="/imagens/icones-claro/mensagens.png" alt="Chat" width="64">
-                <h3>Selecione uma conversa</h3>
-                <p>Escolha um profissional para iniciar o chat</p>
+                <h3 data-i18n="chat.selecioneConversa">Selecione uma conversa</h3>
+                <p data-i18n="chat.escolhaProfissional">Escolha um profissional para iniciar o chat</p>
             </div>
 
             <div class="chat-active" id="chatActive" style="display:none;">
@@ -133,6 +134,7 @@
                         id="chatMessageInput"
                         class="chat-input"
                         placeholder="Digite uma mensagem..."
+                        data-i18n-placeholder="chat.digiteMensagem"
                         autocomplete="off"
                     >
                     <button class="chat-send-btn" id="chatSendBtn">
@@ -145,6 +147,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/Shared/i18n-cliente.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
     <script src="Chat.js"></script>
 </body>

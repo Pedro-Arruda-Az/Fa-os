@@ -31,6 +31,8 @@ function gerarIniciais(nome) {
 }
 
 function formatarQuando(isoString) {
+    const idioma = facosClienteIdiomaAtual();
+    const locale = idioma === 'en' ? 'en-US' : 'pt-BR';
     const data = new Date(isoString);
     const hoje = new Date();
     const ontem = new Date();
@@ -39,12 +41,27 @@ function formatarQuando(isoString) {
     const mesmoDay = (a, b) => a.toDateString() === b.toDateString();
 
     if (mesmoDay(data, hoje)) {
-        return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        return data.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
     }
     if (mesmoDay(data, ontem)) {
-        return 'Ontem';
+        return traduzirCliente('chat.ontem');
     }
-    return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+    return data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit' });
+}
+
+async function buscarFotosProfissionais(emails) {
+    if (!supabaseClient || emails.length === 0) return {};
+
+    const { data, error } = await supabaseClient
+        .from('profissionais')
+        .select('email, foto_perfil')
+        .in('email', emails);
+
+    if (error || !data) return {};
+
+    const mapa = {};
+    data.forEach((row) => { mapa[row.email] = row.foto_perfil || null; });
+    return mapa;
 }
 
 async function buscarConversas() {
@@ -61,10 +78,14 @@ async function buscarConversas() {
         return [];
     }
 
+    const emails = [...new Set((data || []).map((c) => c.profissional_email).filter(Boolean))];
+    const fotos = await buscarFotosProfissionais(emails);
+
     return (data || []).map((c) => ({
         id: c.id,
         name: c.profissional_nome || c.profissional_email,
         initials: gerarIniciais(c.profissional_nome),
+        foto: fotos[c.profissional_email] || null,
         lastMessage: c.ultima_mensagem || '',
         time: formatarQuando(c.ultima_mensagem_em),
         profissionalEmail: c.profissional_email
@@ -85,10 +106,12 @@ async function buscarMensagens(conversaId) {
         return [];
     }
 
+    const idioma = facosClienteIdiomaAtual();
+    const locale = idioma === 'en' ? 'en-US' : 'pt-BR';
     return (data || []).map((m) => ({
         from: m.remetente === 'cliente' ? 'user' : 'pro',
         text: m.texto,
-        time: new Date(m.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        time: new Date(m.criado_em).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
     }));
 }
 
@@ -96,11 +119,14 @@ function renderConversations(list) {
     const container = document.getElementById('conversationsList');
     const countEl = document.getElementById('chatCount');
 
-    countEl.textContent = `${list.length} conversa${list.length !== 1 ? 's' : ''}`;
+    const idioma = facosClienteIdiomaAtual();
+    countEl.textContent = idioma === 'en'
+        ? `${list.length} conversation${list.length !== 1 ? 's' : ''}`
+        : `${list.length} conversa${list.length !== 1 ? 's' : ''}`;
     container.innerHTML = '';
 
     if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.95rem;">Nenhuma conversa ainda. Quando você contrata um serviço, a conversa com o profissional aparece aqui.</p>`;
+        container.innerHTML = `<p style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.95rem;" data-i18n="chat.nenhumaConversa">${traduzirCliente('chat.nenhumaConversa')}</p>`;
         return;
     }
 
@@ -110,7 +136,7 @@ function renderConversations(list) {
         card.dataset.id = conv.id;
 
         card.innerHTML = `
-            <div class="conv-avatar">${conv.initials}</div>
+            <div class="conv-avatar">${avatarConteudo(conv.foto, conv.initials)}</div>
             <div class="conv-info">
                 <div class="conv-name">${conv.name}</div>
                 <div class="conv-last-msg">${conv.lastMessage}</div>
@@ -136,7 +162,7 @@ async function openChat(chatId) {
     document.getElementById('chatPlaceholder').style.display = 'none';
     document.getElementById('chatActive').style.display = 'flex';
 
-    document.getElementById('chatAvatar').textContent = conv.initials;
+    document.getElementById('chatAvatar').innerHTML = avatarConteudo(conv.foto, conv.initials);
     document.getElementById('chatContactName').textContent = conv.name;
     document.getElementById('chatContactStatus').textContent = '';
 
@@ -180,9 +206,10 @@ function adicionarMensagemNaTela(msg) {
 
     const div = document.createElement('div');
     div.className = msg.remetente === 'cliente' ? 'msg-sent' : 'msg-received';
+    const localeMsg = facosClienteIdiomaAtual() === 'en' ? 'en-US' : 'pt-BR';
     div.innerHTML = `
         ${msg.texto}
-        <span class="msg-time">${new Date(msg.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+        <span class="msg-time">${new Date(msg.criado_em).toLocaleTimeString(localeMsg, { hour: '2-digit', minute: '2-digit' })}</span>
     `;
     container.appendChild(div);
     scrollToBottom();
@@ -214,7 +241,7 @@ function renderMessages(messages) {
     container.innerHTML = '';
 
     if (messages.length === 0) {
-        container.innerHTML = `<p class="chat-vazio-aviso" style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.9rem;">Nenhuma mensagem ainda. Diga oi pro profissional!</p>`;
+        container.innerHTML = `<p class="chat-vazio-aviso" data-i18n="chat.nenhumaMensagem" style="text-align:center;color:var(--text-light);padding:2rem;font-size:0.9rem;">${traduzirCliente('chat.nenhumaMensagem')}</p>`;
         return;
     }
 
@@ -249,7 +276,7 @@ async function sendMessage() {
 
     if (erroMsg) {
         console.error('Erro ao enviar mensagem:', erroMsg);
-        alert('Não foi possível enviar a mensagem. Tente novamente.');
+        alert(traduzirCliente('chat.erroEnviarMensagem'));
         return;
     }
 

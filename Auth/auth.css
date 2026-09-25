@@ -252,11 +252,6 @@ a {
 }
 
 .auth-page-login {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 3.5rem;
-    flex-wrap: wrap;
     background-color: #FFF6DD;
     background-image: url('/imagens/login-fundo-novo.png');
     background-repeat: no-repeat;
@@ -267,9 +262,25 @@ a {
     color: #3E2711;
 }
 
+.auth-login-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, calc(5vw - 8px), 3.5rem);
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
 .auth-page-login .auth-hero {
     align-items: flex-start;
-    max-width: 420px;
+    max-width: clamp(260px, calc(25vw + 100px), 420px);
+    width: 100%;
+}
+
+.auth-page-login .auth-card {
+    max-width: clamp(280px, calc(23.5vw + 130px), 430px);
 }
 
 .auth-page-login .auth-logo-link {
@@ -296,8 +307,8 @@ a {
     z-index: 1;
 }
 
-@media (max-width: 860px) {
-    .auth-page-login {
+@media (max-width: 640px) {
+    .auth-login-content {
         flex-direction: column;
         gap: 1.8rem;
     }
@@ -740,22 +751,21 @@ a {
 }
 
 /* ===== Tela de login clara (referência) =====
-   O fundo (foto do profissional + hexágonos decorativos) agora vem
-   embutido na imagem de /imagens/login-fundo-novo.png (ver .auth-page-login
-   mais acima), então não precisamos mais de foto flutuante nem de SVGs
-   de hexágono separados por cima dela.
-
-   A foto do profissional faz parte da imagem de fundo (background-size:
-   cover), então a posição da borda dela, em pixels, cresce junto com a
-   largura da tela. Para o texto/card nunca ficar em cima da foto, o
-   afastamento da coluna de texto usa essa mesma lógica (mais afastamento
-   em telas menores, quase nenhum em telas bem largas, onde a foto já
-   ocupa uma fatia pequena). */
+   O fundo (foto do profissional + hexágonos decorativos) vem embutido
+   na imagem de /imagens/login-fundo-novo.png (ver .auth-page-login
+   mais acima), sem edição. A foto do profissional faz parte da
+   imagem de fundo (background-size: cover), então a posição da borda
+   dela, em pixels, muda junto com a largura da tela. Pra o texto/card
+   nunca ficar em cima da foto — inclusive em janelas de navegador não
+   maximizadas (~640-1000px, muito comuns em notebook/tela dividida) —
+   o afastamento da coluna de texto cresce de forma contínua nessa
+   faixa toda, não só acima de 1000px. Valores calibrados e testados
+   visualmente numa faixa ampla de larguras (640px até 1920px). */
 .auth-page-login .auth-hero {
-    margin-left: clamp(0px, calc(1056px - 55.2vw), 420px);
+    margin-left: clamp(0px, calc(38vw - 220px), 220px);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 640px) {
     .auth-page-login .auth-hero {
         margin-left: 0;
     }
@@ -767,7 +777,7 @@ a {
     -webkit-backdrop-filter: none;
     border: 1px solid rgba(92, 58, 30, 0.06);
     box-shadow: 0 30px 70px rgba(92, 58, 30, 0.18);
-    max-width: 540px;
+    /* largura vem da regra fluida (clamp) lá em cima — não fixar aqui de novo */
 }
 
 .auth-page-login .auth-card label {

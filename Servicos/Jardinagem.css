@@ -385,7 +385,7 @@ body {
 
 .modal-card {
     background: #fff;
-    border-radius: 0;
+    border-radius: 16px;
     padding: 2rem;
     width: 90%;
     max-width: 420px;
@@ -1157,5 +1157,177 @@ body.dark-mode .detalhes-campo textarea {
 
 body.dark-mode .detalhes-cancelar-btn {
     background: #3A322A;
+    color: #F5E9D8;
+}
+
+/* ===== Botão "Ver avaliações" + telinha com a lista de avaliações ===== */
+
+.pro-score-novo {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.btn-ver-avaliacoes {
+    border: none;
+    background: none;
+    color: var(--brown);
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.35rem;
+}
+
+.btn-ver-avaliacoes:hover {
+    color: var(--brown-dark);
+}
+
+.avaliacoes-lista-card {
+    max-width: 460px;
+    max-height: 82vh;
+    overflow-y: auto;
+}
+
+.avaliacoes-lista-nome {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-top: -0.4rem;
+    margin-bottom: 1rem;
+}
+
+.avaliacoes-lista-resumo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.12);
+}
+
+.avaliacoes-resumo-nota {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.avaliacoes-resumo-total {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.avaliacoes-carregando,
+.avaliacoes-vazio {
+    text-align: center;
+    color: var(--text-light);
+    padding: 2rem 0.5rem;
+    font-size: 0.92rem;
+}
+
+.avaliacoes-lista-itens {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.avaliacao-item {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+}
+
+.avaliacao-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.avaliacao-item-topo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.avaliacao-item-topo .modal-stars {
+    font-size: 0.95rem;
+}
+
+.avaliacao-item-nota {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.avaliacao-item-data {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-left: auto;
+}
+
+.avaliacao-item-nome {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--brown);
+    margin: 0.35rem 0 0;
+}
+
+.avaliacao-item-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.avaliacao-item-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+    background: #F5E9D8;
+    color: var(--brown-dark);
+}
+
+.avaliacao-item-comentario {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+body.dark-mode .pro-score-novo { color: #C9A87C; }
+
+body.dark-mode .btn-ver-avaliacoes { color: #F0C989; }
+body.dark-mode .btn-ver-avaliacoes:hover { color: #FFDE9E; }
+
+body.dark-mode .avaliacoes-lista-nome,
+body.dark-mode .avaliacoes-resumo-total,
+body.dark-mode .avaliacoes-carregando,
+body.dark-mode .avaliacoes-vazio,
+body.dark-mode .avaliacao-item-data {
+    color: #C9A87C;
+}
+
+body.dark-mode .avaliacoes-resumo-nota,
+body.dark-mode .avaliacao-item-nota {
+    color: #F5E9D8;
+}
+
+body.dark-mode .avaliacoes-lista-resumo,
+body.dark-mode .avaliacao-item {
+    border-color: rgba(245, 233, 216, 0.14);
+}
+
+body.dark-mode .avaliacao-item-nome {
+    color: #F0C989;
+}
+
+body.dark-mode .avaliacao-item-chip {
+    background: #3A322A;
+    color: #F5E9D8;
+}
+
+body.dark-mode .avaliacao-item-comentario {
     color: #F5E9D8;
 }

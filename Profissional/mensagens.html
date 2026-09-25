@@ -19,23 +19,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -76,23 +76,26 @@
         <div class="mensagens-layout">
 
             <section class="conversas-panel">
-                <h2 class="panel-title">conversas</h2>
+                <h2 class="panel-title" data-i18n="mensagens.conversas">conversas</h2>
                 <div class="conversas-list" id="conversasList">
-                    
+
                 </div>
             </section>
 
             <section class="chat-panel">
-                <h2 class="chat-contato-nome" id="chatContatoNome">Selecione uma conversa</h2>
+                <div class="chat-contato-header">
+                    <div class="chat-contato-avatar" id="chatContatoAvatar"></div>
+                    <h2 class="chat-contato-nome" id="chatContatoNome" data-i18n="mensagens.selecioneConversa">Selecione uma conversa</h2>
+                </div>
                 <div class="chat-divider"></div>
 
                 <div class="chat-mensagens" id="chatMensagens">
-                    
+
                 </div>
 
                 <div class="chat-input-row">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="Digite sua mensagem..." autocomplete="off">
-                    <button class="enviar-btn" id="enviarBtn">Enviar</button>
+                    <input type="text" id="chatInput" class="chat-input" data-i18n-placeholder="mensagens.digiteMensagem" placeholder="Digite sua mensagem..." autocomplete="off">
+                    <button class="enviar-btn" id="enviarBtn" data-i18n="mensagens.enviar">Enviar</button>
                 </div>
             </section>
 
@@ -102,6 +105,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="mensagens.js"></script>
 </body>
 </html>

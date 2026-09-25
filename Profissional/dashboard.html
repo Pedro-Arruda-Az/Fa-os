@@ -19,23 +19,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -71,14 +71,14 @@
 
         <section class="hero-prof">
             <div class="hero-prof-texto">
-                <p class="hero-prof-label">BOM TE VER POR AQUI,</p>
-                <h1 class="hero-prof-titulo">Continue fazendo<br>a <span class="hero-prof-destaque">diferença.</span></h1>
-                <p class="hero-prof-sub">Seu trabalho conecta pessoas e facilita vidas todos os dias.</p>
+                <p class="hero-prof-label" data-i18n="dashboard.heroLabel">BOM TE VER POR AQUI,</p>
+                <h1 class="hero-prof-titulo" data-i18n-html="dashboard.heroTitulo">Continue fazendo<br>a <span class="hero-prof-destaque">diferença.</span></h1>
+                <p class="hero-prof-sub" data-i18n="dashboard.heroSub">Seu trabalho conecta pessoas e facilita vidas todos os dias.</p>
             </div>
             <div class="hero-prof-foto">
                 <img src="/imagens/hero-prof-foto.jpg" alt="" class="hero-prof-foto-img">
                 <div class="hero-prof-quote">
-                    <p>&ldquo;Serviços que aproximam pessoas.&rdquo;</p>
+                    <p data-i18n="dashboard.heroQuote">&ldquo;Serviços que aproximam pessoas.&rdquo;</p>
                     <span class="hero-prof-tracinho"></span>
                 </div>
             </div>
@@ -97,16 +97,16 @@
                 <div class="resumo-numeros-novo">
                     <div class="resumo-num-bloco">
                         <strong id="resumoAtendimentos">0</strong>
-                        <span>atendimentos<br>hoje</span>
+                        <span data-i18n-html="dashboard.atendimentosHojeLabel">atendimentos<br>hoje</span>
                     </div>
                     <div class="resumo-num-divisor"></div>
                     <div class="resumo-num-bloco">
                         <strong id="resumoValor">R$ 0,00</strong>
-                        <span>previsão de ganhos<br>hoje</span>
+                        <span data-i18n-html="dashboard.previsaoGanhosLabel">previsão de ganhos<br>hoje</span>
                     </div>
                 </div>
 
-                <a href="/Profissional/pepe.html" class="ver-link">Ver detalhes <span>&rarr;</span></a>
+                <a href="/Profissional/pepe.html" class="ver-link"><span data-i18n="dashboard.verDetalhes">Ver detalhes</span> <span>&rarr;</span></a>
             </div>
 
             <div class="atendimentos-card-novo">
@@ -123,8 +123,8 @@
         </div>
 
         <div class="footer-tagline">
-            <span><span class="tracinho"></span> FAÇOS — Serviços que aproximam.</span>
-            <span>Mais pessoas. Mais histórias. <span class="tracinho"></span></span>
+            <span><span class="tracinho"></span> <span data-i18n="dashboard.taglineParte1">FAÇOS — Serviços que aproximam.</span></span>
+            <span><span data-i18n="dashboard.taglineParte2">Mais pessoas. Mais histórias.</span> <span class="tracinho"></span></span>
         </div>
     </main>
 

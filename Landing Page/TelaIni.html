@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faços - Encontre profissionais</title>
+    <title id="pageTitleTag">Faços - Encontre profissionais</title>
     <link rel="stylesheet" href="/Shared/app-shell.css">
     <link rel="stylesheet" href="/Landing Page/TelaIni.css">
     <link rel="stylesheet" href="/Buzz/buzz.css">
@@ -21,11 +21,11 @@
             </a>
         </div>
         <div class="header-right">
-            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil">
+            <a href="/Landing Page/Perfil.html" class="topbar-profile-btn" title="Meu perfil" id="topbarProfileLink">
                 <img src="/imagens/icones-claro/perfil.png" alt="" class="icon-claro">
                 <img src="/imagens/icones-escuro/perfil.png" alt="" class="icon-escuro">
             </a>
-            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn active" title="Início">
+            <a href="/Landing Page/TelaIni.html" class="topbar-icon-btn active" title="Início" id="topbarInicioLink">
                 <img src="/imagens/icones-claro/casinha-header.png" alt="" class="icon-claro">
                 <img src="/imagens/icones-escuro/casinha-header.png" alt="" class="icon-escuro">
             </a>
@@ -89,7 +89,7 @@
         <main class="content">
             <section class="hero-inicio">
                 <div class="hero-inicio-photo">
-                    <img src="/imagens/hero-inicio-claro.jpg" alt="Sala de estar aconchegante" class="hero-inicio-img">
+                    <img src="/imagens/hero-inicio-claro.jpg" alt="Sala de estar aconchegante" class="hero-inicio-img" id="heroInicioImg">
                 </div>
                 <div class="hero-inicio-text">
                     <div class="hero-search-row">
@@ -108,7 +108,7 @@
             <section class="search-results" id="searchResultsSection" style="display:none;">
                 <div class="search-results-header">
                     <h2 class="section-title" id="searchResultsTitle">Resultados da busca</h2>
-                    <button type="button" class="search-results-clear" id="searchResultsClear">Limpar busca</button>
+                    <button type="button" class="search-results-clear" id="searchResultsClear" data-i18n="telaini.limparBusca">Limpar busca</button>
                 </div>
                 <div class="results-count" id="searchResultsCount"></div>
                 <div class="professionals-list" id="searchResultsList"></div>
@@ -185,6 +185,7 @@
     </button>
 
     <script src="/Shared/i18n-cliente.js"></script>
+    <script src="/Shared/foto-perfil.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/Shared/notificacoes-badge.js"></script>
     <script src="/Landing Page/TelaIni.js"></script>

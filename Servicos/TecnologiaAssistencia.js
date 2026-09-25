@@ -41,7 +41,9 @@ async function buscarProfissionais() {
             name: row.nome_empresa,
             email: row.email,
             service: 'Tecnologia e assistência',
-            rating: 5.0,
+            rating: row.avaliacao !== null && row.avaliacao !== undefined ? Number(row.avaliacao) : 0,
+            totalAvaliacoes: Number(row.total_avaliacoes || 0),
+            foto: row.foto_perfil || null,
             distance: Number((1 + (index % 5) * 0.7).toFixed(1)),
             lat: row.latitude != null ? Number(row.latitude) : CENTRO_SP.lat + jitter,
             lng: row.longitude != null ? Number(row.longitude) : CENTRO_SP.lng + jitter,
@@ -49,6 +51,7 @@ async function buscarProfissionais() {
             price: `R$ ${Number(row.preco_servico || 0).toFixed(2).replace('.', ',')}`,
             priceValue: Number(row.preco_servico || 0),
             sobre: row.sobre || 'Esse profissional ainda não escreveu uma descrição sobre o seu trabalho.',
+            sobrePadrao: !row.sobre,
             initials: gerarIniciais(row.nome_empresa)
         };
     });
@@ -76,12 +79,15 @@ function verificarLogin() {
 function renderCards(list) {
     const container = document.getElementById('professionalsList');
     const countEl = document.getElementById('resultsCount');
+    const idioma = facosClienteIdiomaAtual();
 
-    countEl.textContent = `${list.length} ${list.length !== 1 ? 'profissionais' : 'profissional'} encontrado${list.length !== 1 ? 's' : ''}`;
+    countEl.textContent = idioma === 'en'
+        ? `${list.length} ${list.length !== 1 ? 'professionals' : 'professional'} found`
+        : `${list.length} ${list.length !== 1 ? 'profissionais' : 'profissional'} encontrado${list.length !== 1 ? 's' : ''}`;
     container.innerHTML = '';
 
     if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center;color:#A0826D;padding:2rem;font-size:0.95rem;">Nenhum profissional de tecnologia e assistência disponível ainda. Assim que um profissional se cadastrar nessa área, ele aparece aqui.</p>`;
+        container.innerHTML = `<p style="text-align:center;color:#A0826D;padding:2rem;font-size:0.95rem;">${traduzirCliente('servicosPag.vazioTecnologia')}</p>`;
         return;
     }
 
@@ -91,15 +97,16 @@ function renderCards(list) {
         card.dataset.id = pro.id;
 
         card.innerHTML = `
-            <div class="pro-avatar">${pro.initials}</div>
+            <div class="pro-avatar">${avatarConteudo(pro.foto, pro.initials)}</div>
             <div class="pro-info">
                 <div class="pro-name">${pro.name}</div>
-                <div class="pro-service">${pro.service}</div>
+                <div class="pro-service">${traduzirCliente('servico.tecnologia')}</div>
                 <div class="pro-meta">
                     <span class="pro-dist">${pro.distance} km</span>
                     <div class="pro-rating-wrap">
-                        <div class="stars">${buildStars(pro.rating)}</div>
-                        <span class="pro-score">${pro.rating}</span>
+                        ${pro.totalAvaliacoes > 0
+                            ? `<div class="stars">${buildStars(pro.rating)}</div><span class="pro-score">${pro.rating.toFixed(1)}</span>`
+                            : `<span class="pro-score pro-score-novo">${traduzirCliente('servicosPag.semAvaliacoesLabel')}</span>`}
                     </div>
                 </div>
             </div>
@@ -142,13 +149,18 @@ function selectPro(id) {
 }
 
 function openModal(pro) {
-    document.getElementById('modalAvatar').textContent = pro.initials;
+    document.getElementById('modalAvatar').innerHTML = avatarConteudo(pro.foto, pro.initials);
     document.getElementById('modalName').textContent = pro.name;
-    document.getElementById('modalCategoria').textContent = pro.service;
-    document.getElementById('modalStars').innerHTML = buildModalStars(pro.rating);
+    document.getElementById('modalCategoria').textContent = traduzirCliente('servico.tecnologia');
     document.getElementById('modalDist').textContent = `${pro.distance} km`;
-    document.getElementById('modalRating').textContent = pro.rating.toFixed(1);
-    document.getElementById('modalSobre').textContent = pro.sobre;
+    if (pro.totalAvaliacoes > 0) {
+        document.getElementById('modalStars').innerHTML = buildModalStars(pro.rating);
+        document.getElementById('modalRating').textContent = pro.rating.toFixed(1);
+    } else {
+        document.getElementById('modalStars').innerHTML = '';
+        document.getElementById('modalRating').textContent = traduzirCliente('servicosPag.semAvaliacoesLabel');
+    }
+    document.getElementById('modalSobre').textContent = pro.sobrePadrao ? traduzirCliente('servicosPag.semSobre') : pro.sobre;
 
     document.getElementById('detailEmpty').style.display = 'none';
     document.getElementById('detailContent').classList.add('open');
@@ -159,11 +171,114 @@ function closeModal() {
     document.getElementById('detailEmpty').style.display = 'flex';
 }
 
+// ===== Telinha "Ver avaliações" (lista de todas as avaliações recebidas) =====
+
+const MOTIVO_I18N = {
+    tempo_espera: 'pedidos.motivoTempoEspera',
+    comportamento: 'pedidos.motivoComportamento',
+    comunicacao: 'pedidos.motivoComunicacao',
+    qualidade: 'pedidos.motivoQualidade',
+    atraso: 'pedidos.motivoAtraso',
+    preco: 'pedidos.motivoPreco'
+};
+
+let ultimasAvaliacoesCarregadas = [];
+
+function escapeHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto == null ? '' : String(texto);
+    return div.innerHTML;
+}
+
+function formatarDataAvaliacao(isoString) {
+    const idioma = facosClienteIdiomaAtual();
+    const locale = idioma === 'en' ? 'en-US' : 'pt-BR';
+    return new Date(isoString).toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
+}
+
+async function buscarAvaliacoesProfissional(email) {
+    if (!supabaseClient) return [];
+
+    const { data, error } = await supabaseClient
+        .from('pedidos')
+        .select('avaliacao, avaliacao_motivos, avaliacao_comentario, usuario_nome, criado_em')
+        .eq('profissional_email', email)
+        .not('avaliacao', 'is', null)
+        .order('criado_em', { ascending: false });
+
+    if (error || !data) return [];
+    return data;
+}
+
+function renderListaAvaliacoes(avaliacoes, pro) {
+    const resumo = document.getElementById('avaliacoesListaResumo');
+    const lista = document.getElementById('avaliacoesListaItens');
+
+    if (!avaliacoes || avaliacoes.length === 0) {
+        resumo.innerHTML = '';
+        lista.innerHTML = `<p class="avaliacoes-vazio">${traduzirCliente('servicosPag.semAvaliacoesAinda')}</p>`;
+        return;
+    }
+
+    const idioma = facosClienteIdiomaAtual();
+    const totalTexto = idioma === 'en'
+        ? `${avaliacoes.length} ${avaliacoes.length !== 1 ? 'reviews' : 'review'}`
+        : `${avaliacoes.length} avaliaç${avaliacoes.length !== 1 ? 'ões' : 'ão'}`;
+
+    resumo.innerHTML = `
+        <div class="modal-stars">${buildModalStars(pro.rating)}</div>
+        <span class="avaliacoes-resumo-nota">${pro.rating.toFixed(1)}</span>
+        <span class="avaliacoes-resumo-total">${totalTexto}</span>
+    `;
+
+    lista.innerHTML = avaliacoes.map((av) => {
+        const nota = Number(av.avaliacao);
+        const motivosChips = (av.avaliacao_motivos || '')
+            .split(',')
+            .map((m) => m.trim())
+            .filter(Boolean)
+            .map((chave) => `<span class="avaliacao-item-chip">${escapeHtml(traduzirCliente(MOTIVO_I18N[chave] || chave))}</span>`)
+            .join('');
+        const comentario = av.avaliacao_comentario
+            ? `<p class="avaliacao-item-comentario">${escapeHtml(av.avaliacao_comentario)}</p>`
+            : '';
+        const nomeReviewer = av.usuario_nome ? escapeHtml(av.usuario_nome) : traduzirCliente('servicosPag.clienteAnonimo');
+
+        return `
+            <div class="avaliacao-item">
+                <div class="avaliacao-item-topo">
+                    <div class="modal-stars">${buildModalStars(nota)}</div>
+                    <span class="avaliacao-item-nota">${nota.toFixed(1)}</span>
+                    <span class="avaliacao-item-data">${formatarDataAvaliacao(av.criado_em)}</span>
+                </div>
+                <p class="avaliacao-item-nome">${nomeReviewer}</p>
+                ${motivosChips ? `<div class="avaliacao-item-chips">${motivosChips}</div>` : ''}
+                ${comentario}
+            </div>
+        `;
+    }).join('');
+}
+
+async function abrirModalAvaliacoes(pro) {
+    document.getElementById('avaliacoesListaNome').textContent = pro.name;
+    document.getElementById('avaliacoesListaResumo').innerHTML = '';
+    document.getElementById('avaliacoesListaItens').innerHTML = `<p class="avaliacoes-carregando">${traduzirCliente('servicosPag.carregandoAvaliacoes')}</p>`;
+    document.getElementById('avaliacoesListaModal').classList.add('open');
+
+    ultimasAvaliacoesCarregadas = await buscarAvaliacoesProfissional(pro.email);
+    renderListaAvaliacoes(ultimasAvaliacoesCarregadas, pro);
+}
+
+function closeModalAvaliacoes() {
+    document.getElementById('avaliacoesListaModal').classList.remove('open');
+}
+
 let metodoSelecionado = null;
 let saldoAtualCarteira = 0;
 
 async function abrirModalPagamento(pro) {
-    document.getElementById('pagamentoSubtitle').textContent = `Serviço com ${pro.name}`;
+    const idioma = facosClienteIdiomaAtual();
+    document.getElementById('pagamentoSubtitle').textContent = idioma === 'en' ? `Service with ${pro.name}` : `Serviço com ${pro.name}`;
     document.getElementById('pagamentoValor').textContent = formatarMoeda(pro.priceValue);
 
     metodoSelecionado = null;
@@ -173,15 +288,17 @@ async function abrirModalPagamento(pro) {
     document.getElementById('paymentModal').classList.add('open');
 
     const saldoTexto = document.getElementById('saldoDisponivelTexto');
-    saldoTexto.textContent = 'Carregando saldo...';
+    saldoTexto.textContent = traduzirCliente('servicosPag.carregandoSaldo');
 
     saldoAtualCarteira = await buscarSaldoCarteira();
-    saldoTexto.textContent = `Saldo disponível: ${formatarMoeda(saldoAtualCarteira)}`;
+    saldoTexto.textContent = facosClienteIdiomaAtual() === 'en'
+        ? `Available balance: ${formatarMoeda(saldoAtualCarteira)}`
+        : `Saldo disponível: ${formatarMoeda(saldoAtualCarteira)}`;
 
     const opcaoCarteira = document.querySelector('.pagamento-opcao[data-metodo="carteira"]');
     if (saldoAtualCarteira < pro.priceValue) {
         opcaoCarteira.disabled = true;
-        saldoTexto.textContent += ' (insuficiente)';
+        saldoTexto.textContent += traduzirCliente('servicosPag.insuficiente');
     } else {
         opcaoCarteira.disabled = false;
     }
@@ -194,7 +311,9 @@ function closePaymentModal() {
 let detalhesAtuais = { endereco: '', observacoes: '' };
 
 function abrirModalDetalhes(pro) {
-    document.getElementById('detalhesServicoLinha').textContent = `Serviço: ${pro.service}`;
+    const idioma = facosClienteIdiomaAtual();
+    const categoriaTexto = traduzirCliente('servico.tecnologia');
+    document.getElementById('detalhesServicoLinha').textContent = idioma === 'en' ? `Service: ${categoriaTexto}` : `Serviço: ${categoriaTexto}`;
     document.getElementById('detalhesEndereco').value = '';
     document.getElementById('detalhesObs').value = '';
     document.getElementById('detalhesModal').classList.add('open');
@@ -230,7 +349,7 @@ async function pagarComCarteira(pro) {
     const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
     const textoOriginal = confirmarBtn.textContent;
     confirmarBtn.disabled = true;
-    confirmarBtn.textContent = 'Processando...';
+    confirmarBtn.textContent = traduzirCliente('servicosPag.processando');
 
     try {
         const resposta = await fetch('/api/contratar-servico', {
@@ -249,15 +368,18 @@ async function pagarComCarteira(pro) {
         const resultado = await resposta.json().catch(() => ({}));
 
         if (!resposta.ok) {
-            alert(resultado.error || 'Não foi possível concluir o pagamento com a carteira.');
+            alert(resultado.error || traduzirCliente('servicosPag.erroPagamentoCarteira'));
             return;
         }
 
-        alert(`Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
+        const idioma = facosClienteIdiomaAtual();
+        alert(idioma === 'en'
+            ? `Payment completed using the wallet balance!\nService requested with ${pro.name}.`
+            : `Pagamento realizado com o saldo da carteira!\nServiço solicitado com ${pro.name}.`);
         closePaymentModal();
     } catch (err) {
         console.error(err);
-        alert('Ocorreu um erro ao processar o pagamento com a carteira.');
+        alert(traduzirCliente('servicosPag.erroPagamentoCarteiraGenerico'));
     } finally {
         confirmarBtn.disabled = false;
         confirmarBtn.textContent = textoOriginal;
@@ -268,7 +390,7 @@ async function iniciarPagamento(pro) {
     const confirmarBtn = document.getElementById('confirmarPagamentoBtn');
     const textoOriginal = confirmarBtn.textContent;
 
-    confirmarBtn.textContent = 'Aguarde...';
+    confirmarBtn.textContent = traduzirCliente('servicosPag.aguarde');
     confirmarBtn.disabled = true;
 
     try {
@@ -298,7 +420,7 @@ async function iniciarPagamento(pro) {
         window.location.href = resultado.init_point;
     } catch (err) {
         console.error('Erro ao iniciar pagamento:', err);
-        alert('Erro ao conectar com o Mercado Pago.\nVerifique o console para mais detalhes.');
+        alert(traduzirCliente('servicosPag.erroMercadoPago'));
         confirmarBtn.textContent = textoOriginal;
         confirmarBtn.disabled = false;
     }
@@ -314,17 +436,35 @@ function bindEvents() {
     }
 
     const searchInput = document.getElementById('searchInput');
+    function getFilteredProfessionals() {
+        const q = searchInput.value.toLowerCase().trim();
+        return professionals.filter(p => !q || p.name.toLowerCase().includes(q) || p.service.toLowerCase().includes(q));
+    }
     searchInput.addEventListener('input', () => {
-        const filtered = professionals.filter(p => {
-            const q = searchInput.value.toLowerCase().trim();
-            return !q || p.name.toLowerCase().includes(q) || p.service.toLowerCase().includes(q);
-        });
-        renderCards(filtered);
+        renderCards(getFilteredProfessionals());
     });
 
     document.getElementById('solicitarBtn').addEventListener('click', () => {
         if (activePro) abrirModalDetalhes(activePro);
     });
+
+    const verAvaliacoesBtn = document.getElementById('verAvaliacoesBtn');
+    if (verAvaliacoesBtn) {
+        verAvaliacoesBtn.addEventListener('click', () => {
+            if (activePro) abrirModalAvaliacoes(activePro);
+        });
+    }
+
+    const avaliacoesListaClose = document.getElementById('avaliacoesListaClose');
+    if (avaliacoesListaClose) {
+        avaliacoesListaClose.addEventListener('click', closeModalAvaliacoes);
+    }
+    const avaliacoesListaModal = document.getElementById('avaliacoesListaModal');
+    if (avaliacoesListaModal) {
+        avaliacoesListaModal.addEventListener('click', (e) => {
+            if (e.target === avaliacoesListaModal) closeModalAvaliacoes();
+        });
+    }
 
     document.getElementById('detalhesCancelarBtn').addEventListener('click', closeModalDetalhes);
     document.getElementById('detalhesModal').addEventListener('click', (e) => {
@@ -335,7 +475,7 @@ function bindEvents() {
         const endereco = document.getElementById('detalhesEndereco').value.trim();
 
         if (!endereco) {
-            alert('Por favor, informe o endereço.');
+            alert(traduzirCliente('servicosPag.erroEndereco'));
             return;
         }
 
@@ -437,6 +577,12 @@ function bindEvents() {
     if (idiomaBtn) {
         idiomaBtn.addEventListener('click', () => {
             if (window.facosClienteTrocarIdioma) facosClienteTrocarIdioma();
+            renderCards(getFilteredProfessionals());
+            if (activePro) openModal(activePro);
+            const avaliacoesListaModal = document.getElementById('avaliacoesListaModal');
+            if (activePro && avaliacoesListaModal && avaliacoesListaModal.classList.contains('open')) {
+                renderListaAvaliacoes(ultimasAvaliacoesCarregadas, activePro);
+            }
         });
     }
 

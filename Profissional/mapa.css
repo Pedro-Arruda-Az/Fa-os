@@ -294,7 +294,7 @@ html.light-mode .config-menu {
     overflow: hidden;
     margin-bottom: 1.25rem;
     border: 1px solid var(--border);
-    /* O Leaflet usa z-index alto (até 1000) nos próprios controles e
+    /* O Mapbox usa z-index alto nos próprios controles e
        camadas internas. Sem isolar esse contexto de empilhamento aqui,
        esses elementos competem diretamente com o cabeçalho fixo (que
        tem z-index mais baixo) e "vazam" por cima dele ao rolar a
@@ -618,19 +618,17 @@ html.light-mode .config-menu {
     transform: translateY(-2px);
 }
 
-.leaflet-popup-content-wrapper {
+.mapboxgl-popup-content {
     background: #262626;
     color: var(--text-main);
     border-radius: 10px;
-}
-
-.leaflet-popup-tip {
-    background: #262626;
-}
-
-.leaflet-popup-content {
     font-family: 'Sora', sans-serif;
     font-size: 0.85rem;
+}
+
+.mapboxgl-popup-tip {
+    border-top-color: #262626 !important;
+    border-bottom-color: #262626 !important;
 }
 
 @media (max-width: 1100px) {

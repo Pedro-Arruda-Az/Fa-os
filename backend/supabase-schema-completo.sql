@@ -14,6 +14,7 @@ alter table usuarios add column if not exists cpf text;
 alter table usuarios add column if not exists saldo numeric(10,2) not null default 0;
 alter table usuarios add column if not exists latitude decimal(10,8);
 alter table usuarios add column if not exists longitude decimal(11,8);
+alter table usuarios add column if not exists foto_perfil text;
 alter table usuarios alter column cpf drop not null;
 alter table usuarios alter column telefone type text;
 alter table usuarios alter column cpf type text;
@@ -102,13 +103,17 @@ create table if not exists pedidos (
     endereco text,
     observacoes text,
     profissional_email text,
-    usuario_nome text
+    usuario_nome text,
+    avaliacao_motivos text,
+    avaliacao_comentario text
 );
 
 alter table pedidos add column if not exists endereco text;
 alter table pedidos add column if not exists observacoes text;
 alter table pedidos add column if not exists profissional_email text;
 alter table pedidos add column if not exists usuario_nome text;
+alter table pedidos add column if not exists avaliacao_motivos text;
+alter table pedidos add column if not exists avaliacao_comentario text;
 
 alter table pagamentos add column if not exists endereco text;
 alter table pagamentos add column if not exists observacoes text;

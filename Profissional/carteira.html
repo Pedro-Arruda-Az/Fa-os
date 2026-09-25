@@ -19,23 +19,23 @@
             <nav class="nav-pills">
                 <a href="/Profissional/dashboard.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
-                    <span>Início</span>
+                    <span data-i18n="nav.inicio">Início</span>
                 </a>
                 <a href="/Profissional/pepe.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
-                    <span>Pedidos</span>
+                    <span data-i18n="painel.pedidos">Pedidos</span>
                 </a>
                 <a href="/Profissional/carteira.html" class="nav-pill active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    <span>Carteira</span>
+                    <span data-i18n="painel.carteira">Carteira</span>
                 </a>
                 <a href="/Profissional/mensagens.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    <span>Mensagens</span>
+                    <span data-i18n="painel.mensagens">Mensagens</span>
                 </a>
                 <a href="/Profissional/mapa.html" class="nav-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Localização</span>
+                    <span data-i18n="painel.localizacao">Localização</span>
                 </a>
             </nav>
 
@@ -77,37 +77,37 @@
             <div class="saldo-card saldo-principal">
                 <div class="saldo-topo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-                    <span>Saldo disponível</span>
+                    <span data-i18n="carteira.saldoDisponivel">Saldo disponível</span>
                 </div>
                 <span class="saldo-valor" id="saldoValor">R$ 0,00</span>
-                <span class="saldo-sub">Disponível para saque</span>
+                <span class="saldo-sub" data-i18n="carteira.disponivelSaque">Disponível para saque</span>
             </div>
         </div>
 
         <div class="acoes-row">
             <button class="btn-sacar" id="sacarBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-                Sacar dinheiro
+                <span data-i18n="carteira.sacarDinheiro">Sacar dinheiro</span>
             </button>
-            <button class="btn-pix" id="pixBtn">Transferir via Pix</button>
+            <button class="btn-pix" id="pixBtn" data-i18n="carteira.transferirPix">Transferir via Pix</button>
         </div>
 
         <div class="conteudo-grid">
 
             <section class="historico-card">
                 <div class="historico-header">
-                    <h2 class="card-titulo">Histórico de transações</h2>
+                    <h2 class="card-titulo" data-i18n="carteira.historicoTransacoes">Histórico de transações</h2>
                     <button class="btn-exportar" id="exportarBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Exportar
+                        <span data-i18n="carteira.exportar">Exportar</span>
                     </button>
                 </div>
 
                 <div class="filtros-row">
-                    <button class="filtro-btn active" data-filtro="todos">Todos</button>
-                    <button class="filtro-btn" data-filtro="ganhos">Ganhos</button>
-                    <button class="filtro-btn" data-filtro="saques">Saques</button>
-                    <button class="filtro-btn" data-filtro="taxas">Taxas</button>
+                    <button class="filtro-btn active" data-filtro="todos" data-i18n="carteira.filtroTodos">Todos</button>
+                    <button class="filtro-btn" data-filtro="ganhos" data-i18n="carteira.filtroGanhos">Ganhos</button>
+                    <button class="filtro-btn" data-filtro="saques" data-i18n="carteira.filtroSaques">Saques</button>
+                    <button class="filtro-btn" data-filtro="taxas" data-i18n="carteira.filtroTaxas">Taxas</button>
                 </div>
 
                 <div class="transacoes-list" id="transacoesList">
@@ -117,32 +117,32 @@
             <aside class="sidebar-col">
 
                 <div class="dados-card">
-                    <h2 class="card-titulo">Dados de pagamento</h2>
+                    <h2 class="card-titulo" data-i18n="carteira.dadosPagamento">Dados de pagamento</h2>
 
                     <div class="dado-item">
-                        <span class="dado-label">Chave Pix</span>
-                        <span class="dado-valor" id="dadoChavePix">Não cadastrada</span>
+                        <span class="dado-label" data-i18n="carteira.chavePix">Chave Pix</span>
+                        <span class="dado-valor" id="dadoChavePix" data-i18n="carteira.naoCadastradaFem">Não cadastrada</span>
                     </div>
 
                     <div class="dado-item">
-                        <span class="dado-label">CNPJ</span>
+                        <span class="dado-label" data-i18n="carteira.cnpj">CNPJ</span>
                         <span class="dado-valor" id="dadoCnpj">—</span>
                     </div>
 
                     <div class="dado-item">
-                        <span class="dado-label">Banco</span>
-                        <span class="dado-valor" id="dadoBanco">Não cadastrado</span>
+                        <span class="dado-label" data-i18n="carteira.banco">Banco</span>
+                        <span class="dado-valor" id="dadoBanco" data-i18n="carteira.naoCadastradoMasc">Não cadastrado</span>
                     </div>
 
-                    <button class="btn-editar" id="editarDadosBtn">Editar dados</button>
+                    <button class="btn-editar" id="editarDadosBtn" data-i18n="carteira.editarDados">Editar dados</button>
                 </div>
 
                 <div class="ganhos-card">
-                    <h2 class="card-titulo">Ganhos recentes</h2>
+                    <h2 class="card-titulo" data-i18n="carteira.ganhosRecentes">Ganhos recentes</h2>
 
                     <div class="ganho-semana">
                         <div class="ganho-linha">
-                            <span>Semana 1</span>
+                            <span data-i18n="carteira.semana1">Semana 1</span>
                             <span>R$ 450</span>
                         </div>
                         <div class="ganho-barra"><div class="ganho-fill" style="width: 66%;"></div></div>
@@ -150,7 +150,7 @@
 
                     <div class="ganho-semana">
                         <div class="ganho-linha">
-                            <span>Semana 2</span>
+                            <span data-i18n="carteira.semana2">Semana 2</span>
                             <span>R$ 680</span>
                         </div>
                         <div class="ganho-barra"><div class="ganho-fill" style="width: 100%;"></div></div>
@@ -158,7 +158,7 @@
 
                     <div class="ganho-semana">
                         <div class="ganho-linha">
-                            <span>Semana 3</span>
+                            <span data-i18n="carteira.semana3">Semana 3</span>
                             <span>R$ 520</span>
                         </div>
                         <div class="ganho-barra"><div class="ganho-fill" style="width: 76%;"></div></div>
@@ -166,7 +166,7 @@
 
                     <div class="ganho-semana">
                         <div class="ganho-linha">
-                            <span>Semana 4</span>
+                            <span data-i18n="carteira.semana4">Semana 4</span>
                             <span>R$ 500</span>
                         </div>
                         <div class="ganho-barra"><div class="ganho-fill" style="width: 74%;"></div></div>
@@ -180,15 +180,15 @@
     <div class="modal-overlay" id="editarDadosModal">
         <div class="modal-card">
             <button class="modal-close" id="fecharEditarDadosModal">&times;</button>
-            <h2 class="card-titulo">Editar dados de pagamento</h2>
+            <h2 class="card-titulo" data-i18n="carteira.editarDadosPagamento">Editar dados de pagamento</h2>
 
-            <label class="form-label">Chave Pix</label>
-            <input type="text" id="inputChavePix" class="form-input" placeholder="email, telefone, CPF/CNPJ ou chave aleatória">
+            <label class="form-label" data-i18n="carteira.chavePix">Chave Pix</label>
+            <input type="text" id="inputChavePix" class="form-input" data-i18n-placeholder="carteira.placeholderChavePix" placeholder="email, telefone, CPF/CNPJ ou chave aleatória">
 
-            <label class="form-label">Banco</label>
-            <input type="text" id="inputBanco" class="form-input" placeholder="Ex: Banco do Brasil, Nubank...">
+            <label class="form-label" data-i18n="carteira.banco">Banco</label>
+            <input type="text" id="inputBanco" class="form-input" data-i18n-placeholder="carteira.placeholderBanco" placeholder="Ex: Banco do Brasil, Nubank...">
 
-            <button class="btn-editar" id="salvarDadosBtn" style="margin-top:1rem;">Salvar</button>
+            <button class="btn-editar" id="salvarDadosBtn" style="margin-top:1rem;" data-i18n="carteira.salvar">Salvar</button>
         </div>
     </div>
 
